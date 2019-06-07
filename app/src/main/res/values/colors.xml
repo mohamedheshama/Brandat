@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#F3DF1D</color>
+    <color name="colorAccent">#999</color>
+    <color name="colorbottom">#999</color>
+    <color name="colortop">#A81E68E9</color>
+    <color name="photo_placeholder">#ccc</color>
+    <color name="ltgray">#ffe0e0e0</color>
+    <color name="myBlue">#0057FF</color>
+
+</resources>
