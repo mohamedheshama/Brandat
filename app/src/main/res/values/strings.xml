@@ -8,13 +8,13 @@
     <string name="action_settings" translatable="false">Settings</string>
 
 
-        <string name="title_home" translatable="false">Home</string>
-        <string name="title_account" translatable="false">Acoount</string>
-        <string name="title_search" translatable="false">search</string>
-        <string name="title_search1" translatable="false"> </string>
-        <string name="title_shops" translatable="false">shops</string>
-        <string name="title_notifications" translatable="false">Notifications</string>
-        <string name="title_shop" translatable="false">shop</string>
+    <string name="title_home" translatable="false">Home</string>
+    <string name="title_account" translatable="false">Acoount</string>
+    <string name="title_search" translatable="false">search</string>
+    <string name="title_search1" translatable="false"> </string>
+    <string name="title_shops" translatable="false">shops</string>
+    <string name="title_notifications" translatable="false">Notifications</string>
+    <string name="title_shop" translatable="false">shop</string>
 
     <string name="names_categories_key" translatable="false">namesCategoriesKey</string>
     <string-array name="names_categories">
@@ -27,7 +27,6 @@
         <item>حيوانات اليفه</item>
         <item>مستلزمات أطفال</item>
     </string-array>
-
 
 
 </resources>

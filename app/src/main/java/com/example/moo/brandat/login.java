@@ -48,7 +48,7 @@ public class login extends AppCompatActivity {
         forgotPass=(TextView) findViewById(R.id.textView5);
         signup=(TextView) findViewById(R.id.textView4);
         login=(Button) findViewById(R.id.button2);
-        isRemember=(CheckBox) findViewById(R.id.checkremember);
+        //isRemember=(CheckBox) findViewById(R.id.checkremember);
         progressDialog=new ProgressDialog(this);
 
         mAuth= FirebaseAuth.getInstance();

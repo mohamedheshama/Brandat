@@ -23,36 +23,38 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:drawableLeft="@drawable/ic_photo_camera_black_24dp"
-            android:text=" Choose profile photo from your mobile"
+            android:text="  Choose profile photo "
             android:textColor="#2F6EE4"
-            android:textSize="20dp"
+            android:textSize="19dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.14"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <android.support.v7.widget.CardView
-            android:layout_width="180dp"
-            android:layout_height="150dp"
+            android:layout_width="150dp"
+            android:layout_height="130dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="32dp"
+            app:cardBackgroundColor="#ECECEC"
             app:layout_constraintBottom_toTopOf="@+id/cardView3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:cardBackgroundColor="#ECECEC"
 
             >
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="12dp" >
+                android:padding="12dp">
 
                 <TextView
                     android:layout_width="40dp"
@@ -67,16 +69,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#fff"
-                    android:scaleType="centerCrop"
-
                     android:src="@drawable/ic_add_a_photo_black_24dp" />
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
-
         <android.support.v7.widget.CardView
             android:id="@+id/cardView3"
-            android:layout_width="355dp"
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="320dp"
             android:layout_marginRight="8dp"
@@ -124,7 +123,7 @@
 
         <android.support.v7.widget.CardView
             android:id="@+id/cardView2"
-            android:layout_width="355dp"
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginRight="8dp"
@@ -171,7 +170,7 @@
 
         <android.support.v7.widget.CardView
             android:id="@+id/cardView"
-            android:layout_width="355dp"
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
@@ -216,7 +215,7 @@
 
         <android.support.v7.widget.CardView
             android:id="@+id/cardView23"
-            android:layout_width="355dp"
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
@@ -260,7 +259,7 @@
 
         <android.support.v7.widget.CardView
             android:id="@+id/cardView4"
-            android:layout_width="355dp"
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginRight="8dp"
@@ -307,7 +306,7 @@
 
         <android.support.v7.widget.CardView
             android:id="@+id/cardView5"
-            android:layout_width="355dp"
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginRight="8dp"
@@ -357,24 +356,25 @@
 
         <Switch
             android:id="@+id/switch1"
-            android:layout_width="wrap_content"
+            android:layout_width="315dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="Do you own a shop?                             "
+            android:text="shop ?"
             android:textColor="#1C2B0E"
             android:textSize="18dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.462"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView5" />
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="327dp"
-            android:layout_height="60dp"
+            android:layout_width="290dp"
+            android:layout_height="55dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
@@ -392,16 +392,16 @@
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="229dp"
+            android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:layout_marginStart="64dp"
             android:layout_marginLeft="64dp"
             android:layout_marginTop="28dp"
             android:layout_marginBottom="8dp"
 
-            android:text="Don`t want any change?"
+            android:text="Don`t want any change? "
             android:textColor="#1C2B0E"
-            android:textSize="20dp"
+            android:textSize="18dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button2"
@@ -415,10 +415,10 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
-            android:text="Ignore"
+            android:text=" Ignore"
             android:textColor="#2F6EE4"
 
-            android:textSize="22dp"
+            android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

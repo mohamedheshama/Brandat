@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
     android:background="@drawable/side_nav_bar"
     android:gravity="bottom"
     android:orientation="vertical"
     android:id="@+id/nav_header"
-    android:onClick="onclick"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -20,13 +18,12 @@
     android:id="@+id/imageView_account"
 
         android:contentDescription="@string/nav_header_desc"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:layout_width="80dp"
+         android:paddingTop="@dimen/nav_header_vertical_spacing"
+
+         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@mipmap/baseline_account_circle_black_48"
-        android:elevation="8dp"
-        app:civ_shadow_color="#8B000000"
-        app:civ_border_width="0dp"
+        android:src="@drawable/ic_account_circle_black_24dp"
+        app:civ_shadow_color="#0057FF"
          android:scaleType="centerCrop"
 
         app:civ_shadow="true"
@@ -43,12 +40,18 @@
         android:id="@+id/signed_in"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="@string/nav_header_title"
+        android:textColor="#0057FF"
+        android:textStyle="bold"
+        android:textSize="17dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#fff"
+        android:textSize="15dp"
+        android:textStyle="bold"
 
         android:text="" />
 

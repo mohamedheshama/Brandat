@@ -1,5 +1,6 @@
 package com.example.moo.brandat;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.moo.brandat.R;
@@ -48,6 +50,7 @@ public class splash extends AppCompatActivity {
     private static final int RC_SIGN_IN =1;
     Button googlebtn;
     Button loginbtn;
+    TextView later2;
 
     FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -64,7 +67,52 @@ private FirebaseAuth.AuthStateListener mAuthListner;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
+        final Dialog dialog = new Dialog(this);
+        dialog.setTitle("change language and country");
+
+        dialog.setContentView(R.layout.layout_dialog);
+        //Spinner spin = (Spinner)dialog.findViewById(R.id.spinner1);
+        Button ok = (Button) dialog.findViewById(R.id.dialogButtonOK2);
+        // if button is clicked, close the custom dialog
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // dialog.dismiss();
+                Toast.makeText(splash.this,"sucess data " , Toast.LENGTH_SHORT).show();
+            }
+        });
+        Button cancel = (Button) dialog.findViewById(R.id.dialogButtonOK);
+        // if button is clicked, close the custom dialog
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        //        radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
+//        btnDisplay = (Button) findViewById(R.id.btnDisplay);
+//
+//        btnDisplay.setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//
+//                // get selected radio button from radioGroup
+//                int selectedId = radioSexGroup.getCheckedRadioButtonId();
+//
+//                // find the radiobutton by returned id
+//                radioSexButton = (RadioButton) findViewById(selectedId);
+//
+//                Toast.makeText(MyAndroidAppActivity.this,
+//                        radioSexButton.getText(), Toast.LENGTH_SHORT).show();
+//
+//            }
+//
+//        });
         googlebtn=(Button)findViewById(R.id.button);
+        later2=(TextView)findViewById(R.id.later);
+
         mAuth = FirebaseAuth.getInstance();
         progressDialog=new ProgressDialog(this);
         mDatabase= FirebaseDatabase.getInstance().getReference().child("userss");
@@ -293,6 +341,10 @@ private FirebaseAuth.AuthStateListener mAuthListner;
                     }
                 });
     }
+    public void later(View view) {
+        startActivity(new Intent(splash.this, MainActivity.class));
 
+
+    }
 
 }

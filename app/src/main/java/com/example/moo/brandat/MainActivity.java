@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity
 TextView user,signed_in;
     private FirebaseAuth.AuthStateListener mAuthListner;
 
+    //android:onClick="onclick"
 
 
     StorageReference mstorStorageReference;
@@ -281,7 +282,7 @@ String hh= String.valueOf(mAuth.getCurrentUser().getPhotoUrl());
                 fragment=new home();
                     onBackPressed();
                 break;
-                case R.id.nav_share:
+                case R.id.my_favorite:
                 fragment=new account();
                     onBackPressed();
                 break;

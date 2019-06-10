@@ -6,6 +6,7 @@
         <!-- <item name="colorPrimary">@color/design_default_color_primary</item>
          <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
          <item name="colorAccent">@color/design_default_color_primary_dark</item>-->
+        <item name="colorControlNormal">#0057FF</item>
      </style>
 
      <style name="AppTheme.NoActionBar">
