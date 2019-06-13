@@ -38,7 +38,7 @@ public class profileEdit extends AppCompatActivity {
     private static final int PHOTO_PICKER = 2;
     ProgressDialog progressDialog;
     FirebaseAuth mAuth;
-
+//DFDBDB  E6DCDC
     private FirebaseAuth.AuthStateListener mAuthListner;
 
     StorageReference mstorStorageReference;

@@ -68,11 +68,11 @@ private FirebaseAuth.AuthStateListener mAuthListner;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
         final Dialog dialog = new Dialog(this);
-        dialog.setTitle("change language and country");
+        dialog.setTitle("Setting");
 
         dialog.setContentView(R.layout.layout_dialog);
         //Spinner spin = (Spinner)dialog.findViewById(R.id.spinner1);
-        Button ok = (Button) dialog.findViewById(R.id.dialogButtonOK2);
+        TextView ok = (TextView) dialog.findViewById(R.id.dialogButtonOK2);
         // if button is clicked, close the custom dialog
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +81,7 @@ private FirebaseAuth.AuthStateListener mAuthListner;
                 Toast.makeText(splash.this,"sucess data " , Toast.LENGTH_SHORT).show();
             }
         });
-        Button cancel = (Button) dialog.findViewById(R.id.dialogButtonOK);
+        TextView cancel = (TextView) dialog.findViewById(R.id.dialogButtonOK);
         // if button is clicked, close the custom dialog
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override

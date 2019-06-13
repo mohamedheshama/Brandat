@@ -318,6 +318,12 @@ String hh= String.valueOf(mAuth.getCurrentUser().getPhotoUrl());
 
     }
 
+    public void searchText(View view) {
+        startActivity(new Intent(MainActivity.this,search.class));
+    }
+    public void searchButton(View view) {
+        startActivity(new Intent(MainActivity.this,search.class));
+    }
 
 
 
