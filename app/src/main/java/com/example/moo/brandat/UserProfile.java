@@ -45,6 +45,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.moo.brandat.chat.ChatActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -194,8 +195,15 @@ if(intent.getExtras()==null) {
     getUserData();
 
 }
-
-
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.chat);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getBaseContext(), ChatActivity.class);
+                intent.putExtra(getString(R.string.key_chat_uid_reciever),UserId);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -381,11 +389,11 @@ productsList= products;
 
 
              }else{
-                 phoneTV.setText("01012345656")  ;
+//                 phoneTV.setText("01012345656")  ;
 
              }
-                emailTV.setText((String)dataSnapshot.child("email").getValue())  ;
-                locationTV.setText((String)dataSnapshot.child("location").getValue())  ;
+//                emailTV.setText((String)dataSnapshot.child("email").getValue())  ;
+//                locationTV.setText((String)dataSnapshot.child("location").getValue())  ;
                 if(img_url!=null){
 
                     Picasso.with(c)

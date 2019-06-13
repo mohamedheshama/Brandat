@@ -32,6 +32,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.example.moo.brandat.chat.FragmentChat;
+import com.example.moo.brandat.chat.FragmentListUserChat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity
     FirebaseAuth mAuth;
 TextView user,signed_in;
     private FirebaseAuth.AuthStateListener mAuthListner;
-
+    public static String usernameId ,usernameUser;
     //android:onClick="onclick"
 
 
@@ -124,7 +126,9 @@ StorageReference filepath=mstorStorageReference.child("App_Images");
 
  //   Log.d("hh", url);
 if(mAuth.getCurrentUser()!=null){
-
+    Log.d("mano", "onComplete: done user id");
+    usernameId = mAuth.getCurrentUser().getUid();
+    usernameUser=mAuth.getCurrentUser().getDisplayName();
     user.setText(mAuth.getCurrentUser().getDisplayName());
     signed_in.setText("Signed in..");
 String hh= String.valueOf(mAuth.getCurrentUser().getPhotoUrl());
@@ -264,7 +268,9 @@ String hh= String.valueOf(mAuth.getCurrentUser().getPhotoUrl());
                 fragment.setArguments(bundle);
                 break;
             case R.id.navigation_notifications:
-                fragment=new navegation();
+                Bundle l=new Bundle();
+
+                fragment=new FragmentListUserChat();
                 break;
             case R.id.navigation_shopping_car:
                 fragment=new navegation();

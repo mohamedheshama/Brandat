@@ -62,7 +62,7 @@ private FirebaseAuth.AuthStateListener mAuthListner;
     Uri mImgUri=null;
     private static final int GALLARY_REQUEST=1;
     private StorageReference mStorageReference;
-    public static String usernameId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +90,7 @@ private FirebaseAuth.AuthStateListener mAuthListner;
                 dialog.dismiss();
             }
         });
-        dialog.show();
+//        dialog.show();
         //        radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
 //        btnDisplay = (Button) findViewById(R.id.btnDisplay);
 //
@@ -317,8 +317,8 @@ private FirebaseAuth.AuthStateListener mAuthListner;
 //                                        final Uri downloadUri = task.getResult();
 
 
-                            usernameId = mAuth.getCurrentUser().getUid();
-                            DatabaseReference currentUserDB = mDatabase.child(usernameId);
+
+                            DatabaseReference currentUserDB = mDatabase.child(mAuth.getCurrentUser().getUid());
                             currentUserDB.child("name").setValue(mAuth.getCurrentUser().getDisplayName());
                             currentUserDB.child("email").setValue(mAuth.getCurrentUser().getEmail());
                             currentUserDB.child("phone").setValue(mAuth.getCurrentUser().getPhoneNumber());

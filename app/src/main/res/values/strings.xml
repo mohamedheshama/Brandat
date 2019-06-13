@@ -11,6 +11,7 @@
     <string name="title_notifications" translatable="false">Notifications</string>
 
     <string name="names_categories_key" translatable="false">namesCategoriesKey</string>
+    <string name="key_chat_uid_reciever">key_of_id_user_recieve</string>
     <string-array name="names_categories">
         <item>عربيات وقطع غيار</item>
         <item>عقارات</item>
