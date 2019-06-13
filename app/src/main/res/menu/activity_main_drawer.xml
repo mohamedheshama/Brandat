@@ -8,7 +8,6 @@
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="Home"
-            android:iconTint="@color/myBlue"
             />
         <item
             android:id="@+id/nav_gallery"

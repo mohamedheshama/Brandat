@@ -29,12 +29,29 @@
             android:src="@drawable/ic_keyboard_backspace_black_24dp" />
 
         <EditText
-            android:layout_width="330dp"
+            android:id="@+id/search_edit_text"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:hint="   search"
             android:textColor="#727070"
             app:backgroundTint="#fff" />
+        <Button
+            android:id="@+id/search_button"
+            android:text="search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </android.support.v7.widget.Toolbar>
 
+    <FrameLayout
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_scrollFlags="scroll|enterAlways"
+        android:id="@+id/fragment_contanair2"
+        android:layout_width="match_parent"
+        android:layout_height="708dp"
+        android:layout_gravity="center"
+        android:layout_weight="4"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="74dp" />
 </android.support.constraint.ConstraintLayout>

@@ -62,6 +62,7 @@ private FirebaseAuth.AuthStateListener mAuthListner;
     Uri mImgUri=null;
     private static final int GALLARY_REQUEST=1;
     private StorageReference mStorageReference;
+    public static String usernameId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -316,8 +317,8 @@ private FirebaseAuth.AuthStateListener mAuthListner;
 //                                        final Uri downloadUri = task.getResult();
 
 
-                            String Uid = mAuth.getCurrentUser().getUid();
-                            DatabaseReference currentUserDB = mDatabase.child(Uid);
+                            usernameId = mAuth.getCurrentUser().getUid();
+                            DatabaseReference currentUserDB = mDatabase.child(usernameId);
                             currentUserDB.child("name").setValue(mAuth.getCurrentUser().getDisplayName());
                             currentUserDB.child("email").setValue(mAuth.getCurrentUser().getEmail());
                             currentUserDB.child("phone").setValue(mAuth.getCurrentUser().getPhoneNumber());

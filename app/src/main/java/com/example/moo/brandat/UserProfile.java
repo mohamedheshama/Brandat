@@ -138,9 +138,7 @@ mDatabase= FirebaseDatabase.getInstance().getReference().child("categories");
 mDatabaseUser.keepSynced(true);
 
 productRecycler=(RecyclerView)findViewById(R.id.prodRec);
-        emailTV=(TextView)findViewById(R.id.email_TV);
-        phoneTV=(TextView)findViewById(R.id.phone_TV);
-        locationTV=(TextView)findViewById(R.id.location_TV);
+
         circularImageView=(CircularImageView)findViewById(R.id.circularImageView);
         desplay_name=(TextView)findViewById(R.id.textView11);
 editActivity=(FloatingActionButton)findViewById(R.id.edit_floating_action_button);
