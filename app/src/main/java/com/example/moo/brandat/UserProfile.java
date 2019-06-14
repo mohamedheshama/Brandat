@@ -204,7 +204,22 @@ if(intent.getExtras()==null) {
                 startActivity(intent);
             }
         });
-    }
+
+    FloatingActionButton fab1 = (FloatingActionButton) findViewById(R.id.more);
+        fab1.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View w) {
+            Intent intent1=new Intent(UserProfile.this, Main_map.class);
+            double l= 30.053748;
+            double g= 30.053748;
+            String ls=""+l;
+            String gs=""+g;
+            intent1.putExtra("long", ls);
+            intent1.putExtra("lat", gs);
+            startActivity(intent1);
+        }
+    });
+}
 
 
 

@@ -62,8 +62,27 @@ circularImageView=findViewById(R.id.circularImageView);
         phone.setText(fon);
 
         fname.setText(name);
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View w) {
+                Intent intent2=new Intent(details.this, map_auto.class);
+                startActivity(intent2);
+            }
+        });
 
-
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View w) {
+                Intent intent1=new Intent(details.this, Main_map.class);
+                double l=50.00351;
+                double g= 50.053748;
+                String ls=""+l;
+                String gs=""+g;
+                intent1.putExtra("long", ls);
+                intent1.putExtra("lat", gs);
+                startActivity(intent1);
+            }
+        });
 
         Picasso.with(this).load(im).into(imageView);
         Picasso.with(this).load(uImg).into(circularImageView);
