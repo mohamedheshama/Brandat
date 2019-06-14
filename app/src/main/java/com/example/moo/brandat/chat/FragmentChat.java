@@ -90,7 +90,7 @@ public class FragmentChat extends Fragment {
 
                 opentChatBetween(mUserIdSender,mUserIdRecieve,messageData);
 
-                mSendMessage.setText("");
+                mMessageEditText.setText("");
             }
         });
 

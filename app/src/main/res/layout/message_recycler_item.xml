@@ -3,33 +3,42 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content">
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:textAlignment="textEnd"
-       android:gravity="end"
-       android:layout_height="wrap_content">
-       <TextView
-           android:id="@+id/content_sender_message"
-           android:layout_margin="8dp"
-           android:text="Hi mahmoud "
-           android:textAlignment="textEnd"
-           android:layout_gravity="end|center"
-           android:textSize="16sp"
-           android:layout_width="280dp"
-           android:layout_height="wrap_content" />
-       <TextView
 
-           android:id="@+id/name_sender_message"
-           android:text="mahmoud"
-           android:layout_margin="4dp"
-           android:textAlignment="textEnd"
-           android:layout_gravity="end|center"
-           android:textSize="8sp"
-           android:layout_width="80dp"
-           android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:textAlignment="textEnd">
+        <LinearLayout
+            android:layout_width="233dp"
+            android:gravity="end"
+            android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/content_sender_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:layout_margin="8dp"
+            android:background="@drawable/message_sender_style"
+            android:padding="8dp"
+            android:text="HI MAHMOUD "
+            android:textColor="@color/text_color_sender"
+            android:textSize="16sp" />
+        </LinearLayout>
+        <TextView
+
+            android:id="@+id/name_sender_message"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:paddingBottom="3dp"
+            android:layout_margin="4dp"
+            android:text="mahmoud"
+            android:textAlignment="textEnd"
+            android:textSize="8sp" />
 
 
-   </LinearLayout>
+    </LinearLayout>
       <LinearLayout
           android:layout_width="match_parent"
           android:orientation="horizontal"
@@ -38,22 +47,29 @@
         android:id="@+id/name_recieve_message"
         android:visibility="gone"
         android:text="mahmoud"
-
+           android:paddingBottom="3dp"
         android:layout_margin="4dp"
         android:textAlignment="textStart"
-        android:layout_gravity="start|center"
+        android:layout_gravity="start|bottom"
         android:textSize="8sp"
         android:layout_width="80dp"
         android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/content_recieve_message"
-        android:visibility="gone"
-        android:layout_margin="8dp"
-        android:text="Hi mahmoud "
-        android:textAlignment="textStart"
-        android:layout_gravity="start|center"
-        android:textSize="16sp"
-        android:layout_width="280dp"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+      android:layout_width="233dp"
+      android:gravity="end"
+      android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/content_recieve_message"
+            android:visibility="gone"
+            android:layout_margin="8dp"
+            android:text="Hi mahmoud "
+            android:layout_gravity="start|center"
+            android:textSize="16sp"
+            android:background="@drawable/message_reciever_style"
+            android:textColor="@color/text_color_reciever"
+            android:padding="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+          </LinearLayout>
       </LinearLayout>
 </LinearLayout>

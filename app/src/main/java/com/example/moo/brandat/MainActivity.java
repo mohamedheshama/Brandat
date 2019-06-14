@@ -25,13 +25,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
 import com.example.moo.brandat.chat.FragmentChat;
 import com.example.moo.brandat.chat.FragmentListUserChat;
 import com.google.firebase.auth.FirebaseAuth;
