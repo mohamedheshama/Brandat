@@ -49,7 +49,7 @@ public class SearchFragment extends Fragment implements ImageAdapter.ImageClickH
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_article_list, container, false);
+        View rootView = inflater.inflate(R.layout.activity_article_list_search, container, false);
 
         productRecycler = (RecyclerView)rootView.findViewById(R.id.recycler_view);
 

@@ -25,23 +25,44 @@
 
         <ImageView
             android:layout_width="35dp"
-            android:layout_height="25dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical|start"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:src="@drawable/ic_keyboard_backspace_black_24dp" />
 
         <EditText
             android:id="@+id/search_edit_text"
-            android:layout_width="230dp"
+            android:layout_width="240dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:hint="   search"
             android:textColor="#727070"
             app:backgroundTint="#fff" />
+
         <Button
             android:id="@+id/search_button"
-            android:text="search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="75dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/searchlight"
+            android:text="بحث"
+            android:textColor="#0057FF"
+            android:textSize="19dp"
+            android:textStyle="bold" />
 
     </android.support.v7.widget.Toolbar>
+
 
     <FrameLayout
         app:layout_constraintEnd_toEndOf="parent"

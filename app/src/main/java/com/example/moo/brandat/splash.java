@@ -72,6 +72,7 @@ private FirebaseAuth.AuthStateListener mAuthListner;
         dialog.setTitle("Setting");
 
         dialog.setContentView(R.layout.layout_dialog);
+        dialog.setCanceledOnTouchOutside(true);
         //Spinner spin = (Spinner)dialog.findViewById(R.id.spinner1);
         TextView ok = (TextView) dialog.findViewById(R.id.dialogButtonOK2);
         // if button is clicked, close the custom dialog
@@ -90,7 +91,7 @@ private FirebaseAuth.AuthStateListener mAuthListner;
                 dialog.dismiss();
             }
         });
-//        dialog.show();
+        dialog.show();
         //        radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
 //        btnDisplay = (Button) findViewById(R.id.btnDisplay);
 //
