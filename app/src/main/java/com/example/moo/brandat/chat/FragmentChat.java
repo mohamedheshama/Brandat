@@ -36,7 +36,7 @@ public class FragmentChat extends Fragment {
     private Button mSendMessage;
     private EditText mMessageEditText;
 
-    private String mUserIdSender,mUserIdRecieve;
+    private String mUserIdSender,mUserIdRecieve,mSenderImageUrl,mRecieverImageUrl;
 
     private DatabaseReference mDatabaseReference;
     private FirebaseDatabase mFirebaseDatabase;
@@ -60,7 +60,12 @@ public class FragmentChat extends Fragment {
         mMessageEditText=rootView.findViewById(R.id.message_edit_text);
 
         //get user id's reciever
-        mUserIdRecieve=getArguments().getString("userUID");
+        Bundle bundle=getArguments();
+        if (bundle!=null) {
+            mUserIdRecieve = bundle.getString(getString(R.string.key_user_uid_fragment));
+            mSenderImageUrl=bundle.getString(getString(R.string.key_imge_url_sender_fragment));
+            mRecieverImageUrl=bundle.getString(getString(R.string.key_imge_url_reciever_fragment));
+        }
 
         //get user id's sender
         mUserIdSender=MainActivity.usernameId;
@@ -70,7 +75,7 @@ public class FragmentChat extends Fragment {
 
          mMessagesList=new ArrayList<>();
 
-         messageAdapter=new MessageAdapter(mMessagesList,mUserIdSender);
+         messageAdapter=new MessageAdapter(mMessagesList,mUserIdSender,mSenderImageUrl,mRecieverImageUrl,getContext());
 
         recyclerView.setAdapter(messageAdapter);
 

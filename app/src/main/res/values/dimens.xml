@@ -12,6 +12,9 @@
     <dimen name="names_categories_textview_size">16sp</dimen>
     <dimen name="names_categories_textview_margin">32dp</dimen>
     <dimen name="names_categories_imageview_margin">32dp</dimen>
+    <dimen name="message_chat_text_size">16sp</dimen>
+    <dimen name="width_imge_chat_fragment">50dp</dimen>
+    <dimen name="height_imge_chat_fragment">50dp</dimen>
 
 
 </resources>

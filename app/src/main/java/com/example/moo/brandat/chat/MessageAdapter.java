@@ -1,5 +1,6 @@
 package com.example.moo.brandat.chat;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,11 +13,15 @@ import java.util.ArrayList;
 
 class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
     private ArrayList mMessageList;
-    private String mMyUid;
+    private String mMyUid,mSenderImageUrl,mRecieverImageUrl;
+    Context mContext;
 
-    public MessageAdapter(ArrayList MessageList,String myUid){
+    public MessageAdapter(ArrayList MessageList, String myUid, String imageSender, String imageReciever, Context context){
         mMessageList=MessageList;
         mMyUid=myUid;
+        mRecieverImageUrl=imageReciever;
+        mSenderImageUrl=imageSender;
+        mContext=context;
     }
 
     @NonNull
@@ -33,10 +38,12 @@ class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
     public void onBindViewHolder(@NonNull MessageViewHolder messageViewHolder, int i) {
         MessageData message=(MessageData)mMessageList.get(i);
         boolean isSender=false;
+        String imgUrl=mRecieverImageUrl;
         if (mMyUid.equals(message.getSender())){
             isSender=true;
+            imgUrl=mSenderImageUrl;
         }
-        messageViewHolder.onBind(message.getName(),message.getContent(),isSender);
+        messageViewHolder.onBind(imgUrl,message.getContent(),isSender,mContext);
     }
 
     @Override

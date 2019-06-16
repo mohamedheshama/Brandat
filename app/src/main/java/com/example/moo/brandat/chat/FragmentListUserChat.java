@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.moo.brandat.MainActivity;
 import com.example.moo.brandat.R;
@@ -54,6 +55,7 @@ public class FragmentListUserChat extends Fragment {
                 Log.d(TAG, "onItemClick: mano "+userListData.getName());
                 Intent intent=new Intent(getContext(),ChatActivity.class);
                 intent.putExtra(getString(R.string.key_chat_uid_reciever),userListData.getUserId());
+                intent.putExtra(getString(R.string.key_of_img_url_user_recieve),userListData.getImg_Url());
                 startActivity(intent);
             }
         });
@@ -80,7 +82,7 @@ public class FragmentListUserChat extends Fragment {
                             Log.d(TAG, "onDataChange: the user id"+dataSnapshot.getKey());
                             userListData=dataSnapshot.getValue(UserListData.class);
                             userListData.setUserId(dataSnapshot.getKey());
-                            Log.d(TAG, "onDataChange: "+userListData.getName() +"       "+ userListData.getUserId());
+                            Log.d(TAG, "onDataChange: "+userListData.getName() +"       "+ userListData.getImg_Url());
                             adatpter.add(userListData);
 
                         }

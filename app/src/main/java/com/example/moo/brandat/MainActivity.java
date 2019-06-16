@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity
     FirebaseAuth mAuth;
 TextView user,signed_in;
     private FirebaseAuth.AuthStateListener mAuthListner;
-    public static String usernameId ,usernameUser;
+    public static String usernameId ,usernameUser,userImageUrl;
     //android:onClick="onclick"
 
 
@@ -122,12 +122,13 @@ if(mAuth.getCurrentUser()!=null){
     Log.d("mano", "onComplete: done user id");
     usernameId = mAuth.getCurrentUser().getUid();
     usernameUser=mAuth.getCurrentUser().getDisplayName();
-    user.setText(mAuth.getCurrentUser().getDisplayName());
+    userImageUrl=mAuth.getCurrentUser().getPhotoUrl().toString();
+    user.setText(usernameUser);
     signed_in.setText("Signed in..");
-String hh= String.valueOf(mAuth.getCurrentUser().getPhotoUrl());
+String hh= String.valueOf(userImageUrl);
     if(hh!=null){
  Picasso.with(this)
-         .load(mAuth.getCurrentUser().getPhotoUrl())
+         .load(hh)
        .resize(80, 80)
          .centerCrop()
         .into(nav_head_account_image);}

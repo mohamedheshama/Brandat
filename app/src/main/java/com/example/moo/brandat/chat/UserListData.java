@@ -1,15 +1,15 @@
 package com.example.moo.brandat.chat;
 
 public class UserListData  {
-    private String name, userId,photoUrl;
+    private String name, userId,img_url;
 
     public  UserListData(){
 
     }
-    public UserListData(String name,String userId,String photoUrl){
+    public UserListData(String name,String userId,String img_url){
         this.name=name;
         this.userId=userId;
-        this.photoUrl=photoUrl;
+        this.img_url=img_url;
     }
 
     public String getName() {
@@ -28,11 +28,11 @@ public class UserListData  {
         this.userId = userId;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
+    public String getImg_Url() {
+        return img_url;
     }
 
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
+    public void setImg_Url(String photoUrl) {
+        this.img_url = photoUrl;
     }
 }

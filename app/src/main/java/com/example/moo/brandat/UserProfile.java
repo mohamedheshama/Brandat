@@ -155,7 +155,7 @@ editActivity.setOnClickListener(new View.OnClickListener() {
 });
 
 Intent intent=getIntent();
-if(intent.getExtras()==null) {
+if(intent==null) {
 
 
     mDatabaseuser_info=mDatabaseUser.child(mAuth.getCurrentUser().getUid());
