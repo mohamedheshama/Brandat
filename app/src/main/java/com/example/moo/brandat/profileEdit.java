@@ -101,6 +101,14 @@ imageView=(ImageView)findViewById(R.id.viewImageeeeee);
         mDatabase= FirebaseDatabase.getInstance().getReference().child("userss");
         progressDialog=new ProgressDialog(this);
         mStorageReference= FirebaseStorage.getInstance().getReference();
+       location .setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View w) {
+
+                Intent intent1=new Intent(profileEdit.this, map_auto.class);
+                startActivity(intent1);
+            }
+        });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override

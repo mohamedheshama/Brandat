@@ -205,7 +205,7 @@ if(intent==null) {
             }
         });
 
-    FloatingActionButton fab1 = (FloatingActionButton) findViewById(R.id.more);
+    FloatingActionButton fab1 = (FloatingActionButton) findViewById(R.id.mapbutton);
         fab1.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View w) {
