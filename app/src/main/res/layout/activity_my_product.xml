@@ -161,15 +161,17 @@
 
                         android:backgroundTint="#EDEAFD"
 
-                        app:srcCompat="@drawable/ic_my_location_black_24dp"
+                        app:srcCompat="@drawable/ic_edit_location_black_24dp"
                         tools:ignore="VectorDrawableCompat" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:text="Location"
+                        android:text="Edit Site"
                         android:gravity="bottom"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+
+                        />
 
 
 
@@ -189,13 +191,13 @@
 
                         android:backgroundTint="#EDEAFD"
 
-                        app:srcCompat="@drawable/ic_chat_blue_24dp"
+                        app:srcCompat="@drawable/ic_delete_black_24dp"
                         tools:ignore="VectorDrawableCompat" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:text="Chat"
+                        android:text="Delete Ads"
                         android:gravity="bottom"
                         android:textSize="16sp" />
 
@@ -215,13 +217,13 @@
 
                         android:backgroundTint="#EDEAFD"
 
-                        app:srcCompat="@drawable/ic_report_black_24dp"
+                        app:srcCompat="@drawable/ic_add_to_photos_black_24dp"
                         tools:ignore="VectorDrawableCompat" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:text="Reporting"
+                        android:text="Add photo"
                         android:gravity="bottom"
 
                         android:textSize="16sp" />
@@ -242,13 +244,13 @@
 
                         android:backgroundTint="#EDEAFD"
 
-                        app:srcCompat="@drawable/like6"
+                        app:srcCompat="@drawable/ic_mode_edit_blue_24dp"
                         tools:ignore="VectorDrawableCompat" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:text="Like"
+                        android:text="Edit Ads"
                         android:gravity="bottom"
                         android:textColor="#0057FF"
                         android:textSize="16sp" />

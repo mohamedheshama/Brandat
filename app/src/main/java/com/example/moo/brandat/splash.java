@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -73,6 +75,7 @@ private FirebaseAuth.AuthStateListener mAuthListner;
 
         dialog.setContentView(R.layout.layout_dialog);
         dialog.setCanceledOnTouchOutside(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //Spinner spin = (Spinner)dialog.findViewById(R.id.spinner1);
         TextView ok = (TextView) dialog.findViewById(R.id.dialogButtonOK2);
         // if button is clicked, close the custom dialog
