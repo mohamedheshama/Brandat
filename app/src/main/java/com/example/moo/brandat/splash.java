@@ -5,8 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -36,12 +34,15 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -58,7 +59,7 @@ public class splash extends AppCompatActivity {
     private DatabaseReference mDatabase;
 
     private ProgressDialog progressDialog;
-private FirebaseAuth.AuthStateListener mAuthListner;
+    private FirebaseAuth.AuthStateListener mAuthListner;
 
 
     Uri mImgUri=null;
@@ -75,7 +76,6 @@ private FirebaseAuth.AuthStateListener mAuthListner;
 
         dialog.setContentView(R.layout.layout_dialog);
         dialog.setCanceledOnTouchOutside(true);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //Spinner spin = (Spinner)dialog.findViewById(R.id.spinner1);
         TextView ok = (TextView) dialog.findViewById(R.id.dialogButtonOK2);
         // if button is clicked, close the custom dialog
@@ -213,7 +213,7 @@ private FirebaseAuth.AuthStateListener mAuthListner;
         mGoogleApiClient =new GoogleApiClient.Builder(getApplicationContext()).enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
             @Override
             public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-            Toast.makeText(splash.this,"You got an error",Toast.LENGTH_SHORT).show();
+                Toast.makeText(splash.this,"You got an error",Toast.LENGTH_SHORT).show();
 
             }
         }).addApi(Auth.GOOGLE_SIGN_IN_API,gso)
@@ -256,7 +256,7 @@ private FirebaseAuth.AuthStateListener mAuthListner;
     }
     public void LogIn (View v){
         startActivity(new Intent(splash.this,login.class));
-}
+    }
 
 
 
@@ -287,7 +287,7 @@ private FirebaseAuth.AuthStateListener mAuthListner;
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-      //  Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+        //  Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -296,9 +296,9 @@ private FirebaseAuth.AuthStateListener mAuthListner;
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                          //  Log.d(TAG, "signInWithCredential:success");
-                          //  FirebaseUser user = mAuth.getCurrentUser();
-                          //  user.get
+                            //  Log.d(TAG, "signInWithCredential:success");
+                            //  FirebaseUser user = mAuth.getCurrentUser();
+                            //  user.get
                             mImgUri=(Uri) mAuth.getCurrentUser().getPhotoUrl();
 
 //                            final StorageReference filepath=mStorageReference.child("App_Images").child(mImgUri.getLastPathSegment());
@@ -319,26 +319,47 @@ private FirebaseAuth.AuthStateListener mAuthListner;
 //                                public void onComplete(@NonNull Task<Uri> task) {
 //                                    if (task.isSuccessful()) {
 //                                        final Uri downloadUri = task.getResult();
+                            FirebaseInstanceId.getInstance().getInstanceId()
+                                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+
+                                            if (task.isSuccessful()){
+                                                DatabaseReference currentUserDB = mDatabase.child(mAuth.getCurrentUser().getUid());
+                                                Log.d("mano", "onComplete: "+task.getResult().getToken());
+                                                currentUserDB.child("notificationTokens").setValue(task.getResult().getToken());
+                                                currentUserDB.child("name").setValue(mAuth.getCurrentUser().getDisplayName());
+                                                currentUserDB.child("email").setValue(mAuth.getCurrentUser().getEmail());
+                                                currentUserDB.child("phone").setValue(mAuth.getCurrentUser().getPhoneNumber());
+
+                                                currentUserDB.child("img_url").setValue(mImgUri.toString());
+                                            }
+                                            // Get new Instance ID token
+                                            String token = task.getResult().getToken();
+                                            Log.w("mano", "getInstanceId failed  "+token);
 
 
+                                        }
+                                    });
+                            mAuth.getCurrentUser().getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<GetTokenResult> task) {
 
-                            DatabaseReference currentUserDB = mDatabase.child(mAuth.getCurrentUser().getUid());
-                            currentUserDB.child("name").setValue(mAuth.getCurrentUser().getDisplayName());
-                            currentUserDB.child("email").setValue(mAuth.getCurrentUser().getEmail());
-                            currentUserDB.child("phone").setValue(mAuth.getCurrentUser().getPhoneNumber());
+                                }
+                            });
 
-                            currentUserDB.child("img_url").setValue(mImgUri.toString());
+
 
                             progressDialog.dismiss();
                             startActivity(new Intent(splash.this, MainActivity.class));
-                                //    }}
-                             //   });
+                            //    }}
+                            //   });
                             //   updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
-                         //   Log.w(TAG, "signInWithCredential:failure", task.getException());
-                         //   Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                           // updateUI(null);
+                            //   Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            //   Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+                            // updateUI(null);
                             Toast.makeText(splash.this,"error signning with google",Toast.LENGTH_LONG).show();
                         }
 

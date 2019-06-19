@@ -16,6 +16,8 @@
     <string name="key_user_uid_fragment">userUID</string>
     <string name="key_imge_url_sender_fragment">imageSender</string>
     <string name="key_imge_url_reciever_fragment">imageReciever</string>
+    <string name="notification_recieved_action">NotificationAction</string>
+
     <string-array name="names_categories">
         <item>عربيات وقطع غيار</item>
         <item>عقارات</item>
