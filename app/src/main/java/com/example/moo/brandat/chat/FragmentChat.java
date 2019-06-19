@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.moo.brandat.MainActivity;
+import com.example.moo.brandat.Notification.RequestNotificationData;
 import com.example.moo.brandat.R;
 import com.example.moo.brandat.splash;
 import com.google.firebase.database.ChildEventListener;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 
 public class FragmentChat extends Fragment {
     public static String TAG="fragmentchat";
-
+    public static boolean IS_ACTIVATE=false;
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
     private ArrayList<MessageData> mMessagesList;
@@ -96,6 +97,15 @@ public class FragmentChat extends Fragment {
                 opentChatBetween(mUserIdSender,mUserIdRecieve,messageData);
 
                 mMessageEditText.setText("");
+
+                mDatabaseReference
+                        .child("Notification")
+                        .child(mUserIdRecieve)
+                        .child(mUserIdSender)
+                        .child("contetnText")
+                        .setValue(messageData.getContent());
+
+
             }
         });
 
@@ -115,6 +125,9 @@ public class FragmentChat extends Fragment {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                             mMessagesList.add(dataSnapshot.getValue(MessageData.class));
+
+                            recyclerView.smoothScrollToPosition(messageAdapter.getItemCount()-1);
+
                             messageAdapter.notifyDataSetChanged();
                         }
 
@@ -211,5 +224,29 @@ public class FragmentChat extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        IS_ACTIVATE=false;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        IS_ACTIVATE=true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        IS_ACTIVATE=false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        IS_ACTIVATE=true;
     }
 }

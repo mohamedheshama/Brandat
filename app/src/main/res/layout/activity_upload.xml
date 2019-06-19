@@ -71,7 +71,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#fff"
-                        android:src="@drawable/ic_add_a_photo_blue_24dp" />
+                        android:src="@drawable/ic_add_a_photo_black_24dp" />
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>

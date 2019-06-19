@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView2"
@@ -7,9 +7,7 @@
     android:layout_height="510dp"
     android:layout_gravity="center"
     android:orientation="vertical"
-    app:cardCornerRadius="10dp"
-    android:background="@android:color/white"
-    android:elevation="2dp"
+    android:background="#fff"
     >
     <ScrollView
         android:layout_width="match_parent"
@@ -39,8 +37,9 @@
                     android:elevation="6dp"
                     android:text=" select language"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#0057FF"
-                    android:textSize="21dp"
+                    android:textColor="#969393"
+                    android:textSize="23dp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/frmOk"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -96,9 +95,9 @@
                     android:elevation="6dp"
                     android:text="    English"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textSize="22dp"
-                    android:textColor="#6F4A02"
-
+                    android:textColor="#969393"
+                    android:textSize="21dp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@+id/radioSex"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/frmOk"
@@ -188,10 +187,11 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="23dp"
                     android:elevation="6dp"
-                    android:text="                    العربيه"
+                    android:text="                     العربيه"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textSize="23dp"
-                    android:textColor="#6F4A02"
+                    android:textColor="#969393"
+                    android:textSize="22dp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -235,8 +235,9 @@
                 android:elevation="6dp"
                 android:text="  select country"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#0057FF"
-                android:textSize="21dp"
+                android:textColor="#969393"
+                android:textSize="23dp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/frmOk"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.064"
@@ -285,9 +286,10 @@
                     android:elevation="6dp"
                     android:text="    Egypt"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#969393"
 
-                    android:textSize="22dp"
-                    android:textColor="#6F4A02"
+                    android:textSize="21dp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/circularImageView"
@@ -325,9 +327,10 @@
                     android:elevation="6dp"
                     android:text="    Kuwait"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#969393"
 
-                    android:textSize="22dp"
-                    android:textColor="#6F4A02"
+                    android:textSize="21dp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/circularImageView2"
@@ -365,9 +368,10 @@
                     android:elevation="6dp"
                     android:text="    Soudi"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#969393"
 
-                    android:textSize="22dp"
-                    android:textColor="#6F4A02"
+                    android:textSize="21dp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/circularImageView3"
@@ -404,9 +408,10 @@
                     android:elevation="6dp"
                     android:text="    Arab Emirates"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#969393"
 
-                    android:textSize="22dp"
-                    android:textColor="#6F4A02"
+                    android:textSize="21dp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/circularImageView4"
@@ -444,9 +449,10 @@
                     android:elevation="6dp"
                     android:text="    Jordan"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#969393"
 
-                    android:textSize="22dp"
-                    android:textColor="#6F4A02"
+                    android:textSize="21dp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/circularImageView4"
@@ -528,21 +534,23 @@
                 android:layout_height="70dp" />
         </LinearLayout>
     </ScrollView>
-
-
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:layout_gravity="bottom"
+        app:cardCornerRadius="10dp"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:orientation="horizontal"
-            android:background="@android:color/white"
-            android:layout_gravity="bottom"
+
             >
             <TextView
                 android:layout_width="160dp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="20dp"
-
                 android:layout_weight="1"/>
             <TextView
                 android:id="@+id/dialogButtonOK"
@@ -555,9 +563,8 @@
                 android:layout_below="@+id/image"
                 android:layout_weight="1"
                 android:textColor="#0057FF"
-                android:textSize="19dp"
-                android:layout_marginBottom="18dp"
-
+                android:textStyle="bold"
+                android:textSize="17dp"
                 />
             <TextView
                 android:id="@+id/dialogButtonOK2"
@@ -570,11 +577,11 @@
                 android:gravity="center"
                 android:layout_weight="1"
                 android:textColor="#0057FF"
-                android:textSize="19dp"
-                android:layout_marginBottom="18dp"
-
+                android:textStyle="bold"
+                android:textSize="17dp"
 
                 />
 
         </LinearLayout>
-</android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
+</FrameLayout>

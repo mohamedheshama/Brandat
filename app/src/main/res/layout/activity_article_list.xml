@@ -29,7 +29,6 @@
             android:elevation="5dp"
             android:orientation="horizontal"
             android:padding="5dp"
-            android:background="#EDEAFD"
             >
 
             <TextView
