@@ -31,7 +31,7 @@ public class NotificationUtils {
     }
 
     public static PendingIntent createContentIntent(Context context){
-        Intent intent=new Intent(context, ChatActivity.class);
+        Intent intent=new Intent(context,MainActivity.class);
         intent.setAction(context.getString(R.string.notification_recieved_action));
         PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_IMMUTABLE);
         return pendingIntent;
