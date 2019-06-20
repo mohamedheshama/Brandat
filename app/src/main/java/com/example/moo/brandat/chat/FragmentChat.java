@@ -27,6 +27,7 @@ import java.util.ArrayList;
 public class FragmentChat extends Fragment {
     public static String TAG="fragmentchat";
     public static boolean IS_ACTIVATE=false;
+    public static String RECIEVER_UID="no";
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
     private ArrayList<MessageData> mMessagesList;
@@ -63,6 +64,7 @@ public class FragmentChat extends Fragment {
             mSenderImageUrl=bundle.getString(getString(R.string.key_imge_url_sender_fragment));
             mRecieverImageUrl=bundle.getString(getString(R.string.key_imge_url_reciever_fragment));
         }
+
 
         //get user id's sender
         mUserIdSender= MainActivity.usernameId;
@@ -226,23 +228,27 @@ public class FragmentChat extends Fragment {
     public void onPause() {
         super.onPause();
         IS_ACTIVATE=false;
+        RECIEVER_UID="no";
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        RECIEVER_UID=mUserIdRecieve;
         IS_ACTIVATE=true;
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        RECIEVER_UID="no";
         IS_ACTIVATE=false;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        RECIEVER_UID=mUserIdRecieve;
         IS_ACTIVATE=true;
     }
 }
