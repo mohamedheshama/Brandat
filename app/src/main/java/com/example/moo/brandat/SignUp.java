@@ -137,7 +137,6 @@ if(!TextUtils.isEmpty(fname)&&!TextUtils.isEmpty(pass)&&!TextUtils.isEmpty(cpass
                         DatabaseReference currentUserDB = mDatabase.child(Uid);
                         currentUserDB.child("name").setValue(fname);
                         currentUserDB.child("email").setValue(emai);
-
                         currentUserDB.child("password").setValue(cpass);
                         currentUserDB.child("phone").setValue(fone);
                         currentUserDB.child("location").setValue(locash);

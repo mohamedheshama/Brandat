@@ -25,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.moo.brandat.Notification.MyFCMService;
+import com.example.moo.brandat.Notification.NotificationUtils;
 import com.example.moo.brandat.chat.FragmentChat;
 import com.example.moo.brandat.chat.FragmentListUserChat;
 import com.google.firebase.auth.FirebaseAuth;
@@ -154,6 +156,8 @@ String hh= String.valueOf(userImageUrl);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
     @Override
@@ -324,8 +328,6 @@ String hh= String.valueOf(userImageUrl);
     public void searchButton(View view) {
         startActivity(new Intent(MainActivity.this,search.class));
     }
-
-
 
 
 
