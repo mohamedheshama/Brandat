@@ -22,7 +22,8 @@
         <activity android:name=".chat.ChatActivity" />
         <activity android:name=".search" />
         <activity android:name=".splash">
-            <intent-filter>
+
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -56,6 +57,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".categoryItem"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UpdateProduct"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
