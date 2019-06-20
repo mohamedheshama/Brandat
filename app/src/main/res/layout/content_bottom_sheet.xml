@@ -109,7 +109,6 @@
             android:layout_width="45dp"
             android:layout_height="50dp"
             android:layout_gravity="right|center"
-
             android:src="@drawable/ic_playlist_add_black_24dp"
             android:layout_weight="1"
             />
