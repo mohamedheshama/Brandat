@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -93,104 +94,11 @@ public class details extends AppCompatActivity {
         fname.setText(name);
         client = LocationServices.getFusedLocationProviderClient(details.this);
         requestPermission();
-        phone.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.more);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View w) {
+            public void onClick(View v) {
 
-                final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    Intent intent3 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(intent3);
-                    if (ActivityCompat.checkSelfPermission(details.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                        return;
-                    }
-                    client.getLastLocation().addOnSuccessListener(details.this, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            if (location !=null){
-                                double l= location.getLatitude();
-                                double g=location.getLongitude();
-                                String ls=""+l;
-                                String gs=""+g;
-                                Toast.makeText(details.this, ls, Toast.LENGTH_SHORT).show();
-                                Toast.makeText(details.this, gs, Toast.LENGTH_SHORT).show();
-
-                            }
-                        }
-                    });
-
-
-                }
-else {
-                    if (ActivityCompat.checkSelfPermission(details.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                        return;
-                    }
-                    client.getLastLocation().addOnSuccessListener(details.this, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            if (location != null) {
-                                double l = location.getLongitude();
-                                double g = location.getLatitude();
-                                String ls = "" + l;
-                                String gs =  ""+ g;
-                                Toast.makeText(details.this, ls, Toast.LENGTH_SHORT).show();
-                                Toast.makeText(details.this, gs, Toast.LENGTH_SHORT).show();
-
-                            }
-                        }
-                    });
-
-
-//                    Intent intent2=new Intent(details.this, map_auto.class);
-//                    startActivity(intent2);
-
-                }
-                if (ActivityCompat.checkSelfPermission(details.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                   //  public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                 //                                             int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                client.getLastLocation().addOnSuccessListener(details.this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location !=null){
-                            double l= location.getLatitude();
-                            double g=location.getLongitude();
-                            String ls=""+l;
-                            String gs=""+g;
-
-                            Toast.makeText(details.this, ls, Toast.LENGTH_SHORT).show();
-                            Toast.makeText(details.this, gs, Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-                });
-            }
-        });
-
-
-        location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View w) {
                 Intent intent1=new Intent(details.this, Main_map.class);
                 double l=30.00351;
                 double g= 30.053748;
@@ -200,14 +108,122 @@ else {
                 intent1.putExtra("lat", gs);
                 startActivity(intent1);
             }
-        });
-        category.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View w) {
-                Intent intent1=new Intent(details.this, map_auto.class);
-                startActivity(intent1);
-            }
-        });
+      });
+//        phone.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View w) {
+//
+//                final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+//                    Intent intent3 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                    startActivity(intent3);
+//                    if (ActivityCompat.checkSelfPermission(details.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+//                        // TODO: Consider calling
+//                        //    ActivityCompat#requestPermissions
+//                        // here to request the missing permissions, and then overriding
+//                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                        //                                          int[] grantResults)
+//                        // to handle the case where the user grants the permission. See the documentation
+//                        // for ActivityCompat#requestPermissions for more details.
+//                        return;
+//                    }
+//                    client.getLastLocation().addOnSuccessListener(details.this, new OnSuccessListener<Location>() {
+//                        @Override
+//                        public void onSuccess(Location location) {
+//                            if (location !=null){
+//                                double l= location.getLatitude();
+//                                double g=location.getLongitude();
+//                                String ls=""+l;
+//                                String gs=""+g;
+//                                Toast.makeText(details.this, ls, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(details.this, gs, Toast.LENGTH_SHORT).show();
+//
+//                            }
+//                        }
+//                    });
+//
+//
+//                }
+//else {
+//                    if (ActivityCompat.checkSelfPermission(details.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                        // TODO: Consider calling
+//                        //    ActivityCompat#requestPermissions
+//                        // here to request the missing permissions, and then overriding
+//                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                        //                                          int[] grantResults)
+//                        // to handle the case where the user grants the permission. See the documentation
+//                        // for ActivityCompat#requestPermissions for more details.
+//                        return;
+//                    }
+//                    client.getLastLocation().addOnSuccessListener(details.this, new OnSuccessListener<Location>() {
+//                        @Override
+//                        public void onSuccess(Location location) {
+//                            if (location != null) {
+//                                double l = location.getLongitude();
+//                                double g = location.getLatitude();
+//                                String ls = "" + l;
+//                                String gs =  ""+ g;
+//                                Toast.makeText(details.this, ls, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(details.this, gs, Toast.LENGTH_SHORT).show();
+//
+//                            }
+//                        }
+//                    });
+//
+//
+////                    Intent intent2=new Intent(details.this, map_auto.class);
+////                    startActivity(intent2);
+//
+//                }
+//                if (ActivityCompat.checkSelfPermission(details.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+//                    // TODO: Consider calling
+//                    //    ActivityCompat#requestPermissions
+//                    // here to request the missing permissions, and then overriding
+//                   //  public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                 //                                             int[] grantResults)
+//                    // to handle the case where the user grants the permission. See the documentation
+//                    // for ActivityCompat#requestPermissions for more details.
+//                    return;
+//                }
+//                client.getLastLocation().addOnSuccessListener(details.this, new OnSuccessListener<Location>() {
+//                    @Override
+//                    public void onSuccess(Location location) {
+//                        if (location !=null){
+//                            double l= location.getLatitude();
+//                            double g=location.getLongitude();
+//                            String ls=""+l;
+//                            String gs=""+g;
+//
+//                            Toast.makeText(details.this, ls, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(details.this, gs, Toast.LENGTH_SHORT).show();
+//
+//                        }
+//                    }
+//                });
+//            }
+//        });
+//
+//
+//        location.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View w) {
+//                Intent intent1=new Intent(details.this, Main_map.class);
+//                double l=30.00351;
+//                double g= 30.053748;
+//                String ls=""+l;
+//                String gs=""+g;
+//                intent1.putExtra("long", ls);
+//                intent1.putExtra("lat", gs);
+//                startActivity(intent1);
+//            }
+//        });
+//        category.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View w) {
+//                Intent intent1=new Intent(details.this, map_auto.class);
+//                startActivity(intent1);
+//            }
+//        });
 
         Picasso.with(this).load(im).into(imageView);
         Picasso.with(this).load(uImg).into(circularImageView);

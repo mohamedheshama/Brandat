@@ -20,7 +20,11 @@
     <include layout="@layout/activity_my_profile" />
 
     <!-- Bottom Sheet Content -->
-    <include layout="@layout/content_bottom_sheet" />
-
+    <include layout="@layout/content_bottom_sheet"
+        android:id="@+id/bottom1"
+        />
+    <include layout="@layout/location_bottom_sheet"
+        android:id="@+id/bottom2"
+        />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,14 +1,20 @@
 package com.example.moo.brandat;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +34,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.moo.brandat.chat.ChatActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -63,9 +72,10 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
     private FloatingActionButton more;
 
 
-
-
-
+    TextView bottom_sheet_manual;
+    TextView bottom_sheet_gps;
+    private FusedLocationProviderClient client;
+    private BottomSheetBehavior bottomSheetBehavior2;
 
     private static final int PHOTO_PICKER = 2;
     ProgressDialog progressDialog;
@@ -110,6 +120,8 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
         initViews();
         initListeners();
 
+        client = LocationServices.getFusedLocationProviderClient(my_profile.this);
+        requestPermission();
 
         productsList = new ArrayList<>();
 
@@ -188,13 +200,11 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
         checkUserExist();
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.chat);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.location_map);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), ChatActivity.class);
-                intent.putExtra(getString(R.string.key_chat_uid_reciever), UserId);
-                startActivity(intent);
+                bottomSheetBehavior2.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
 
@@ -597,9 +607,14 @@ View mView;
     private void initViews() {
 
 
-        bottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottomSheetLayout));
+        bottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottom1));
+
+        bottomSheetBehavior2 = BottomSheetBehavior.from(findViewById(R.id.bottom2));
+
+        bottom_sheet_manual= (TextView) findViewById(R.id.location_manual);
 
 
+        bottom_sheet_gps= (TextView) findViewById(R.id.gps_auto);
       //  go = (Button) findViewById(R.id.go);
 
     }
@@ -611,6 +626,9 @@ View mView;
     private void initListeners() {
 
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bottomSheetBehavior2.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bottom_sheet_gps.setOnClickListener(this);
+        bottom_sheet_manual.setOnClickListener(  this);
         //go.setOnClickListener(this);
 
     }
@@ -623,17 +641,146 @@ View mView;
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+        case R.id.location_manual:
+        bottomSheetBehavior2.setState(BottomSheetBehavior.STATE_HIDDEN);
+        Intent intent1 = new Intent(my_profile.this, map_auto.class);
 
-//            case R.id.go:
-//                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-//
-//                break;
+        startActivity(intent1);
+        break;
+        case R.id.gps_auto:
+        bottomSheetBehavior2.setState(BottomSheetBehavior.STATE_HIDDEN);
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Intent intent3 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent3);
+            if (ActivityCompat.checkSelfPermission(my_profile.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            client.getLastLocation().addOnSuccessListener(my_profile.this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        double l = location.getLatitude();
+                        double g = location.getLongitude();
+                        String ls = "" + l;
+                        String gs = "" + g;
+                        Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(my_profile.this, gs, Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            });
+
+
+        } else {
+            if (ActivityCompat.checkSelfPermission(my_profile.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                client.getLastLocation().addOnSuccessListener(my_profile.this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            double l = location.getLatitude();
+                            double g = location.getLongitude();
+                            String ls = "" + l;
+                            String gs = "" + g;
+
+                            Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(my_profile.this, gs, Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            client.getLastLocation().addOnSuccessListener(my_profile.this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        double l = location.getLongitude();
+                        double g = location.getLatitude();
+                        String ls = "" + l;
+                        String gs = "" + g;
+                        Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(my_profile.this, gs, Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            });
+
+
+//                    Intent intent2=new Intent(details.this, map_auto.class);
+//                    startActivity(intent2);
 
         }
+        if (ActivityCompat.checkSelfPermission(my_profile.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            client.getLastLocation().addOnSuccessListener(my_profile.this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        double l = location.getLatitude();
+                        double g = location.getLongitude();
+                        String ls = "" + l;
+                        String gs = "" + g;
+
+                        Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(my_profile.this, gs, Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            });
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //  public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                             int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        client.getLastLocation().addOnSuccessListener(my_profile.this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    double l = location.getLatitude();
+                    double g = location.getLongitude();
+                    String ls = "" + l;
+                    String gs = "" + g;
+
+                    Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(my_profile.this, gs, Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
+
+
+        break;
+
+
     }
+}
 
     public void more(View view) {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+    }
+    private void requestPermission(){
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
 
     }
 }
