@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.example.moo.brandat.MainActivity;
@@ -21,6 +22,8 @@ public class NotificationUtils {
     public static final String CHANNEL_NOTIFICATION_ID="FIRST";
 
     public static void  setNotification(Context context ,String name,String body,String uid,String imgeSender){
+        Log.d("mano", "createContentIntent: "+uid);
+
         NotificationManager notificationManager= (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel=new NotificationChannel(CHANNEL_NOTIFICATION_ID,"ma", NotificationManager.IMPORTANCE_HIGH);
@@ -37,8 +40,10 @@ public class NotificationUtils {
     public static PendingIntent createContentIntent(Context context,String uid,String imgeSender){
         Intent intent=new Intent(context, ChatActivity.class);
         intent.setAction(context.getString(R.string.notification_recieved_action));
-        intent.putExtra(context.getString(R.string.key_of_img_url_user_recieve),uid);
-        intent.putExtra(context.getString(R.string.key_imge_url_sender_fragment),imgeSender);
+        Log.d("mano", "createContentIntent: "+uid);
+        intent.putExtra(context.getString(R.string.key_chat_uid_reciever),uid);
+        intent.putExtra("mano","mano"+uid);
+        intent.putExtra(context.getString(R.string.key_of_img_url_user_recieve),imgeSender);
         PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_IMMUTABLE);
         return pendingIntent;
     }

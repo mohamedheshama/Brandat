@@ -233,8 +233,8 @@ public class details extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.chat);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.chat);
+        fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getBaseContext(), ChatActivity.class);

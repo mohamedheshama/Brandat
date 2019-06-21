@@ -26,7 +26,7 @@ public class MyFCMService extends FirebaseMessagingService {
 
 
             Log.d("hi", "onMessageReceived: " + remoteMessage.getData());
-            Log.d("hi", "onMessageReceived: " + title + "   " + message+"  "+imgeSender);
+            Log.d("hi", "onMessageReceived: " + title + "   " + message+"  "+sender);
             if (!FragmentChat.IS_ACTIVATE&&!FragmentChat.RECIEVER_UID.equals(sender)) {
                 NotificationUtils.setNotification(getApplicationContext(), title, message,sender,imgeSender);
             }

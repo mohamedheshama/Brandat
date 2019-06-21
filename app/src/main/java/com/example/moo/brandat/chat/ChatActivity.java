@@ -33,12 +33,16 @@ public class ChatActivity extends AppCompatActivity {
         mSenderImageUrl= MainActivity.userImageUrl;
         Intent intent=getIntent();
         if (intent!=null) {
+
+
             mRecieverUid = intent.getStringExtra(getString(R.string.key_chat_uid_reciever));
+            Log.d("mano ", "onCreate: "+mRecieverUid);
             if (intent.hasExtra(getString(R.string.key_of_img_url_user_recieve))) {
                 Log.d("mano", "onCreate:imge   go to has extra");
                 mRecieverImageUrl = intent.getStringExtra(getString(R.string.key_of_img_url_user_recieve));
             }
-            Log.d("mano", "onCreate:imge  "+mRecieverImageUrl);
+            String  test=intent.getStringExtra("mano");
+            Log.d("mano", "onCreate:imge  "+mRecieverUid+"   "+test);
         }
         FragmentChat fragmentChat=new FragmentChat();
         Bundle bundle=new Bundle();
