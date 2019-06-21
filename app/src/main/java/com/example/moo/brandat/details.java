@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.moo.brandat.chat.ChatActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -248,7 +249,16 @@ public class details extends AppCompatActivity {
                 }
             }
         });
-
+        FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.chat);
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getBaseContext(), ChatActivity.class);
+                intent.putExtra(getString(R.string.key_chat_uid_reciever),uId);
+                intent.putExtra(getString(R.string.key_of_img_url_user_recieve),uImg);
+                startActivity(intent);
+            }
+        });
 
         editActivity.hide();
         if(mCurrentUser.getUid().equals(uId)) {

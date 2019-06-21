@@ -36,12 +36,15 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -320,14 +323,37 @@ private FirebaseAuth.AuthStateListener mAuthListner;
 //                                    if (task.isSuccessful()) {
 //                                        final Uri downloadUri = task.getResult();
 
+                            FirebaseInstanceId.getInstance().getInstanceId()
+                                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+
+                                            if (task.isSuccessful()){
+                                                DatabaseReference currentUserDB = mDatabase.child(mAuth.getCurrentUser().getUid());
+                                                Log.d("mano", "onComplete: "+task.getResult().getToken());
+                                                currentUserDB.child("notificationTokens").setValue(task.getResult().getToken());
+                                                currentUserDB.child("name").setValue(mAuth.getCurrentUser().getDisplayName());
+                                                currentUserDB.child("email").setValue(mAuth.getCurrentUser().getEmail());
+                                                currentUserDB.child("phone").setValue(mAuth.getCurrentUser().getPhoneNumber());
+
+                                                currentUserDB.child("img_url").setValue(mImgUri.toString());
+                                            }
+                                            // Get new Instance ID token
+                                            String token = task.getResult().getToken();
+                                            Log.w("mano", "getInstanceId failed  "+token);
 
 
-                            DatabaseReference currentUserDB = mDatabase.child(mAuth.getCurrentUser().getUid());
-                            currentUserDB.child("name").setValue(mAuth.getCurrentUser().getDisplayName());
-                            currentUserDB.child("email").setValue(mAuth.getCurrentUser().getEmail());
-                            currentUserDB.child("phone").setValue(mAuth.getCurrentUser().getPhoneNumber());
+                                        }
+                                    });
+                            mAuth.getCurrentUser().getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<GetTokenResult> task) {
 
-                            currentUserDB.child("img_url").setValue(mImgUri.toString());
+                                }
+                            });
+
+
+
 
                             progressDialog.dismiss();
                             startActivity(new Intent(splash.this, MainActivity.class));

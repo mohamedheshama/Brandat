@@ -1,6 +1,5 @@
 package com.example.moo.brandat.chat;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,11 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.moo.brandat.MainActivity;
 import com.example.moo.brandat.R;
-import com.example.moo.brandat.splash;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,7 +26,8 @@ import java.util.ArrayList;
 
 public class FragmentChat extends Fragment {
     public static String TAG="fragmentchat";
-
+    public static boolean IS_ACTIVATE=false;
+    public static String RECIEVER_UID="no";
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
     private ArrayList<MessageData> mMessagesList;
@@ -64,18 +62,21 @@ public class FragmentChat extends Fragment {
         if (bundle!=null) {
             mUserIdRecieve = bundle.getString(getString(R.string.key_user_uid_fragment));
             mSenderImageUrl=bundle.getString(getString(R.string.key_imge_url_sender_fragment));
-            mRecieverImageUrl=bundle.getString(getString(R.string.key_imge_url_reciever_fragment));
+
+            mRecieverImageUrl = bundle.getString(getString(R.string.key_imge_url_reciever_fragment));
+
         }
 
+
         //get user id's sender
-        mUserIdSender=MainActivity.usernameId;
+        mUserIdSender= MainActivity.usernameId;
 
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-         mMessagesList=new ArrayList<>();
+        mMessagesList=new ArrayList<>();
 
-         messageAdapter=new MessageAdapter(mMessagesList,mUserIdSender,mSenderImageUrl,mRecieverImageUrl,getContext());
+        messageAdapter=new MessageAdapter(mMessagesList,mUserIdSender,mSenderImageUrl,mRecieverImageUrl,getContext());
 
         recyclerView.setAdapter(messageAdapter);
 
@@ -96,6 +97,15 @@ public class FragmentChat extends Fragment {
                 opentChatBetween(mUserIdSender,mUserIdRecieve,messageData);
 
                 mMessageEditText.setText("");
+
+                mDatabaseReference
+                        .child("Notification")
+                        .child(mUserIdRecieve)
+                        .child(mUserIdSender)
+                        .child("contetnText")
+                        .setValue(messageData.getContent());
+
+
             }
         });
 
@@ -112,34 +122,37 @@ public class FragmentChat extends Fragment {
                 if (idMessages!=null){
                     DatabaseReference userDataRefPath=mDatabaseReference.child("allmessages").child(idMessages);
                     userDataRefPath.addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                            mMessagesList.add(dataSnapshot.getValue(MessageData.class));
-                            messageAdapter.notifyDataSetChanged();
-                        }
+                                                              @Override
+                                                              public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                                                  mMessagesList.add(dataSnapshot.getValue(MessageData.class));
 
-                        @Override
-                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                                                  recyclerView.smoothScrollToPosition(messageAdapter.getItemCount()-1);
 
-                        }
+                                                                  messageAdapter.notifyDataSetChanged();
+                                                              }
 
-                        @Override
-                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                                                              @Override
+                                                              public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                        }
+                                                              }
 
-                        @Override
-                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                                              @Override
+                                                              public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-                        }
+                                                              }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                              @Override
+                                                              public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                        }
-                }
+                                                              }
 
-                );
+                                                              @Override
+                                                              public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                              }
+                                                          }
+
+                    );
                 }else {
                     opentChatBetween(userIdSender,userIdRecieve,null);
                     recieveAllMessages(userIdSender,userIdRecieve);
@@ -170,10 +183,10 @@ public class FragmentChat extends Fragment {
                             String idSpecialMessage= (String)dataSnapshot.getValue();
                             //go to activty
                             if (messageData!=null)
-                            mDatabaseReference.child("allmessages")
-                                    .child(idSpecialMessage)
-                                    .push()
-                                    .setValue(messageData);
+                                mDatabaseReference.child("allmessages")
+                                        .child(idSpecialMessage)
+                                        .push()
+                                        .setValue(messageData);
                         }
 
                         @Override
@@ -198,10 +211,10 @@ public class FragmentChat extends Fragment {
 
                     //go to new activity with id message special
                     if (messageData!=null)
-                    mDatabaseReference.child("allmessages")
-                            .child(idMessageSpecial)
-                            .push()
-                            .setValue(messageData);
+                        mDatabaseReference.child("allmessages")
+                                .child(idMessageSpecial)
+                                .push()
+                                .setValue(messageData);
                 }
             }
 
@@ -212,4 +225,33 @@ public class FragmentChat extends Fragment {
         });
 
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        IS_ACTIVATE=false;
+        RECIEVER_UID="no";
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        RECIEVER_UID=mUserIdRecieve;
+        IS_ACTIVATE=true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        RECIEVER_UID="no";
+        IS_ACTIVATE=false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        RECIEVER_UID=mUserIdRecieve;
+        IS_ACTIVATE=true;
+    }
+
 }
