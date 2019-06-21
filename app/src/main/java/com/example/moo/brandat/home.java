@@ -129,10 +129,7 @@ return rootView;
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                         for (DataSnapshot postSnapshote: postSnapshot.getChildren()) {
-
                             products product = postSnapshote.getValue(products.class);
-                            product.setProduct_key(postSnapshote.getKey());
-
                             productsList.add(product);
 
                         }
@@ -199,76 +196,36 @@ return rootView;
         public void onImageClick(products products) {
 
 
+            Intent intent = new Intent(getActivity(), details.class);
 
-            if(mAuth.getCurrentUser().getUid().equals(products.getUser_id())){
+            String fname = products.getFname();
+            intent.putExtra("fname", fname);
+            String category = products.getCategory();
+            intent.putExtra("category", category);
+            String cost = products.getCost();
+            intent.putExtra("cost", cost);
+            String email = products.getEmail();
+            intent.putExtra("email", email);
+            String img = products.getImg_src();
+            intent.putExtra("img", img);
+            String location = products.getLocation();
+            intent.putExtra("location", location);
+            String owner = products.getOwnername();
+            intent.putExtra("owner", owner);
+            String pcase = products.getproduct_case();
+            intent.putExtra("pcase", pcase);
+            String phone = products.getPhone();
+            intent.putExtra("phone", phone);
+            intent.putExtra("user_id",products.getUser_id());
 
-                Intent intent = new Intent(getActivity(), my_product.class);
-                String fname = products.getFname();
-                intent.putExtra("fname", fname);
-                String category = products.getCategory();
-                intent.putExtra("category", category);
-                String cost = products.getCost();
-                intent.putExtra("cost", cost);
-                String email = products.getEmail();
-                intent.putExtra("email", email);
-                String img = products.getImg_src();
-                intent.putExtra("img", img);
-                String location = products.getLocation();
-                intent.putExtra("location", location);
-                String owner = products.getOwnername();
-                intent.putExtra("owner", owner);
-                String pcase = products.getproduct_case();
-                intent.putExtra("pcase", pcase);
-                String phone = products.getPhone();
-                intent.putExtra("phone", phone);
-                intent.putExtra("user_id",products.getUser_id());
-                String prodescribe=products.getproduct_des();
-                intent.putExtra("prodescribe",prodescribe);
-                //String userImg = products.getPhone();
-                intent.putExtra("img_url",products.getImg_url());
-                intent.putExtra("product_key",products.getProduct_key());
-
-                Log.d("imgitem", "onImageClick: "+products.getImg_url());
-                startActivity(intent);
-                Toast.makeText(getActivity(),""+products.getCategory(),Toast.LENGTH_SHORT).show();
+            //String userImg = products.getPhone();
+            intent.putExtra("img_url",products.getImg_url());
+            Log.d("imgitem", "onImageClick: "+products.getImg_url());
+            startActivity(intent);
+            Toast.makeText(getActivity(),""+products.getCategory(),Toast.LENGTH_SHORT).show();
 
 
-            }else {
 
-
-                Intent intent = new Intent(getActivity(), details.class);
-
-                String fname = products.getFname();
-                intent.putExtra("fname", fname);
-                String category = products.getCategory();
-                intent.putExtra("category", category);
-                String cost = products.getCost();
-                intent.putExtra("cost", cost);
-                String email = products.getEmail();
-                intent.putExtra("email", email);
-                String img = products.getImg_src();
-                intent.putExtra("img", img);
-                String location = products.getLocation();
-                intent.putExtra("location", location);
-                String owner = products.getOwnername();
-                intent.putExtra("owner", owner);
-                String pcase = products.getproduct_case();
-                intent.putExtra("pcase", pcase);
-                String phone = products.getPhone();
-                intent.putExtra("phone", phone);
-                intent.putExtra("user_id", products.getUser_id());
-                String prodescribe = products.getproduct_des();
-                intent.putExtra("prodescribe", prodescribe);
-                //String userImg = products.getPhone();
-                intent.putExtra("img_url", products.getImg_url());
-                intent.putExtra("product_key", products.getProduct_key());
-
-                Log.d("imgitem", "onImageClick: " + products.getImg_url());
-                startActivity(intent);
-                Toast.makeText(getActivity(), "" + products.getCategory(), Toast.LENGTH_SHORT).show();
-
-
-            }
         }
     }
 

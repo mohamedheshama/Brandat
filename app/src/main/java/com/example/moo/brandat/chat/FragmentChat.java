@@ -1,6 +1,5 @@
 package com.example.moo.brandat.chat;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,11 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.moo.brandat.MainActivity;
 import com.example.moo.brandat.R;
-import com.example.moo.brandat.splash;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,7 +26,8 @@ import java.util.ArrayList;
 
 public class FragmentChat extends Fragment {
     public static String TAG="fragmentchat";
-
+    public static boolean IS_ACTIVATE=false;
+    public static String RECIEVER_UID="no";
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
     private ArrayList<MessageData> mMessagesList;
@@ -64,11 +62,14 @@ public class FragmentChat extends Fragment {
         if (bundle!=null) {
             mUserIdRecieve = bundle.getString(getString(R.string.key_user_uid_fragment));
             mSenderImageUrl=bundle.getString(getString(R.string.key_imge_url_sender_fragment));
-            mRecieverImageUrl=bundle.getString(getString(R.string.key_imge_url_reciever_fragment));
+            if (bundle.containsKey(getString(R.string.key_imge_url_reciever_fragment))) {
+                mRecieverImageUrl = bundle.getString(getString(R.string.key_imge_url_reciever_fragment));
+            }
         }
 
+
         //get user id's sender
-        mUserIdSender=MainActivity.usernameId;
+        mUserIdSender= MainActivity.usernameId;
 
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -96,6 +97,15 @@ public class FragmentChat extends Fragment {
                 opentChatBetween(mUserIdSender,mUserIdRecieve,messageData);
 
                 mMessageEditText.setText("");
+
+                mDatabaseReference
+                        .child("Notification")
+                        .child(mUserIdRecieve)
+                        .child(mUserIdSender)
+                        .child("contetnText")
+                        .setValue(messageData.getContent());
+
+
             }
         });
 
@@ -115,6 +125,9 @@ public class FragmentChat extends Fragment {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                             mMessagesList.add(dataSnapshot.getValue(MessageData.class));
+
+                            recyclerView.smoothScrollToPosition(messageAdapter.getItemCount()-1);
+
                             messageAdapter.notifyDataSetChanged();
                         }
 
@@ -212,4 +225,33 @@ public class FragmentChat extends Fragment {
         });
 
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        IS_ACTIVATE=false;
+        RECIEVER_UID="no";
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        RECIEVER_UID=mUserIdRecieve;
+        IS_ACTIVATE=true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        RECIEVER_UID="no";
+        IS_ACTIVATE=false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        RECIEVER_UID=mUserIdRecieve;
+        IS_ACTIVATE=true;
+    }
+
 }

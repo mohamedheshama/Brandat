@@ -144,8 +144,7 @@ String hh= String.valueOf(userImageUrl);
   nav_head_account_image.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-
-        startActivity(new Intent(MainActivity.this, my_profile.class));
+        startActivity(new Intent(MainActivity.this, UserProfile.class));
 
     }
    });

@@ -7,7 +7,7 @@ public class products {
 
     }
 
-    public products(String fname, String category, String product_case, String cost, String product_des, String location, String ownername, String phone, String email, String imagesrc,String img_url,String user_id,String product_key) {
+    public products(String fname, String category, String product_case, String cost, String product_des, String location, String ownername, String phone, String email, String imagesrc,String img_url,String user_id) {
         this.product_name = fname;
         this.category = category;
         this.product_case = product_case;
@@ -20,7 +20,6 @@ public class products {
         this.imagesrc=imagesrc;
         this.img_url=img_url;
         this.user_id=user_id;
-        this.product_key=product_key;
 
     }
 
@@ -97,16 +96,6 @@ public class products {
     }
 
     String product_name;String category;String product_case;String cost;String product_des;String location;String ownername;String phone;String email;
-
-    public String getProduct_key() {
-        return product_key;
-    }
-
-    public void setProduct_key(String product_key) {
-        this.product_key = product_key;
-    }
-
-    String product_key;
 
     public String getUser_id() {
         return user_id;

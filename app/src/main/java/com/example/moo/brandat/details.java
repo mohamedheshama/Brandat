@@ -19,11 +19,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.moo.brandat.chat.ChatActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
@@ -42,9 +41,6 @@ public class details extends AppCompatActivity {
     ImageView imageView;
     CircularImageView circularImageView;
     private FusedLocationProviderClient client;
-    private FirebaseAuth mAuth;
-    private FirebaseUser mCurrentUser;
-    FloatingActionButton editActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,35 +58,32 @@ public class details extends AppCompatActivity {
         email = (TextView) findViewById(R.id.email);
         imageView = findViewById(R.id.viewImage);
         circularImageView = findViewById(R.id.circularImageView);
-        mAuth=FirebaseAuth.getInstance();
-        mCurrentUser=mAuth.getCurrentUser();
-        editActivity=(FloatingActionButton)findViewById(R.id.edit_floating_action_button);
+
 
         final Intent intent = getIntent();
-        final String name = intent.getStringExtra("fname");
-        final String cat = intent.getStringExtra("category");
-        final String cos = intent.getStringExtra("cost");
-        final String em = intent.getStringExtra("email");
-        final String im = intent.getStringExtra("img");
-        final String loc = intent.getStringExtra("location");
-        final String ow = intent.getStringExtra("owner");
-        final String pcas = intent.getStringExtra("pcase");
-        final String fon = intent.getStringExtra("phone");
+        String name = intent.getStringExtra("fname");
+        String cat = intent.getStringExtra("category");
+        String cos = intent.getStringExtra("cost");
+        String em = intent.getStringExtra("email");
+        String im = intent.getStringExtra("img");
+        String loc = intent.getStringExtra("location");
+        String ow = intent.getStringExtra("owner");
+        String pcas = intent.getStringExtra("pcase");
+        String fon = intent.getStringExtra("phone");
         final String uImg = intent.getStringExtra("img_url");
         final String uId = intent.getStringExtra("user_id");
-        final String prodescribe=intent.getStringExtra("prodescribe");
-        final String product_key=intent.getStringExtra("product_key");
 
+        Log.d("imgitem", "onImageClick: " + uImg);
 
         fname.setText(name);
         category.setText(cat);
-        casee.setText(pcas);
-        pdescribe.setText(prodescribe);
         cost.setText(cos);
         email.setText(em);
         location.setText(loc);
         ownername.setText(ow);
+        casee.setText(pcas);
         phone.setText(fon);
+
         fname.setText(name);
         client = LocationServices.getFusedLocationProviderClient(details.this);
         requestPermission();
@@ -231,69 +224,27 @@ public class details extends AppCompatActivity {
         circularImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent1=new Intent(details.this,UserProfile.class);
+                intent1.putExtra("UserId",uId);
+                intent1.putExtra("img_url",uImg);
 
-                Log.d("tesssssssssssst", "onClick: "+uId+"         "+mCurrentUser.getUid());
-                if(mCurrentUser.getUid().equals(uId)){
+                startActivity(intent1);
 
-                    Intent intent1=new Intent(details.this,my_profile.class);
-                    startActivity(intent1);
+            }
+        });
 
-
-                }else {
-                    Intent intent2 = new Intent(details.this, UserProfile.class);
-                    intent2.putExtra("UserId", uId);
-                    intent2.putExtra("img_url", uImg);
-
-                    startActivity(intent2);
-                }
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.chat);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getBaseContext(), ChatActivity.class);
+                intent.putExtra(getString(R.string.key_chat_uid_reciever),uId);
+                intent.putExtra(getString(R.string.key_of_img_url_user_recieve),uImg);
+                startActivity(intent);
             }
         });
 
 
-        editActivity.hide();
-        if(mCurrentUser.getUid().equals(uId)) {
-
-            editActivity.show();
-
-            editActivity.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-                    Intent intent = new Intent(details.this, UpdateProduct.class);
-
-                    // String fname = products.getFname();
-                    intent.putExtra("fname", name);
-                    // String category = products.getCategory();
-                    intent.putExtra("category", cat);
-                    //   String cost = products.getCost();
-                    intent.putExtra("cost", cos);
-                    // String email = products.getEmail();
-                    intent.putExtra("email", em);
-                    // String img = products.getImg_src();
-                    intent.putExtra("img", im);
-                    //  String location = products.getLocation();
-                    intent.putExtra("location", loc);
-                    // String owner = products.getOwnername();
-                    intent.putExtra("owner", ow);
-                    //  String pcase = products.getproduct_case();
-                    intent.putExtra("pcase", pcas);
-                    // String phone = products.getPhone();
-                    intent.putExtra("phone", fon);
-                    intent.putExtra("user_id", uId);
-                    intent.putExtra("prodescribe", prodescribe);
-                    intent.putExtra("product_key",product_key);
-
-                    //String userImg = products.getPhone();
-                    intent.putExtra("img_url", uImg);
-                    //  Log.d("imgitem", "onImageClick: "+products.getImg_url());
-                    startActivity(intent);
-                    //  Toast.makeText(getActivity(),""+products.getCategory(),Toast.LENGTH_SHORT).show();
-
-
-                }
-            });
-        }
 
     }
     private void requestPermission(){

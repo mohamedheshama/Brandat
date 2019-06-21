@@ -433,7 +433,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/email"
                                 android:layout_gravity="center_vertical"
                                 android:paddingLeft="20dp"
                                 android:text="Wiliam@gmail.com"

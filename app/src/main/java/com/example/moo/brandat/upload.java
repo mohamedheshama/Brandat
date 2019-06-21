@@ -49,7 +49,7 @@ TextView publish;
     private ProgressDialog mProgress;
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
-    String key;
+
 
 
     @Nullable
@@ -138,7 +138,7 @@ mProgress.show();
                     final Uri downloadUri = task.getResult();
 
 final DatabaseReference productsData=mDatabase.child("products").push();
- key=productsData.getKey();
+String key=productsData.getKey();
                     final DatabaseReference categoriesData=mDatabasecat.child(categories).child(key);
 
                     mDatabase.addValueEventListener(new ValueEventListener() {
@@ -156,8 +156,6 @@ productsData.child("product_name").setValue(pname);
                             productsData.child("imagesrc").setValue(downloadUri.toString());
                             productsData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
                             productsData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
-                            productsData.child("product_key").setValue(key);
-
 
 
 
@@ -174,8 +172,6 @@ productsData.child("product_name").setValue(pname);
                             categoriesData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
 
                             categoriesData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
-                            categoriesData.child("product_key").setValue(key);
-
 
                             mProgress.dismiss();
                             Toast.makeText(getContext(),"Your ptoduct's data has inserted succesfully.",Toast.LENGTH_LONG ).show();
@@ -224,5 +220,4 @@ productsData.child("product_name").setValue(pname);
         }
 
 
-}
-}
+}}
