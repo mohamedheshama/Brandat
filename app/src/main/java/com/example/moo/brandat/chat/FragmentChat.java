@@ -62,7 +62,9 @@ public class FragmentChat extends Fragment {
         if (bundle!=null) {
             mUserIdRecieve = bundle.getString(getString(R.string.key_user_uid_fragment));
             mSenderImageUrl=bundle.getString(getString(R.string.key_imge_url_sender_fragment));
-            mRecieverImageUrl=bundle.getString(getString(R.string.key_imge_url_reciever_fragment));
+            if (bundle.containsKey(getString(R.string.key_imge_url_reciever_fragment))) {
+                mRecieverImageUrl = bundle.getString(getString(R.string.key_imge_url_reciever_fragment));
+            }
         }
 
 
@@ -251,4 +253,5 @@ public class FragmentChat extends Fragment {
         RECIEVER_UID=mUserIdRecieve;
         IS_ACTIVATE=true;
     }
+
 }

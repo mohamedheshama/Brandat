@@ -22,13 +22,13 @@ public class MyFCMService extends FirebaseMessagingService {
             String title = data.get("name");
             String message = data.get("body");
             String sender = data.get("sender");
-
+            String imgeSender=data.get("imgeurlsender");
 
 
             Log.d("hi", "onMessageReceived: " + remoteMessage.getData());
-            Log.d("hi", "onMessageReceived: " + title + "   " + message+"  "+sender);
+            Log.d("hi", "onMessageReceived: " + title + "   " + message+"  "+imgeSender);
             if (!FragmentChat.IS_ACTIVATE&&!FragmentChat.RECIEVER_UID.equals(sender)) {
-                NotificationUtils.setNotification(getApplicationContext(), title, message,sender);
+                NotificationUtils.setNotification(getApplicationContext(), title, message,sender,imgeSender);
             }
         }
     }

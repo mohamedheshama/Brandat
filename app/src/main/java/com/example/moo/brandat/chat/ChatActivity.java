@@ -15,6 +15,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.concurrent.Semaphore;
+
 public class ChatActivity extends AppCompatActivity {
     private String mRecieverUid,mRecieverImageUrl,mSenderImageUrl;
     private FirebaseDatabase mFirebaseDatabase;
@@ -33,10 +35,10 @@ public class ChatActivity extends AppCompatActivity {
         if (intent!=null) {
             mRecieverUid = intent.getStringExtra(getString(R.string.key_chat_uid_reciever));
             if (intent.hasExtra(getString(R.string.key_of_img_url_user_recieve))) {
+                Log.d("mano", "onCreate:imge   go to has extra");
                 mRecieverImageUrl = intent.getStringExtra(getString(R.string.key_of_img_url_user_recieve));
-            }else {
-                mRecieverImageUrl=getImageUrlFor(mRecieverUid);
             }
+            Log.d("mano", "onCreate:imge  "+mRecieverImageUrl);
         }
         FragmentChat fragmentChat=new FragmentChat();
         Bundle bundle=new Bundle();
@@ -47,20 +49,5 @@ public class ChatActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.container_chat,fragmentChat).commit();
     }
 
-    private String getImageUrlFor(String mRecieverUid) {
-        final String[] imgUrl = new String[1];
-        mDatabaseReference.child("userss").child(mRecieverUid).child("img_url").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                 imgUrl[0] =dataSnapshot.getValue(String.class);
 
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        return imgUrl[0];
-    }
 }
