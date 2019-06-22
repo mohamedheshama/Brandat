@@ -25,7 +25,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:text="More Setting"
+        android:text="@string/MoreSetting"
 
         android:textAppearance="@android:style/TextAppearance.Large" />
 
@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center"
-                android:text="set location manual"
+                android:text="@string/SetLocationManual"
                 android:layout_weight="3"
                 android:textSize="21sp"
                 android:textColor="#6F4A02"
@@ -98,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center"
-                android:text="curent location (GPS)"
+                android:text="@string/CurrentLocation"
                 android:layout_weight="3"
                 android:textSize="21sp"
                 android:textColor="#6F4A02"

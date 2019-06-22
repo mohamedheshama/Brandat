@@ -97,7 +97,7 @@
                 android:layout_height="30dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:text="I am shop owner. "
+                android:text="@string/iamshopowner"
                 android:textAlignment="center"
                 android:textSize="15dp"
                 android:textStyle="italic"
@@ -167,7 +167,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:text="Location"
+                        android:text="@string/Location"
                         android:gravity="bottom"
                         android:textSize="16sp" />
 
@@ -195,7 +195,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:text="Chat"
+                        android:text="@string/Chat"
                         android:gravity="bottom"
                         android:textSize="16sp" />
 
@@ -221,7 +221,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:text="Reporting"
+                        android:text="@string/Reporting"
                         android:gravity="bottom"
 
                         android:textSize="16sp" />
@@ -248,7 +248,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:text="Like"
+                        android:text="@string/Like"
                         android:gravity="bottom"
                         android:textColor="#0057FF"
                         android:textSize="16sp" />
@@ -284,7 +284,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Product Name "
+                    android:text="@string/ProductName "
                     android:textAlignment="center"
                     android:layout_marginBottom="5dp"
                     android:textColor="#0057FF"
@@ -294,7 +294,7 @@
                     android:id="@+id/fullName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="   Product Name "
+                    android:text="@string/ProductName"
                     android:drawableLeft="@drawable/ic_check_black_24dp"
                     />
 
@@ -326,7 +326,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Category"
+                    android:text="@string/Category"
                     android:textAlignment="center"
                     android:layout_marginBottom="5dp"
                     android:textColor="#0057FF"
@@ -373,7 +373,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Case"
+                    android:text="@string/Case"
                     android:textAlignment="center"
                     android:layout_marginBottom="5dp"
                     android:textColor="#0057FF"
@@ -419,7 +419,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Descripe"
+                    android:text="@string/Descripe"
                     android:textAlignment="center"
                     android:layout_marginBottom="5dp"
                     android:textColor="#0057FF"
@@ -463,7 +463,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Address"
+                    android:text="@string/Address"
                     android:textAlignment="center"
                     android:layout_marginBottom="5dp"
                     android:textColor="#0057FF"
@@ -511,7 +511,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Phone"
+                    android:text="@string/Phone"
                     android:textAlignment="center"
                     android:layout_marginBottom="5dp"
                     android:textColor="#0057FF"
@@ -555,7 +555,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Email"
+                    android:text="@string/Email"
                     android:textAlignment="center"
                     android:layout_marginBottom="5dp"
                     android:textColor="#0057FF"

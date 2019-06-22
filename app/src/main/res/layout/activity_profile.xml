@@ -144,7 +144,7 @@
                                     android:layout_marginStart="8dp"
                                     android:layout_marginTop="64dp"
                                     android:layout_marginEnd="8dp"
-                                    android:text="Muhammad Usama"
+                                    android:text="Mahmoud Bohlok"
                                     android:textColor="#0057FF"
                                     android:textSize="20dp"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -193,7 +193,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Products"
+                                            android:text="@string/Products"
                                             android:textSize="20sp" />
 
                                         <TextView
@@ -217,7 +217,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Followers"
+                                            android:text="@string/Followers"
                                             android:textSize="20sp" />
 
                                         <TextView
@@ -241,7 +241,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Likes"
+                                            android:text="@string/Like"
                                             android:textSize="20sp" />
 
                                         <TextView
@@ -314,7 +314,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
-                                android:text="Reporting"
+                                android:text="@string/Reporting"
                                 android:gravity="bottom"
                                 android:textSize="16sp" />
 
@@ -343,7 +343,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
-                                android:text="Location"
+                                android:text="@string/Location"
                                 android:gravity="bottom"
                                 android:textSize="16sp" />
 
@@ -369,7 +369,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
-                                android:text="Chat"
+                                android:text="@string/Chat"
                                 android:gravity="bottom"
 
                                 android:textSize="16sp" />
@@ -570,7 +570,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginLeft="8dp"
                             android:layout_marginTop="8dp"
-                            android:text="My Products"
+                            android:text="@string/MyProducts"
                             android:textSize="20dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -652,7 +652,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginLeft="8dp"
                             android:layout_marginTop="8dp"
-                            android:text="My Favorites"
+                            android:text="@string/MyFavorites"
                             android:textSize="20dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />

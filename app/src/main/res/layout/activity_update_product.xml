@@ -115,7 +115,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_check_circle_black_24dp"
-                            android:hint="   Product Name "
+                            android:hint="   @string/ProductName "
 
                             android:inputType="textAutoComplete" />
 
@@ -166,7 +166,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_radio_button_unchecked_black_24dp"
-                            android:hint="   category "
+                            android:hint="   @string/Category"
                             android:onClick="category"
                             android:inputType="textAutoComplete" />
 
@@ -214,7 +214,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_radio_button_unchecked_black_24dp"
-                            android:hint="   Product case "
+                            android:hint=" @string/ProductCase"
 
                             android:inputType="textAutoComplete" />
 
@@ -259,7 +259,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_radio_button_unchecked_black_24dp"
-                            android:hint="   Cost (L.E)"
+                            android:hint="   @string/Cost"
 
                             android:inputType="number" />
 
@@ -307,7 +307,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_radio_button_unchecked_black_24dp"
-                            android:hint="   Product descripe "
+                            android:hint="   @string/Productdescripe "
 
                             android:inputType="textAutoComplete" />
 
@@ -356,7 +356,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_wplace_black_24dp"
-                            android:hint="   Enter Location  "
+                            android:hint="   @string/EnterLocation  "
 
                             android:inputType="textAutoComplete" />
                         <Spinner
@@ -407,7 +407,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_wperson_black_24dp"
-                            android:hint="   Owner Name "
+                            android:hint="   @string/OwnerName "
 
                             android:inputType="textAutoComplete" />
 
@@ -457,7 +457,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_wsmartphone_black_24dp"
-                            android:hint="   Phone "
+                            android:hint="   @string/Phone "
 
                             android:inputType="phone" />
 
@@ -506,7 +506,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_wemail_black_24dp"
-                            android:hint="   Email "
+                            android:hint="   @string/Email "
 
                             android:inputType="textEmailAddress" />
 

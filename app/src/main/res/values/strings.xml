@@ -11,12 +11,12 @@
     <string name="title_notifications" translatable="false">Notifications</string>
 
     <string name="names_categories_key" translatable="false">namesCategoriesKey</string>
-    <string name="key_chat_uid_reciever">key_of_id_user_recieve</string>
-    <string name="key_of_img_url_user_recieve">imgurlkey</string>
-    <string name="key_user_uid_fragment">userUID</string>
-    <string name="key_imge_url_sender_fragment">imageSender</string>
-    <string name="notification_recieved_action">NotificationAction</string>
-    <string name="key_imge_url_reciever_fragment">imageReciever</string>
+    <string name="key_chat_uid_reciever" translatable="false">key_of_id_user_recieve</string>
+    <string name="key_of_img_url_user_recieve" translatable="false">imgurlkey</string>
+    <string name="key_user_uid_fragment" translatable="false">userUID</string>
+    <string name="key_imge_url_sender_fragment" translatable="false">imageSender</string>
+    <string name="notification_recieved_action" translatable="false">NotificationAction</string>
+    <string name="key_imge_url_reciever_fragment" translatable="false">imageReciever</string>
     <string-array name="names_categories">
         <item>عربيات وقطع غيار</item>
         <item>عقارات</item>
@@ -27,6 +27,53 @@
         <item>حيوانات اليفه</item>
         <item>مستلزمات أطفال</item>
     </string-array>
+    <string name="EnterHerToAddLocationInMap">Enter Her To Add Location In Map</string>
+    <string name="EditAds">Edit Ads</string>
+    <string name="Addphoto">Add photo</string>
+    <string name="DeleteAds">Delete Ads</string>
+    <string name="Editsite">Edit site</string>
+    <string name="ProductName">Product Name</string>
+    <string name="Category">Category</string>
+    <string name="Case">case</string>
+    <string name="Descripe">Descripe</string>
+    <string name="Address">Address</string>
+    <string name="Phone">Phone</string>
+    <string name="Email">Email</string>
+    <string name="Like">Like</string>
+    <string name="Followers">Followers</string>
+    <string name="Products">Products</string>
+    <string name="Notifies">Notifies</string>
+    <string name="More">More</string>
+    <string name="MyProducts">My Products</string>
+    <string name="MyFavorites">My Favorites</string>
+    <string name="Chat">Chat</string>
+    <string name="Location">Location</string>
+    <string name="iamshopowner">i am shop owner</string>
+    <string name="search">search</string>
+    <string name="Home">Home</string>
+    <string name="shops">shops</string>
+    <string name="Notification">Notification</string>
+    <string name="Uploadproductphoto">Upload product photo</string>
+    <string name="Cost">Cost(L.E)</string>
+    <string name="EnterLocation">EditAds</string>
+    <string name="ProductCase">Product Case</string>
+    <string name="Productdescripe">Product descripe</string>
+    <string name="OwnerName">Owner Name</string>
+    <string name="SetLocationManual">Set Location Manual</string>
+    <string name="CurrentLocation">CurrentLocation(GPS)</string>
+    <string name="MoreSetting">More Setting</string>
+    <string name="DeleteAccount">Delete Account</string>
+    <string name="AddCostsList">Add Costs List</string>
+    <string name="EditCostsList">Edit Costs List</string>
+    <string name="AdsSearch">Ads Search</string>
+    <string name="FollowMe">Follow Me</string>
+    <string name="AddProduct">Add Product</string>
+    <string name="Setting">Setting</string>
+    <string name="Reporting">Reporting</string>
+    <string name="Chooseprofilephoto">Choose profile photo</string>
+    <string name="FullName">Full Name</string>
+    <string name="Password">Password</string>
+    <string name="ConfirmPassword">Confirm Password</string>
 
-
+    <string name="LogOut">log out</string>
 </resources>

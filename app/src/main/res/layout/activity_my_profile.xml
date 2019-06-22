@@ -173,7 +173,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Products"
+                                            android:text="@string/Products"
                                             android:textSize="20sp" />
 
                                         <TextView
@@ -197,7 +197,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Followers"
+                                            android:text="@string/Followers"
                                             android:textSize="20sp" />
 
                                         <TextView
@@ -221,7 +221,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Likes"
+                                            android:text="@string/Like"
                                             android:textSize="20sp" />
 
                                         <TextView
@@ -295,7 +295,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
-                                android:text="More"
+                                android:text="@string/More"
                                 android:gravity="bottom"
                                 android:textSize="16sp"
 
@@ -325,7 +325,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
-                                android:text="Edit Site"
+                                android:text="@string/Editsite"
                                 android:gravity="bottom"
                                 android:textSize="16sp" />
 
@@ -351,7 +351,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
-                                android:text="Notifies"
+                                android:text="@string/Notifies"
                                 android:gravity="bottom"
 
                                 android:textSize="16sp" />
@@ -378,7 +378,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
-                                android:text="Add ads"
+                                android:text="@string/AddProduct"
                                 android:gravity="bottom"
                                 android:textColor="#0057FF"
                                 android:textSize="16sp" />
@@ -553,7 +553,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginLeft="8dp"
                             android:layout_marginTop="8dp"
-                            android:text="My Products"
+                            android:text="@string/MyProducts"
                             android:textSize="20dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -634,7 +634,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginLeft="8dp"
                             android:layout_marginTop="8dp"
-                            android:text="My Favorites"
+                            android:text="@string/MyFavorites"
                             android:textSize="20dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />

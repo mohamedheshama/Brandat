@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Project </string>
+    <string name="AddCostsList">"اضافة قائمه اسعار "</string>
+    <string name="Addphoto">اضافة صوره</string>
+    <string name="Address">العنوان</string>
+    <string name="AdsSearch">بحث المنتج</string>
+    <string name="Category">الفئه</string>
+    <string name="Chat">المحادثه</string>
+    <string name="Cost">السعر (ج)</string>
+    <string name="CurrentLocation">الموقع الحالي</string>
+    <string name="DeleteAccount">حذف الحساب</string>
+    <string name="DeleteAds">حذف المنتج</string>
+    <string name="Descripe">الوصف</string>
+    <string name="EditAds">تعديل المنتج</string>
+    <string name="EditCostsList">تعديل قائمه الاسعار</string>
+    <string name="Editsite">تعديل الموقع</string>
+    <string name="Email">"الحساب "</string>
+    <string name="EnterLocation">ادخل الموقع</string>
+    <string name="Followers">المتابعين</string>
+    <string name="Home">الرئيسي</string>
+    <string name="Like">الاعجاب</string>
+    <string name="Location">الموقع</string>
+    <string name="More">اضافي</string>
+    <string name="MoreSetting">اعدادات اضافيه</string>
+    <string name="MyFavorites">المفضله</string>
+    <string name="MyProducts">منتجاتي</string>
+    <string name="Notification">اشعارات</string>
+    <string name="Notifies">اشعار</string>
+    <string name="OwnerName">اسم مالك المنتج</string>
+    <string name="Phone">المحمول</string>
+    <string name="ProductCase">حالة المنتج </string>
+    <string name="ProductName">اسم المنتج</string>
+    <string name="Productdescripe">وصف المنتج</string>
+    <string name="Products">منتجات</string>
+    <string name="SetLocationManual">اضافة الموقع يدوي</string>
+    <string name="Setting">اعدادات</string>
+    <string name="Uploadproductphoto">اضافة صوره للمنتج</string>
+    <string name="iamshopowner">اناامتلك محل</string>
+    <string name="search">بحث</string>
+    <string name="shops">محلات</string>
+    <string name="AddProduct">اضاقة منتج</string>
+    <string name="Case">حالة المنتج</string>
+    <string name="Reporting">تقرير</string>
+    <string name="FollowMe">تابعني</string>
+    <string name="LogOut">تسجيل الخروج</string>
+    <string name="Chooseprofilephoto">اختيار صورة شخصيه</string>
+    <string name="FullName">الاسم بالكامل</string>
+    <string name="Password">الرقم السري</string>
+    <string name="ConfirmPassword">تاكيد الرقم السري</string>
+    <string name="EnterHerToAddLocationInMap">اضغط هنا لاضافه موقعك باستخدام الخريطه</string>
+
+</resources>

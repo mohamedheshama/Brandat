@@ -7,24 +7,24 @@
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_home_black_24dp"
-            android:title="Home"
+            android:title="@string/Home"
             />
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_search_blue_24dp"
-            android:title="Ads Search" />
+            android:title="@string/AdsSearch" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_add_blue_24dp"
-            android:title="Add Product" />
+            android:title="@string/AddProduct" />
         <item
             android:id="@+id/my_favorite"
             android:icon="@drawable/ic_star_black_24dp"
-            android:title="My Favorite" />
+            android:title="@string/MyFavorites" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_mode_edit_blue_24dp"
-            android:title="Setting " />
+            android:title="@string/Setting" />
     </group>
 
     <item android:title="Communicate">
