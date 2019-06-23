@@ -2,7 +2,6 @@ package com.example.moo.brandat.chat;
 
 public class MessageData {
     private String mName,mContent,mSender,mReciever;
-    private boolean  mIsSender;
     public MessageData(){}
     public MessageData(String name,String content,String sender,String reciever){
         mName=name;
@@ -44,11 +43,5 @@ public class MessageData {
         this.mContent = mContent;
     }
 
-    public boolean isIsSender() {
-        return mIsSender;
-    }
 
-    public void setIsSender(boolean mIsSender) {
-        this.mIsSender = mIsSender;
-    }
 }

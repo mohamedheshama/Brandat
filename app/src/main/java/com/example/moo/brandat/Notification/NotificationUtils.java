@@ -32,17 +32,17 @@ public class NotificationUtils {
         NotificationCompat.Builder notificationBuilder=new NotificationCompat.Builder(context,CHANNEL_NOTIFICATION_ID)
                 .setContentTitle(name)
                 .setSmallIcon(R.drawable.mapbox_logo_icon)
-                .setContentIntent(createContentIntent(context,uid,imgeSender))
+                .setContentIntent(createContentIntent(context,uid,imgeSender,name))
+                .setAutoCancel(true)
                 .setContentText(body);
         notificationManager.notify(CHANNEL_NOTIFICATION_ID,1,notificationBuilder.build());
     }
 
-    public static PendingIntent createContentIntent(Context context,String uid,String imgeSender){
+    public static PendingIntent createContentIntent(Context context,String uid,String imgeSender,String name){
         Intent intent=new Intent(context, ChatActivity.class);
-        intent.setAction(context.getString(R.string.notification_recieved_action));
         Log.d("mano", "createContentIntent: "+uid);
         intent.putExtra(context.getString(R.string.key_chat_uid_reciever),uid);
-        intent.putExtra("mano","mano"+uid);
+        intent.putExtra(context.getString(R.string.key_chat_name_reciever),name);
         intent.putExtra(context.getString(R.string.key_of_img_url_user_recieve),imgeSender);
         PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_IMMUTABLE);
         return pendingIntent;

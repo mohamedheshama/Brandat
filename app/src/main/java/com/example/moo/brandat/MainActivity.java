@@ -6,6 +6,7 @@ import android.graphics.Movie;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.moo.brandat.chat.ChatActivity;
 import com.example.moo.brandat.chat.FragmentChat;
 import com.example.moo.brandat.chat.FragmentListUserChat;
 import com.google.firebase.auth.FirebaseAuth;
@@ -120,9 +122,15 @@ StorageReference filepath=mstorStorageReference.child("App_Images");
  //   Log.d("hh", url);
 if(mAuth.getCurrentUser()!=null){
     Log.d("mano", "onComplete: done user id");
+    FragmentChat.IS_ACTIVATE=true;
     usernameId = mAuth.getCurrentUser().getUid();
     usernameUser=mAuth.getCurrentUser().getDisplayName();
     userImageUrl=mAuth.getCurrentUser().getPhotoUrl().toString();
+    PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+            .edit()
+            .putString(getApplicationContext().getString(R.string.user_uid_shared_preference), usernameId)
+            .putString(getApplicationContext().getString(R.string.user_imge_url_shared_preference),userImageUrl)
+            .apply();
     user.setText(usernameUser);
     signed_in.setText("Signed in..");
 String hh= String.valueOf(userImageUrl);
@@ -288,6 +296,7 @@ String hh= String.valueOf(userImageUrl);
                     onBackPressed();
                 break;
                 case R.id.nav_LogOut:
+                    FragmentChat.IS_ACTIVATE=false;
                     mAuth.signOut();
                  //   startActivity(new Intent(MainActivity.this,splash.class));
 

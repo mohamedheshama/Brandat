@@ -34,7 +34,7 @@ public class FragmentListUserChat extends Fragment {
     private ArrayList<UserListData> mListUserChatArrayList;
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView=inflater.inflate(R.layout.activity_chat_user_list,container,false);
 
         mFirebaseDatabase=FirebaseDatabase.getInstance();
@@ -55,6 +55,7 @@ public class FragmentListUserChat extends Fragment {
                 Log.d(TAG, "onItemClick: mano "+userListData.getName());
                 Intent intent=new Intent(getContext(),ChatActivity.class);
                 intent.putExtra(getString(R.string.key_chat_uid_reciever),userListData.getUserId());
+                intent.putExtra(getString(R.string.key_chat_name_reciever),userListData.getName());
                 intent.putExtra(getString(R.string.key_of_img_url_user_recieve),userListData.getImg_Url());
                 startActivity(intent);
             }

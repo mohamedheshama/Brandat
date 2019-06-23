@@ -1,11 +1,19 @@
 package com.example.moo.brandat.chat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.moo.brandat.MainActivity;
 import com.example.moo.brandat.R;
@@ -14,18 +22,40 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.concurrent.Semaphore;
+import java.util.zip.Inflater;
 
 public class ChatActivity extends AppCompatActivity {
-    private String mRecieverUid,mRecieverImageUrl,mSenderImageUrl;
+    private String mRecieverUid,mRecieverImageUrl,mSenderImageUrl,mRecieverName;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
+
+    private ImageView mImgeRecieverImgeView;
+    private TextView mNameRecieverTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+
+        Toolbar mTopToolbar = (Toolbar) findViewById(R.id.toolbar_chat);
+        setSupportActionBar(mTopToolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+
+        LayoutInflater layoutInflater=(LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View myBar=layoutInflater.inflate(R.layout.chat_cutom_bar,null);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(myBar);
+
+
+        mImgeRecieverImgeView=myBar.findViewById(R.id.imge_reciever_message_custom_bar);
+        mNameRecieverTextView=myBar.findViewById(R.id.name__reciever_message_custom_bar);
+
 
         mFirebaseDatabase=FirebaseDatabase.getInstance();
         mDatabaseReference=mFirebaseDatabase.getReference();
@@ -41,9 +71,20 @@ public class ChatActivity extends AppCompatActivity {
                 Log.d("mano", "onCreate:imge   go to has extra");
                 mRecieverImageUrl = intent.getStringExtra(getString(R.string.key_of_img_url_user_recieve));
             }
+            if (intent.hasExtra(getString(R.string.key_chat_name_reciever))){
+                mRecieverName=intent.getStringExtra(getString(R.string.key_chat_name_reciever));
+            }
             String  test=intent.getStringExtra("mano");
             Log.d("mano", "onCreate:imge  "+mRecieverUid+"   "+test);
         }
+
+        Picasso.with(this)
+                .load(mRecieverImageUrl)
+                .resize(50, 50)
+                .centerCrop()
+                .into(mImgeRecieverImgeView);
+        mNameRecieverTextView.setText(mRecieverName);
+
         FragmentChat fragmentChat=new FragmentChat();
         Bundle bundle=new Bundle();
         bundle.putString(getString(R.string.key_user_uid_fragment),mRecieverUid);
@@ -52,6 +93,18 @@ public class ChatActivity extends AppCompatActivity {
         fragmentChat.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.container_chat,fragmentChat).commit();
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; go home
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 }

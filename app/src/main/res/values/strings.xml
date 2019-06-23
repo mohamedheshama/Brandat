@@ -17,6 +17,9 @@
     <string name="key_imge_url_sender_fragment">imageSender</string>
     <string name="notification_recieved_action">NotificationAction</string>
     <string name="key_imge_url_reciever_fragment">imageReciever</string>
+    <string name="user_uid_shared_preference">user_uid</string>
+    <string name="user_imge_url_shared_preference">user_imge_url</string>
+    <string name="key_chat_name_reciever">name_reciever</string>
     <string-array name="names_categories">
         <item>عربيات وقطع غيار</item>
         <item>عقارات</item>

@@ -20,7 +20,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".my_product"></activity>
         <activity android:name=".my_profile" />
-        <activity android:name=".chat.ChatActivity" />
         <activity android:name=".search" />
         <activity android:name=".splash">
 
@@ -62,6 +61,11 @@
         <activity
             android:name=".UpdateProduct"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".chat.ChatActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <service
             android:name=".Notification.MyFCMService"
             android:exported="false">

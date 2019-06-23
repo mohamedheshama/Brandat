@@ -1,6 +1,8 @@
 package com.example.moo.brandat.chat;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -40,6 +42,8 @@ public class FragmentChat extends Fragment {
     private FirebaseDatabase mFirebaseDatabase;
     private MessageAdapter messageAdapter;
 
+
+
     public FragmentChat(){
     }
 
@@ -64,12 +68,19 @@ public class FragmentChat extends Fragment {
             mSenderImageUrl=bundle.getString(getString(R.string.key_imge_url_sender_fragment));
 
             mRecieverImageUrl = bundle.getString(getString(R.string.key_imge_url_reciever_fragment));
+            Log.d(TAG, "onCreateView: user id reciever "+mUserIdRecieve+"  "+mRecieverImageUrl);
 
         }
 
-
         //get user id's sender
         mUserIdSender= MainActivity.usernameId;
+        if (mUserIdSender==null|| mUserIdSender.isEmpty()){
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+           mUserIdSender= sharedPreferences.getString(getContext().getString(R.string.user_uid_shared_preference), " ");
+           mSenderImageUrl=sharedPreferences.getString(getContext().getString(R.string.user_imge_url_shared_preference),"  ");
+
+        }
+
 
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -114,7 +125,7 @@ public class FragmentChat extends Fragment {
 
     private void recieveAllMessages(final String userIdSender, final String userIdRecieve) {
         DatabaseReference userDataRefPath=mDatabaseReference.child("userss").child(userIdSender).child("mymessages").child(userIdRecieve);
-        userDataRefPath.addListenerForSingleValueEvent(new ValueEventListener() {
+        userDataRefPath.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String idMessages=dataSnapshot.getValue(String.class);
@@ -122,35 +133,36 @@ public class FragmentChat extends Fragment {
                 if (idMessages!=null){
                     DatabaseReference userDataRefPath=mDatabaseReference.child("allmessages").child(idMessages);
                     userDataRefPath.addChildEventListener(new ChildEventListener() {
-                                                              @Override
-                                                              public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                                                                  mMessagesList.add(dataSnapshot.getValue(MessageData.class));
+                          @Override
+                          public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                              dataSnapshot.getChildrenCount();
+                              mMessagesList.add(dataSnapshot.getValue(MessageData.class));
 
-                                                                  recyclerView.smoothScrollToPosition(messageAdapter.getItemCount()-1);
+                              recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);
 
-                                                                  messageAdapter.notifyDataSetChanged();
-                                                              }
+                              messageAdapter.notifyDataSetChanged();
+                          }
 
-                                                              @Override
-                                                              public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                          @Override
+                          public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                                                              }
+                          }
 
-                                                              @Override
-                                                              public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                          @Override
+                          public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-                                                              }
+                          }
 
-                                                              @Override
-                                                              public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                          @Override
+                          public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                                                              }
+                          }
 
-                                                              @Override
-                                                              public void onCancelled(@NonNull DatabaseError databaseError) {
+                          @Override
+                          public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                                              }
-                                                          }
+                          }
+                      }
 
                     );
                 }else {
