@@ -73,31 +73,42 @@ private FirebaseAuth.AuthStateListener mAuthListner;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
-        final Dialog dialog = new Dialog(this);
-        dialog.setTitle("Setting");
+        SharedPreferences pref2 = getSharedPreferences("DialogPREF", Context.MODE_PRIVATE);
+        if(pref2.getBoolean("Dialog_executed", false)){
 
-        dialog.setContentView(R.layout.layout_dialog);
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        //Spinner spin = (Spinner)dialog.findViewById(R.id.spinner1);
-        TextView ok = (TextView) dialog.findViewById(R.id.dialogButtonOK2);
-        // if button is clicked, close the custom dialog
-        ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // dialog.dismiss();
-                Toast.makeText(splash.this,"sucess data " , Toast.LENGTH_SHORT).show();
-            }
-        });
-        TextView cancel = (TextView) dialog.findViewById(R.id.dialogButtonOK);
-        // if button is clicked, close the custom dialog
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
+        } else {
+            final Dialog dialog = new Dialog(this);
+
+            //dialog.setTitle("Setting");
+
+            dialog.setContentView(R.layout.layout_dialog);
+            dialog.setCanceledOnTouchOutside(true);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            //Spinner spin = (Spinner)dialog.findViewById(R.id.spinner1);
+            TextView ok = (TextView) dialog.findViewById(R.id.dialogButtonOK2);
+            // if button is clicked, close the custom dialog
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Toast.makeText(splash.this,"sucess data " , Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
+            TextView cancel = (TextView) dialog.findViewById(R.id.dialogButtonOK);
+            // if button is clicked, close the custom dialog
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+            SharedPreferences.Editor ed = pref2.edit();
+            ed.putBoolean("Dialog_executed", true);
+            ed.commit();
+        }
+
         //        radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
 //        btnDisplay = (Button) findViewById(R.id.btnDisplay);
 //

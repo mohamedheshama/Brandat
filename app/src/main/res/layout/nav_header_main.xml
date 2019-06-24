@@ -7,7 +7,6 @@
     android:gravity="bottom"
     android:orientation="vertical"
     android:id="@+id/nav_header"
-    android:onClick="onclick"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -18,7 +17,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        >
         <com.mikhaellopez.circularimageview.CircularImageView
 
             android:id="@+id/imageView_account"
@@ -31,34 +32,34 @@
             android:src="@drawable/ic_account_circle_black_24dp"
             app:civ_shadow_color="#0057FF"
             android:scaleType="centerCrop"
-            android:layout_gravity="start"
+            android:layout_gravity="center"
             app:civ_shadow="true"
 
 
             />
+        <TextView
+            android:id="@+id/user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+
+            android:text="" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/signed_in"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:text="@string/nav_header_title"
+            android:textColor="#2B2A2A"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:layout_gravity="center"
+
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     </LinearLayout>
-    <TextView
-        android:id="@+id/user"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#fff"
-        android:textSize="18dp"
-        android:textStyle="bold"
-        android:layout_gravity="left"
-
-        android:text="" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/signed_in"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="@string/nav_header_title"
-        android:textColor="#2B2A2A"
-        android:textStyle="bold"
-        android:textSize="15dp"
-        android:layout_gravity="left"
-
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 </LinearLayout>

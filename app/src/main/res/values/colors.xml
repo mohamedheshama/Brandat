@@ -13,5 +13,9 @@
     <color name="photo_placeholder">#ccc</color>
     <color name="text_color_sender">#fff</color>
     <color name="text_color_reciever">#302D2D</color>
+    <array name="dot_colors">
+        <item>#0057FF</item>
+        <item>#EDEAFD</item>
 
+    </array>
 </resources>

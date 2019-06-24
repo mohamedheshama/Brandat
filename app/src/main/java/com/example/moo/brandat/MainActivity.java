@@ -83,22 +83,26 @@ TextView user,signed_in;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment=null;
-                fragment=new upload();
-                loadfragment(fragment);
+//                Fragment fragment=null;
+//                fragment=new upload();
+//                loadfragment(fragment);
+                startActivity(new Intent(MainActivity.this, Upload.class));
+
             }
         });
     mAuth = FirebaseAuth.getInstance();
 
-    FloatingActionButton fab1 = (FloatingActionButton) findViewById(R.id.floatingActionButton);
-    fab1.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Fragment fragment=null;
-            fragment=new upload();
-            loadfragment(fragment);
-        }
-    });
+//    FloatingActionButton fab1 = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+//    fab1.setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View view) {
+////            Fragment fragment=null;
+////            fragment=new upload();
+////            loadfragment(fragment);
+//            startActivity(new Intent(MainActivity.this, Upload.class));
+//
+//        }
+//    });
 
     mAuthListner=new FirebaseAuth.AuthStateListener() {
         @Override

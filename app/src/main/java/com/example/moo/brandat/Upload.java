@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ import com.google.firebase.storage.UploadTask;
 
 import static android.app.Activity.RESULT_OK;
 
-public class upload  extends Fragment {
+public class Upload  extends AppCompatActivity {
 
 TextView publish;
     EditText fname;EditText category;EditText casee;EditText cost;EditText pdescribe;EditText location;EditText ownername;EditText phone;EditText email;
@@ -52,23 +53,25 @@ TextView publish;
     String key;
 
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_upload, null);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_upload);
 
-        fname=(EditText)rootView.findViewById(R.id.fullName);
-        category=(EditText)rootView.findViewById(R.id.category);
-        casee=(EditText)rootView.findViewById(R.id.casee);
-        cost=(EditText)rootView.findViewById(R.id.cost);
-        ownername=(EditText)rootView.findViewById(R.id.ownerName);
-        pdescribe=(EditText)rootView.findViewById(R.id.descripe);
-        location=(EditText)rootView.findViewById(R.id.location);
-        phone=(EditText)rootView.findViewById(R.id.phoneNumber);
-        email=(EditText)rootView.findViewById(R.id.email);
-        publish=(TextView) rootView.findViewById(R.id.textView6);
-        imageView=(ImageView) rootView.findViewById(R.id.viewImage);
-        mProgress=new ProgressDialog(rootView.getContext());
+
+
+        fname=(EditText)findViewById(R.id.fullName);
+        category=(EditText)findViewById(R.id.category);
+        casee=(EditText)findViewById(R.id.casee);
+        cost=(EditText)findViewById(R.id.cost);
+        ownername=(EditText)findViewById(R.id.ownerName);
+        pdescribe=(EditText)findViewById(R.id.descripe);
+        location=(EditText)findViewById(R.id.location);
+        phone=(EditText)findViewById(R.id.phoneNumber);
+        email=(EditText)findViewById(R.id.email);
+        publish=(TextView)findViewById(R.id.textView6);
+        imageView=(ImageView)findViewById(R.id.viewImage);
+        mProgress=new ProgressDialog(this);
 mStorageReference= FirebaseStorage.getInstance().getReference();
         mAuth=FirebaseAuth.getInstance();
         mCurrentUser=mAuth.getCurrentUser();
@@ -95,7 +98,6 @@ publish.setOnClickListener(new View.OnClickListener() {
 
     }
 });
-        return rootView;
     }
 //    public void uploadimge(View v){
 //        Intent intent = new Intent();
@@ -178,13 +180,13 @@ productsData.child("product_name").setValue(pname);
 
 
                             mProgress.dismiss();
-                            Toast.makeText(getContext(),"Your ptoduct's data has inserted succesfully.",Toast.LENGTH_LONG ).show();
+                            Toast.makeText(getApplicationContext(),"Your ptoduct's data has inserted succesfully.",Toast.LENGTH_LONG ).show();
 
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Toast.makeText(getContext(),"Error",Toast.LENGTH_LONG ).show();
+                            Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG ).show();
                         }
                     });
 
@@ -192,7 +194,7 @@ productsData.child("product_name").setValue(pname);
                 } else {
  mProgress.dismiss();
 
-                    Toast.makeText(getContext(),"task not succesful",Toast.LENGTH_LONG ).show();
+                    Toast.makeText(getApplicationContext(),"task not succesful",Toast.LENGTH_LONG ).show();
 
                     // Handle failures
                     // ...

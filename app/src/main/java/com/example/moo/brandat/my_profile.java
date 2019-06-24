@@ -166,7 +166,7 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(my_profile.this, upload.class));
+                startActivity(new Intent(my_profile.this, Upload.class));
 
 
             }
