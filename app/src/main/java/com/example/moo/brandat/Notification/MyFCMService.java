@@ -40,6 +40,7 @@ public class MyFCMService extends FirebaseMessagingService {
                 String message = data.get("body");
                 String productId = data.get("product");
                 String userid = data.get("userid");
+                Log.d("mano", ":  the product id is "+userid+"   "+productId+"   "+message);
 
 
                 Log.d("hi", "onMessageReceived: " + remoteMessage.getData());

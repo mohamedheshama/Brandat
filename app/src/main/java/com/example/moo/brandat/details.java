@@ -38,6 +38,7 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
+import java.util.Map;
 
 public class details extends AppCompatActivity {
     TextView fname;
@@ -83,9 +84,8 @@ public class details extends AppCompatActivity {
         mCurrentUser=mAuth.getCurrentUser();
         editActivity=(FloatingActionButton)findViewById(R.id.edit_floating_action_button);
 
-        final Intent intent = getIntent();
-        String action=intent.getAction();
-        if (action==null||!action.equals(getString(R.string.action_notification_detail_prduct))) {
+         Intent intent = getIntent();
+        if (intent.hasExtra("fname")) {
             name = intent.getStringExtra("fname");
             cat = intent.getStringExtra("category");
             cos = intent.getStringExtra("cost");
@@ -101,27 +101,25 @@ public class details extends AppCompatActivity {
             product_key = intent.getStringExtra("product_key");
             setUp();
         }else{
-            String prductId=intent.getStringExtra("prductId");
-            String userId=intent.getStringExtra("userid");
-            mDatabaseReference.child("userss").child(userId).child("products").child(prductId).addListenerForSingleValueEvent(new ValueEventListener() {
+            String productId=intent.getStringExtra("productId");
+            String userId=intent.getStringExtra("userId");
+            mDatabaseReference.child("userss").child(userId).child("products").child(productId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    products products =dataSnapshot.getValue(products.class);
-                    Log.d("mano", "onDataChange: "+products.getCategory());
-                    name = products.getFname();
-                    cat = products.getCategory();
-                    cos = products.getCost();
-                    em = products.getEmail();
-                    im = products.getImg_src();
-                    loc = products.getLocation();
-                    ow = products.getOwnername();
-                    pcas = products.getproduct_case();
-                    fon = products.getPhone();
-                    uImg = products.getImg_url();
-                    uId = products.getUser_id();
-                    prodescribe = products.getproduct_des();
-                    product_key = products.getProduct_key();
+                    products product =dataSnapshot.getValue(products.class);
+                    name = product.getFname();
+                    cat = product.getCategory();
+                    cos = product.getCost();
+                    em = product.getEmail();
+                    im = product.getImg_src();
+                    loc = product.getLocation();
+                    ow = product.getOwnername();
+                    pcas = product.getproduct_case();
+                    fon = product.getPhone();
+                    uImg = product.getImg_url();
+                    uId = product.getUser_id();
+                    prodescribe = product.getproduct_des();
+                    product_key = product.getProduct_key();
                     setUp();
                 }
 

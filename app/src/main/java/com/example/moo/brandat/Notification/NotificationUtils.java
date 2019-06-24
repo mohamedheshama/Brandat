@@ -67,9 +67,10 @@ public class NotificationUtils {
     public static PendingIntent createContentIntentYourFollower(Context context,String prodctId,String userid){
         Intent intent=new Intent(context, details.class);
         intent.setAction(context.getString(R.string.action_notification_detail_prduct));
-        intent.putExtra("prductId",prodctId);
-        intent.putExtra("userid",userid);
-        PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_IMMUTABLE);
+        Log.d("mano", "createContentIntentYourFollower:  the product id is "+prodctId+"   "+userid);
+        intent.putExtra("productId",prodctId);
+        intent.putExtra("userId",userid);
+        PendingIntent pendingIntent=PendingIntent.getActivity(context,2,intent,PendingIntent.FLAG_IMMUTABLE);
         return pendingIntent;
     }
 }
