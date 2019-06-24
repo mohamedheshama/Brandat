@@ -21,6 +21,7 @@
     <string name="user_uid_shared_preference">user_uid</string>
     <string name="user_imge_url_shared_preference">user_imge_url</string>
     <string name="key_chat_name_reciever">name_reciever</string>
+    <string name="action_notification_detail_prduct">open_detati_load_data</string>
     <string-array name="names_categories">
         <item>عربيات وقطع غيار</item>
         <item>عقارات</item>

@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import com.example.moo.brandat.MainActivity;
 import com.example.moo.brandat.R;
 import com.example.moo.brandat.chat.ChatActivity;
+import com.example.moo.brandat.details;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -48,5 +49,27 @@ public class NotificationUtils {
         return pendingIntent;
     }
 
+    public static void  setNotificationYourFollower(Context context ,String body,String productId,String userid){
 
+        NotificationManager notificationManager= (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel=new NotificationChannel(CHANNEL_NOTIFICATION_ID,"ma", NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+        NotificationCompat.Builder notificationBuilder=new NotificationCompat.Builder(context,CHANNEL_NOTIFICATION_ID)
+                .setContentTitle("New announcement")
+                .setSmallIcon(R.drawable.mapbox_logo_icon)
+                .setContentIntent(createContentIntentYourFollower(context,productId,userid))
+                .setAutoCancel(true)
+                .setContentText(body);
+        notificationManager.notify(CHANNEL_NOTIFICATION_ID,1,notificationBuilder.build());
+    }
+    public static PendingIntent createContentIntentYourFollower(Context context,String prodctId,String userid){
+        Intent intent=new Intent(context, details.class);
+        intent.setAction(context.getString(R.string.action_notification_detail_prduct));
+        intent.putExtra("prductId",prodctId);
+        intent.putExtra("userid",userid);
+        PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_IMMUTABLE);
+        return pendingIntent;
+    }
 }

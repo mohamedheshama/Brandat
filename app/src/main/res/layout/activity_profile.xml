@@ -383,7 +383,7 @@
                             android:orientation="vertical">
 
                             <android.support.design.widget.FloatingActionButton
-                                android:id="@+id/add"
+                                android:id="@+id/follow_me"
                                 style="@style/Widget.Design.FloatingActionButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -394,6 +394,7 @@
                                 tools:ignore="VectorDrawableCompat" />
 
                             <TextView
+
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
                                 android:text="Follow me"

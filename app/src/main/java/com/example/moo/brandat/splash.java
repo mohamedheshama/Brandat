@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -340,9 +341,11 @@ private FirebaseAuth.AuthStateListener mAuthListner;
                                         public void onComplete(@NonNull Task<InstanceIdResult> task) {
 
                                             if (task.isSuccessful()){
+
                                                 DatabaseReference currentUserDB = mDatabase.child(mAuth.getCurrentUser().getUid());
                                                 Log.d("mano", "onComplete: "+task.getResult().getToken());
                                                 currentUserDB.child("notificationTokens").setValue(task.getResult().getToken());
+
                                                 currentUserDB.child("name").setValue(mAuth.getCurrentUser().getDisplayName());
                                                 currentUserDB.child("email").setValue(mAuth.getCurrentUser().getEmail());
                                                 currentUserDB.child("phone").setValue(mAuth.getCurrentUser().getPhoneNumber());

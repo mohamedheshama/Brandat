@@ -13,11 +13,13 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Movie;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -26,6 +28,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.UserHandle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -108,12 +111,17 @@ String UserId;
     private DatabaseReference mDatabaseUser;
 RecyclerView productRecycler;
 Context c;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mDatabaseReference;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+
+
 
         productsList = new ArrayList<>();
 
@@ -132,7 +140,8 @@ mAuthListner=new FirebaseAuth.AuthStateListener() {
 mDatabase= FirebaseDatabase.getInstance().getReference().child("categories");
         mDatabaseUser= FirebaseDatabase.getInstance().getReference().child("userss");
 
-
+        mFirebaseDatabase=FirebaseDatabase.getInstance();
+        mDatabaseReference=mFirebaseDatabase.getReference();
 
 
         mDatabase.keepSynced(true);
@@ -185,12 +194,13 @@ if(intent==null) {
     getUserData();
 
 }
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.chat);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.chat);
+        fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getBaseContext(), ChatActivity.class);
                 intent.putExtra(getString(R.string.key_chat_uid_reciever),UserId);
+                intent.putExtra(getString(R.string.key_of_img_url_user_recieve),img_url);
                 startActivity(intent);
             }
         });
@@ -209,11 +219,63 @@ if(intent==null) {
             startActivity(intent1);
         }
     });
-}
 
 
+    final FloatingActionButton fabFollowMe= (FloatingActionButton) findViewById(R.id.follow_me);
+    final DatabaseReference path=mDatabaseReference.child("userss").child(UserId).child("followers").child(MainActivity.usernameId);
+        path.addListenerForSingleValueEvent(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            String value=dataSnapshot.getValue(String.class);
+            Log.d("mano", "onDataChange:  value  "+value);
+            if (value==null){
+
+                fabFollowMe.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#EDEAFD")));
+
+            }else if(value.equals("true")){
+
+                fabFollowMe.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#5A01FA")));
+            }
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    });
+
+        fabFollowMe.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
 
 
+            path.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String value=dataSnapshot.getValue(String.class);
+                    Log.d("mano", "onDataChange:  value  "+value);
+                    if (value==null){
+
+                        path.setValue("true");
+                        fabFollowMe.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#5A01FA")));
+
+                    }else {
+                        dataSnapshot.getRef().removeValue();
+                        fabFollowMe.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#EDEAFD")));
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            Toast.makeText(UserProfile.this, "done", Toast.LENGTH_SHORT).show();
+        }
+    });
+
+    }
     public class fetchProducts extends AsyncTask<String, Void, List> implements  productsAdapter.ImageClickHandler {
 
         @Override

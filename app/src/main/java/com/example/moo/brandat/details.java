@@ -4,10 +4,14 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -25,6 +29,11 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
@@ -45,12 +54,19 @@ public class details extends AppCompatActivity {
     private FusedLocationProviderClient client;
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mDatabaseReference;
     FloatingActionButton editActivity;
+
+     String name,cat,cos,em,im,loc,ow,pcas,fon,uImg,uId,prodescribe,product_key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+        mFirebaseDatabase=FirebaseDatabase.getInstance();
+        mDatabaseReference=mFirebaseDatabase.getReference();
 
         fname = (TextView) findViewById(R.id.fullName);
         category = (TextView) findViewById(R.id.category);
@@ -68,31 +84,55 @@ public class details extends AppCompatActivity {
         editActivity=(FloatingActionButton)findViewById(R.id.edit_floating_action_button);
 
         final Intent intent = getIntent();
-        final String name = intent.getStringExtra("fname");
-        final String cat = intent.getStringExtra("category");
-        final String cos = intent.getStringExtra("cost");
-        final String em = intent.getStringExtra("email");
-        final String im = intent.getStringExtra("img");
-        final String loc = intent.getStringExtra("location");
-        final String ow = intent.getStringExtra("owner");
-        final String pcas = intent.getStringExtra("pcase");
-        final String fon = intent.getStringExtra("phone");
-        final String uImg = intent.getStringExtra("img_url");
-        final String uId = intent.getStringExtra("user_id");
-        final String prodescribe=intent.getStringExtra("prodescribe");
-        final String product_key=intent.getStringExtra("product_key");
+        String action=intent.getAction();
+        if (action==null||!action.equals(getString(R.string.action_notification_detail_prduct))) {
+            name = intent.getStringExtra("fname");
+            cat = intent.getStringExtra("category");
+            cos = intent.getStringExtra("cost");
+            em = intent.getStringExtra("email");
+            im = intent.getStringExtra("img");
+            loc = intent.getStringExtra("location");
+            ow = intent.getStringExtra("owner");
+            pcas = intent.getStringExtra("pcase");
+            fon = intent.getStringExtra("phone");
+            uImg = intent.getStringExtra("img_url");
+            uId = intent.getStringExtra("user_id");
+            prodescribe = intent.getStringExtra("prodescribe");
+            product_key = intent.getStringExtra("product_key");
+            setUp();
+        }else{
+            String prductId=intent.getStringExtra("prductId");
+            String userId=intent.getStringExtra("userid");
+            mDatabaseReference.child("userss").child(userId).child("products").child(prductId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    products products =dataSnapshot.getValue(products.class);
+                    Log.d("mano", "onDataChange: "+products.getCategory());
+                    name = products.getFname();
+                    cat = products.getCategory();
+                    cos = products.getCost();
+                    em = products.getEmail();
+                    im = products.getImg_src();
+                    loc = products.getLocation();
+                    ow = products.getOwnername();
+                    pcas = products.getproduct_case();
+                    fon = products.getPhone();
+                    uImg = products.getImg_url();
+                    uId = products.getUser_id();
+                    prodescribe = products.getproduct_des();
+                    product_key = products.getProduct_key();
+                    setUp();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
 
 
-        fname.setText(name);
-        category.setText(cat);
-        casee.setText(pcas);
-        pdescribe.setText(prodescribe);
-        cost.setText(cos);
-        email.setText(em);
-        location.setText(loc);
-        ownername.setText(ow);
-        phone.setText(fon);
-        fname.setText(name);
         client = LocationServices.getFusedLocationProviderClient(details.this);
         requestPermission();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.more);
@@ -226,8 +266,7 @@ public class details extends AppCompatActivity {
 //            }
 //        });
 
-        Picasso.with(this).load(im).into(imageView);
-        Picasso.with(this).load(uImg).into(circularImageView);
+
 
         circularImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -259,6 +298,8 @@ public class details extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
 
         editActivity.hide();
         if(mCurrentUser.getUid().equals(uId)) {
@@ -306,6 +347,22 @@ public class details extends AppCompatActivity {
         }
 
     }
+
+    private void setUp() {
+        fname.setText(name);
+        category.setText(cat);
+        casee.setText(pcas);
+        pdescribe.setText(prodescribe);
+        cost.setText(cos);
+        email.setText(em);
+        location.setText(loc);
+        ownername.setText(ow);
+        phone.setText(fon);
+        fname.setText(name);
+        Picasso.with(this).load(im).into(imageView);
+        Picasso.with(this).load(uImg).into(circularImageView);
+    }
+
     private void requestPermission(){
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
