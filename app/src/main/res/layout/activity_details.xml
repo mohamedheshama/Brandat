@@ -21,7 +21,7 @@
 
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="232dp"
+            android:layout_marginTop="230dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:backgroundTint="#EDEAFD"
@@ -94,7 +94,7 @@
             <TextView
                 android:id="@+id/textView12"
                 android:layout_width="300dp"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:text="I am shop owner. "
@@ -103,16 +103,6 @@
                 android:textStyle="italic"
 
                 />
-            <TextView
-                android:id="@+id/publish_date"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:hint="Date: 3th may"
-                android:layout_marginStart="8dp"
-
-                android:layout_gravity="start"
-                android:textSize="16dp"
-                android:layout_marginLeft="8dp" />
         </LinearLayout>
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -258,19 +248,44 @@
 
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
+        <LinearLayout
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/setting">
 
+            <TextView
+                android:id="@+id/publish_date"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="start"
+                android:layout_marginStart="8dp"
+
+                android:layout_marginLeft="8dp"
+                android:hint="Date: 3th may"
+                android:textSize="16dp" />
+        </LinearLayout>
         <android.support.v7.widget.CardView
             android:id="@+id/cardView3"
             android:layout_width="355dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="15dp"
             android:layout_marginRight="8dp"
             android:padding="5dp"
             app:cardBackgroundColor="#ECECEC"
             app:cardCornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/setting">
+            app:layout_constraintTop_toBottomOf="@+id/date">
 
 
             <LinearLayout

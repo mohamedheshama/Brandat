@@ -10,7 +10,7 @@
     <color name="myBlue">#0057FF</color>
     <color name="sender">#0675CF</color>
     <color name="reciever">#DBD9D9</color>
-    <color name="photo_placeholder">#ccc</color>
+    <color name="photo_placeholder">#B3CCCCCC</color>
     <color name="text_color_sender">#fff</color>
     <color name="text_color_reciever">#302D2D</color>
     <array name="dot_colors">
