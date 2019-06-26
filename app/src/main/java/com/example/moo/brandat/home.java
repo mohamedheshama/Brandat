@@ -49,7 +49,7 @@ public class home extends Fragment {
     private ImageAdapter imageAdapter;
 
 
-    List<products> productsList;
+    List<List<products>> productsList;
     ImageAdapter cardsAdapter;
 
 
@@ -115,7 +115,7 @@ return rootView;
 
     }
 
-    public class fetchProducts extends AsyncTask<String, Void, List>implements ImageAdapter.ImageClickHandler {
+    public class fetchProducts extends AsyncTask<String, Void, List>implements ImageAdapterTwo.ImageClickHandler {
 
 
         @Override
@@ -127,16 +127,19 @@ return rootView;
             productQuery.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+                    List<String> namesCategries=new ArrayList<>();
                     for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                        namesCategries.add(postSnapshot.getKey());
+                        List<products> list=new ArrayList<>();
                         for (DataSnapshot postSnapshote: postSnapshot.getChildren()) {
 
                             products product = postSnapshote.getValue(products.class);
                             product.setProduct_key(postSnapshote.getKey());
 
-                            productsList.add(product);
+                            list.add(product);
 
                         }
-
+                        productsList.add(list);
 
 
 
@@ -145,7 +148,7 @@ return rootView;
 
                         // TODO: handle the post
                     }
-                    setupLayout(productsList);
+                    setupLayout(productsList,namesCategries);
 
 
 
@@ -174,7 +177,7 @@ return rootView;
         }
 
 
-        public void setupLayout(List<products> products){
+        public void setupLayout(List<List<products>> products,List namesCategres){
             productsList= products;
 //    LinearLayoutManager layoutManager=new LinearLayoutManager(UserProfile.this);
 //    layoutManager.setReverseLayout(true);
@@ -182,14 +185,16 @@ return rootView;
 
             productRecycler.setHasFixedSize(true);
 
-            StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            LinearLayoutManager sglm = new LinearLayoutManager(getContext());
+            sglm.setOrientation(LinearLayoutManager.VERTICAL);
             productRecycler.setLayoutManager(sglm);
 
             //productRecycler.setLayoutManager(layoutManager);
 
 
 
-            cardsAdapter = new ImageAdapter(productsList, getContext(),  this);
+            cardsAdapter = new ImageAdapter(productsList, getContext(),  this,namesCategres);
+
 
             productRecycler.setAdapter(cardsAdapter);
 

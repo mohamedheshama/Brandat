@@ -26,7 +26,7 @@ import java.util.List;
 public class categoryItem extends AppCompatActivity {
 
     List<products> productsList;
-    ImageAdapter cardsAdapter;
+    ImageAdapterTwo cardsAdapter;
 
     private Context context;
 
@@ -81,7 +81,7 @@ itemToFetch=intent.getStringExtra("item");
 
     }
 
-    public class fetchProducts extends AsyncTask<String, Void, List> implements ImageAdapter.ImageClickHandler {
+    public class fetchProducts extends AsyncTask<String, Void, List> implements ImageAdapterTwo.ImageClickHandler {
 
 
         @Override
@@ -137,7 +137,7 @@ itemToFetch=intent.getStringExtra("item");
             //productRecycler.setLayoutManager(layoutManager);
 
 
-            cardsAdapter = new ImageAdapter(productsList, categoryItem.this, this);
+            cardsAdapter = new ImageAdapterTwo(productsList, categoryItem.this, this,false);
 
             productRecycler.setAdapter(cardsAdapter);
 

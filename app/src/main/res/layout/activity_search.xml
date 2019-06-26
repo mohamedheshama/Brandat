@@ -73,7 +73,7 @@
         app:layout_scrollFlags="scroll|enterAlways"
         android:id="@+id/fragment_contanair2"
         android:layout_width="match_parent"
-        android:layout_height="708dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="4"
         tools:layout_editor_absoluteX="0dp"

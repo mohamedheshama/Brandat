@@ -31,13 +31,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class SearchFragment extends Fragment implements ImageAdapter.ImageClickHandler {
+public class SearchFragment extends Fragment implements ImageAdapterTwo.ImageClickHandler {
     public final String TAG="searchfragment";
     List<products> productsList;
     private static FirebaseDatabase mFirebaseDatabase;
     private static DatabaseReference mDatabaseReference;
     private RecyclerView productRecycler;
-    private ImageAdapter cardsAdapter;
+    private ImageAdapterTwo cardsAdapter;
 
     public SearchFragment(){
         mFirebaseDatabase=FirebaseDatabase.getInstance();
@@ -126,7 +126,7 @@ public class SearchFragment extends Fragment implements ImageAdapter.ImageClickH
         StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         productRecycler.setLayoutManager(sglm);
 
-         cardsAdapter = new ImageAdapter(productsList, getContext(),  this);
+         cardsAdapter = new ImageAdapterTwo(productsList, getContext(),  this,false);
 
         productRecycler.setAdapter(cardsAdapter);
 
