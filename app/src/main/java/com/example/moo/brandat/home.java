@@ -84,7 +84,6 @@ public class home extends Fragment {
         mDatabaseuser_info=mDatabaseUser.child(mAuth.getCurrentUser().getUid());
         mDatabaseProducts=mDatabaseuser_info.child("products");
 
-        mDatabase.keepSynced(true);
         mDatabaseUser.keepSynced(true);
         mDatabaseProducts.keepSynced(true);
 
@@ -122,21 +121,23 @@ return rootView;
         protected List doInBackground(String... strings) {
 
 
-            Query productQuery = mDatabase;//////////filtering
-
+            final Query productQuery = mDatabase;//////////filtering
+            final List<String> namesCategries=new ArrayList<>();
             productQuery.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-                    List<String> namesCategries=new ArrayList<>();
+
                     for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                         namesCategries.add(postSnapshot.getKey());
                         List<products> list=new ArrayList<>();
+                        int i=0;
                         for (DataSnapshot postSnapshote: postSnapshot.getChildren()) {
-
+                            i++;
                             products product = postSnapshote.getValue(products.class);
                             product.setProduct_key(postSnapshote.getKey());
-
-                            list.add(product);
+                            if (i<=5) {
+                                list.add(product);
+                            }
 
                         }
                         productsList.add(list);
@@ -162,6 +163,7 @@ return rootView;
                     // ...
                 }
             });
+
 
 
 
