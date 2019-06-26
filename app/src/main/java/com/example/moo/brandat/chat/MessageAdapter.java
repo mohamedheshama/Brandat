@@ -43,7 +43,7 @@ class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
             isSender=true;
             imgUrl=mSenderImageUrl;
         }
-        messageViewHolder.onBind(imgUrl,message.getContent(),isSender,mContext);
+        messageViewHolder.onBind(imgUrl,message.getContent(),isSender,mContext,message.getPhotoUrl());
     }
 
     @Override

@@ -24,6 +24,12 @@
             android:text="HI MAHMOUD "
             android:textColor="@color/text_color_sender"
             android:textSize="@dimen/message_chat_text_size" />
+            <ImageView
+                android:id="@+id/photoImageView_sender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                />
         </LinearLayout>
         <com.mikhaellopez.circularimageview.CircularImageView
 
@@ -71,6 +77,12 @@
             android:padding="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/photoImageView_reciever"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            />
           </LinearLayout>
       </LinearLayout>
 </LinearLayout>

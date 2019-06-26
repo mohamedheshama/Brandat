@@ -1,6 +1,8 @@
 package com.example.moo.brandat.chat;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -14,15 +16,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.moo.brandat.MainActivity;
 import com.example.moo.brandat.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 
@@ -35,14 +43,17 @@ public class FragmentChat extends Fragment {
     private ArrayList<MessageData> mMessagesList;
     private Button mSendMessage;
     private EditText mMessageEditText;
+    private ImageView mImageView;
+
+    private static int RC_PHOTO_PICKER=3;
 
     private String mUserIdSender,mUserIdRecieve,mSenderImageUrl,mRecieverImageUrl;
 
     private DatabaseReference mDatabaseReference;
     private FirebaseDatabase mFirebaseDatabase;
     private MessageAdapter messageAdapter;
-
-
+    private FirebaseStorage mFirebaseStorage;
+    private StorageReference mStorageReference;
 
     public FragmentChat(){
     }
@@ -56,11 +67,25 @@ public class FragmentChat extends Fragment {
 
         mFirebaseDatabase=FirebaseDatabase.getInstance();
         mDatabaseReference=mFirebaseDatabase.getReference();
+        mFirebaseStorage=FirebaseStorage.getInstance();
+         mStorageReference = mFirebaseStorage.getReference();
 
         mSendMessage=rootView.findViewById(R.id.sendButton);
         recyclerView=rootView.findViewById(R.id.message_recycler_view);
         mMessageEditText=rootView.findViewById(R.id.message_edit_text);
+        mImageView=rootView.findViewById(R.id.photoPickerButton);
 
+
+        mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpeg");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
+
+            }
+        });
         //get user id's reciever
         Bundle bundle=getArguments();
         if (bundle!=null) {
@@ -104,6 +129,7 @@ public class FragmentChat extends Fragment {
                 messageData.setName(MainActivity.usernameUser);
                 messageData.setSender(mUserIdSender);
                 messageData.setReciever(mUserIdRecieve);
+                messageData.setPhotoUrl(null);
 
                 opentChatBetween(mUserIdSender,mUserIdRecieve,messageData);
 
@@ -265,5 +291,37 @@ public class FragmentChat extends Fragment {
         RECIEVER_UID=mUserIdRecieve;
         IS_ACTIVATE=true;
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+       if(requestCode==RC_PHOTO_PICKER){
+            Uri selectedPhoto=data.getData();
+            final StorageReference filePath=mStorageReference.child("chat").child(selectedPhoto.getLastPathSegment());
+            filePath.putFile(selectedPhoto).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            MessageData messageData=new MessageData();
+                            messageData.setContent(null);
+                            messageData.setPhotoUrl(uri.toString());
+                            messageData.setName(MainActivity.usernameUser);
+                            messageData.setSender(mUserIdSender);
+                            messageData.setReciever(mUserIdRecieve);
 
+                            opentChatBetween(mUserIdSender,mUserIdRecieve,messageData);
+                            mDatabaseReference
+                                    .child("Notification")
+                                    .child(mUserIdRecieve)
+                                    .child(mUserIdSender)
+                                    .child("contetnText")
+                                    .setValue("photo ");
+                        }
+                    });
+                }
+            });
+
+        }
+    }
 }
