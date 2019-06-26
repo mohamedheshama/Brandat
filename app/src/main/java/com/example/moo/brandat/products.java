@@ -6,6 +6,7 @@ public class products {
     public products() {
 
     }
+    String imagesrc;
 
     public products(String fname, String category, String product_case, String cost, String product_des, String location, String ownername, String phone, String email, String imagesrc,String img_url,String user_id,String product_key) {
         this.product_name = fname;
@@ -128,15 +129,15 @@ public class products {
 
     String img_url;
 
-    public String getImg_src() {
+    public String getImgesrc() {
         return imagesrc;
     }
 
-    public void setImg_src(String imagesrc) {
+    public void setImgesrc(String imagesrc) {
         this.imagesrc = imagesrc;
     }
 
-    String imagesrc;
+
 
 
 

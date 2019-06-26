@@ -111,7 +111,7 @@ public class details extends AppCompatActivity {
                     cat = product.getCategory();
                     cos = product.getCost();
                     em = product.getEmail();
-                    im = product.getImg_src();
+                    im = product.getImgesrc();
                     loc = product.getLocation();
                     ow = product.getOwnername();
                     pcas = product.getproduct_case();
@@ -356,8 +356,8 @@ public class details extends AppCompatActivity {
         location.setText(loc);
         ownername.setText(ow);
         phone.setText(fon);
-        fname.setText(name);
-        Picasso.with(this).load(im).into(imageView);
+        Picasso.with(this).load(im) .resize(200, 200)
+                .centerCrop().into(imageView);
         Picasso.with(this).load(uImg).into(circularImageView);
     }
 

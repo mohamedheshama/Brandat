@@ -336,7 +336,7 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
             intent.putExtra("cost", cost);
             String email = products.getEmail();
             intent.putExtra("email", email);
-            String img = products.getImg_src();
+            String img = products.getImgesrc();
             intent.putExtra("img", img);
             String location = products.getLocation();
             intent.putExtra("location", location);

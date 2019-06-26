@@ -80,7 +80,7 @@ public class SearchFragment extends Fragment implements ImageAdapterTwo.ImageCli
                             pro.setCategory((String) test.get("product_name"));
                             pro.setCost((String) test.get("cost"));
                             pro.setEmail((String) test.get("email"));
-                            pro.setImg_src((String) test.get("imagesrc"));
+                            pro.setImgesrc((String) test.get("imagesrc"));
                             pro.setImg_url((String) test.get("img_url"));
                             pro.setLocation((String) test.get("location"));
                             pro.setOwnername((String) test.get("ownername"));
@@ -146,7 +146,7 @@ public class SearchFragment extends Fragment implements ImageAdapterTwo.ImageCli
         intent.putExtra("cost", cost);
         String email = products.getEmail();
         intent.putExtra("email", email);
-        String img = products.getImg_src();
+        String img = products.getImgesrc();
         intent.putExtra("img", img);
         String location = products.getLocation();
         intent.putExtra("location", location);

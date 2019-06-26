@@ -61,8 +61,8 @@ public class ImageAdapterTwo extends RecyclerView.Adapter<ImageAdapterTwo.ImageV
     @Override
     public void onBindViewHolder(@NonNull ImageAdapterTwo.ImageViewHolderTwo imageViewHolder, int i) {
         products prod = mList.get(i);
-        Log.d("imgg", "onBindViewHolder: "+prod.imagesrc);
-        Picasso.with(context).load(prod.getImg_src()) .resize(200, 200)
+        Log.d("imgg", "onBindViewHolder: "+prod.getImgesrc());
+        Picasso.with(context).load(prod.getImgesrc()).resize(200, 200)
                 .centerCrop().into(imageViewHolder.imageView);
         imageViewHolder.arttitle.setText(prod.getCost()+" "+"LE");
         imageViewHolder.artsubtitle.setText(prod.getCategory());

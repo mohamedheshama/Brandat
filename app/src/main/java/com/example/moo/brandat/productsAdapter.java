@@ -48,7 +48,7 @@ final Context context = viewGroup.getContext();
 public void onBindViewHolder(@NonNull ImageViewHolder imageViewHolder, int i) {
         products prod = mList.get(i);
     Log.d("imgg", "onBindViewHolder: "+prod.imagesrc);
-        Picasso.with(context).load(prod.getImg_src()).into(imageViewHolder.imageView);
+        Picasso.with(context).load(prod.getImgesrc()).into(imageViewHolder.imageView);
         imageViewHolder.arttitle.setText(prod.getCost()+""+" LE");
         imageViewHolder.artsubtitle.setText(prod.getCategory());
 

@@ -120,12 +120,12 @@ return rootView;
         @Override
         protected List doInBackground(String... strings) {
 
-
             final Query productQuery = mDatabase;//////////filtering
             final List<String> namesCategries=new ArrayList<>();
             productQuery.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+                    productsList.clear();
 
                     for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                         namesCategries.add(postSnapshot.getKey());
@@ -134,9 +134,12 @@ return rootView;
                         for (DataSnapshot postSnapshote: postSnapshot.getChildren()) {
                             i++;
                             products product = postSnapshote.getValue(products.class);
+                            product.setImgesrc(postSnapshote.child("imagesrc").getValue(String.class));
+                            product.setFname(postSnapshote.child("product_name").getValue(String.class));
                             product.setProduct_key(postSnapshote.getKey());
                             if (i<=5) {
                                 list.add(product);
+                                Log.d("onBindViewHolder", "onDataChange: test "+postSnapshote.hasChild("category")+postSnapshote.child("imagesrc").getValue(String.class));
                             }
 
                         }
@@ -218,7 +221,7 @@ return rootView;
                 intent.putExtra("cost", cost);
                 String email = products.getEmail();
                 intent.putExtra("email", email);
-                String img = products.getImg_src();
+                String img = products.getImgesrc();
                 intent.putExtra("img", img);
                 String location = products.getLocation();
                 intent.putExtra("location", location);
@@ -253,7 +256,7 @@ return rootView;
                 intent.putExtra("cost", cost);
                 String email = products.getEmail();
                 intent.putExtra("email", email);
-                String img = products.getImg_src();
+                String img = products.getImgesrc();
                 intent.putExtra("img", img);
                 String location = products.getLocation();
                 intent.putExtra("location", location);

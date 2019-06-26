@@ -3,7 +3,7 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_margin="12dp"
+    android:layout_margin="2dp"
     android:layout_height="wrap_content">
    <RelativeLayout
        android:id="@+id/relative_more_click"
