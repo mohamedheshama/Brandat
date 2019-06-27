@@ -1,10 +1,12 @@
 package com.example.moo.brandat;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -299,5 +301,46 @@ email.setText(em);
         }
 
 
+    }
+
+    public void category(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("select Category type");
+
+// add a list
+        String[] categries = {"Cars", "Mobiles", "Electronics","Animals","Music and Books","Jops","Houses"};
+        builder.setItems(categries, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        category.setText("Cars");
+                        break;
+                    case 1:
+                        category.setText("Mobiles");
+                        break;
+                    case 2:
+                        category.setText("Electronics");
+                        break;
+                    case 3:
+                        category.setText("Animals");
+                        break;
+                    case 4:
+                        category.setText("Music and Books");
+                        break;
+                    case 5:
+                        category.setText("Jops");
+                        break;
+                    case 6:
+                        category.setText("Houses");
+                        break;
+
+                }
+            }
+        });
+
+// create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

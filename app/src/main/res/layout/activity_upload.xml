@@ -170,8 +170,11 @@
                             android:drawableLeft="@drawable/ic_radio_button_unchecked_black_24dp"
                             android:hint="   category "
                             android:onClick="category"
-                            android:inputType="textAutoComplete" />
+                            android:editable="false"
+                            android:textSize="18sp"
 
+                            android:clickable="true"
+                            android:inputType="none" />
 
                     </android.support.design.widget.TextInputLayout>
 
