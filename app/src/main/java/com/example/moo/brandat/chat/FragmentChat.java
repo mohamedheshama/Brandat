@@ -43,7 +43,7 @@ public class FragmentChat extends Fragment {
     private ArrayList<MessageData> mMessagesList;
     private Button mSendMessage;
     private EditText mMessageEditText;
-    private ImageView mImageView;
+    private ImageView mSendePhotoImgae,mLocationImage;
 
     private static int RC_PHOTO_PICKER=3;
 
@@ -62,7 +62,7 @@ public class FragmentChat extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView=inflater.inflate(R.layout.fragment_chat,container,false);
 
         mFirebaseDatabase=FirebaseDatabase.getInstance();
@@ -73,19 +73,10 @@ public class FragmentChat extends Fragment {
         mSendMessage=rootView.findViewById(R.id.sendButton);
         recyclerView=rootView.findViewById(R.id.message_recycler_view);
         mMessageEditText=rootView.findViewById(R.id.message_edit_text);
-        mImageView=rootView.findViewById(R.id.photoPickerButton);
+        mSendePhotoImgae=rootView.findViewById(R.id.photoPickerButton);
+        mLocationImage=rootView.findViewById(R.id.photoLocationButton);
 
 
-        mImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/jpeg");
-                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
-
-            }
-        });
         //get user id's reciever
         Bundle bundle=getArguments();
         if (bundle!=null) {
@@ -124,24 +115,31 @@ public class FragmentChat extends Fragment {
         mSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MessageData messageData=new MessageData();
-                messageData.setContent(mMessageEditText.getText().toString());
-                messageData.setName(MainActivity.usernameUser);
-                messageData.setSender(mUserIdSender);
-                messageData.setReciever(mUserIdRecieve);
-                messageData.setPhotoUrl(null);
+                String contentMessage=mMessageEditText.getText().toString();
+                if (!contentMessage.replace("\\s","").isEmpty()) {
+                    sendMessage(mMessageEditText.getText().toString(), false);
+                }
 
-                opentChatBetween(mUserIdSender,mUserIdRecieve,messageData);
+            }
+        });
+        mLocationImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: code bohlok get the my location and send
+                Toast.makeText(getContext(), "code bohlok first", Toast.LENGTH_SHORT).show();
+                double latitude=0.444 ,longitud=0.33;
+                String content=String.valueOf(latitude)+" jsdflfdsljdfsdfsldkafj "+String.valueOf(latitude);
+                sendMessage(content,false);
 
-                mMessageEditText.setText("");
-
-                mDatabaseReference
-                        .child("Notification")
-                        .child(mUserIdRecieve)
-                        .child(mUserIdSender)
-                        .child("contetnText")
-                        .setValue(messageData.getContent());
-
+            }
+        });
+        mSendePhotoImgae.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpeg");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
 
             }
         });
@@ -296,32 +294,57 @@ public class FragmentChat extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
        if(requestCode==RC_PHOTO_PICKER){
             Uri selectedPhoto=data.getData();
-            final StorageReference filePath=mStorageReference.child("chat").child(selectedPhoto.getLastPathSegment());
-            filePath.putFile(selectedPhoto).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            MessageData messageData=new MessageData();
-                            messageData.setContent(null);
-                            messageData.setPhotoUrl(uri.toString());
-                            messageData.setName(MainActivity.usernameUser);
-                            messageData.setSender(mUserIdSender);
-                            messageData.setReciever(mUserIdRecieve);
+            if (selectedPhoto!=null) {
+                final StorageReference filePath = mStorageReference.child("chat").child(selectedPhoto.getLastPathSegment());
+                filePath.putFile(selectedPhoto).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
 
-                            opentChatBetween(mUserIdSender,mUserIdRecieve,messageData);
-                            mDatabaseReference
-                                    .child("Notification")
-                                    .child(mUserIdRecieve)
-                                    .child(mUserIdSender)
-                                    .child("contetnText")
-                                    .setValue("photo ");
-                        }
-                    });
-                }
-            });
-
+                                sendMessage(uri.toString(), true);
+                            }
+                        });
+                    }
+                });
+            }
         }
     }
+
+    public void sendMessage(String messageContent,boolean isPhoto){
+        MessageData messageData=new MessageData();
+        messageData.setName(MainActivity.usernameUser);
+        messageData.setSender(mUserIdSender);
+        messageData.setReciever(mUserIdRecieve);
+        if (isPhoto) {
+            messageData.setPhotoUrl(null);
+            mDatabaseReference
+                    .child("Notification")
+                    .child(mUserIdRecieve)
+                    .child(mUserIdSender)
+                    .child("contetnText")
+                    .setValue("photo");
+        }else {
+            messageData.setContent(messageContent);
+            mDatabaseReference
+                    .child("Notification")
+                    .child(mUserIdRecieve)
+                    .child(mUserIdSender)
+                    .child("contetnText")
+                    .setValue(messageData.getContent());
+        }
+
+        opentChatBetween(mUserIdSender,mUserIdRecieve,messageData);
+
+        mMessageEditText.setText("");
+
+        mDatabaseReference
+                .child("Notification")
+                .child(mUserIdRecieve)
+                .child(mUserIdSender)
+                .child("contetnText")
+                .setValue(messageData.getContent());
+    }
+
 }

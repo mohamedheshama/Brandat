@@ -150,7 +150,6 @@ return rootView;
 
                           //  products product = postSnapshot.getValue(products.class);
 
-                        // TODO: handle the post
                     }
                     setupLayout(productsList,namesCategries);
 

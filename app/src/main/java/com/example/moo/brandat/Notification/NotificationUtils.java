@@ -42,6 +42,7 @@ public class NotificationUtils {
     public static PendingIntent createContentIntent(Context context,String uid,String imgeSender,String name){
         Intent intent=new Intent(context, ChatActivity.class);
         Log.d("mano", "createContentIntent: "+uid);
+
         intent.putExtra(context.getString(R.string.key_chat_uid_reciever),uid);
         intent.putExtra(context.getString(R.string.key_chat_name_reciever),name);
         intent.putExtra(context.getString(R.string.key_of_img_url_user_recieve),imgeSender);

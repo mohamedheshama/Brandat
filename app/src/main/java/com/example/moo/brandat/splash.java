@@ -169,7 +169,6 @@ private FirebaseAuth.AuthStateListener mAuthListner;
                     sleep(timeSec);
 
                 } catch (Exception e) {
-                    // TODO: handle exception
                     e.printStackTrace();
                 } finally {
 

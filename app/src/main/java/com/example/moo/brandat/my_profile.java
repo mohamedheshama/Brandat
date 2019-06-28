@@ -250,8 +250,9 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                         products product = postSnapshot.getValue(products.class);
+                        product.setImgesrc(postSnapshot.child("imagesrc").getValue(String.class));
+                        product.setFname(postSnapshot.child("product_name").getValue(String.class));
                         productsList.add(product);
-                        // TODO: handle the post
                     }
                     setupLayout(productsList);
 
@@ -654,7 +655,6 @@ View mView;
             Intent intent3 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(intent3);
             if (ActivityCompat.checkSelfPermission(my_profile.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
                 //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -669,6 +669,9 @@ View mView;
                     if (location != null) {
                         double l = location.getLatitude();
                         double g = location.getLongitude();
+                        //to firebase
+                        setMyLocationToFirebase(l,g);
+
                         String ls = "" + l;
                         String gs = "" + g;
                         Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
@@ -689,6 +692,8 @@ View mView;
                             double g = location.getLongitude();
                             String ls = "" + l;
                             String gs = "" + g;
+                            //to firebase
+                            setMyLocationToFirebase(l,g);
 
                             Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
                             Toast.makeText(my_profile.this, gs, Toast.LENGTH_SHORT).show();
@@ -697,7 +702,6 @@ View mView;
                     }
                 });
 
-                // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
                 //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -714,6 +718,9 @@ View mView;
                         double g = location.getLatitude();
                         String ls = "" + l;
                         String gs = "" + g;
+                        //to firebase
+                        setMyLocationToFirebase(l,g);
+
                         Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
                         Toast.makeText(my_profile.this, gs, Toast.LENGTH_SHORT).show();
 
@@ -735,6 +742,8 @@ View mView;
                         double g = location.getLongitude();
                         String ls = "" + l;
                         String gs = "" + g;
+                        //to firebase
+                        setMyLocationToFirebase(l,g);
 
                         Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
                         Toast.makeText(my_profile.this, gs, Toast.LENGTH_SHORT).show();
@@ -742,7 +751,6 @@ View mView;
                     }
                 }
             });
-            // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
             //  public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -759,6 +767,8 @@ View mView;
                     double g = location.getLongitude();
                     String ls = "" + l;
                     String gs = "" + g;
+                    //to firebase
+                    setMyLocationToFirebase(l,g);
 
                     Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
                     Toast.makeText(my_profile.this, gs, Toast.LENGTH_SHORT).show();
@@ -773,6 +783,12 @@ View mView;
 
     }
 }
+
+    private void setMyLocationToFirebase(double l, double g) {
+        String myLocation=l+" "+g;
+        mDatabaseUser.child(MainActivity.usernameId).child("location").setValue(myLocation);
+        Log.d("mano", "setMyLocationToFirebase: done");
+    }
 
     public void more(View view) {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);

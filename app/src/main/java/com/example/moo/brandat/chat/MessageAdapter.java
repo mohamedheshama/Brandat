@@ -3,6 +3,7 @@ package com.example.moo.brandat.chat;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -43,6 +44,7 @@ class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
             isSender=true;
             imgUrl=mSenderImageUrl;
         }
+        Log.d("mano", "onBindViewHolder: "+message.getContent());
         messageViewHolder.onBind(imgUrl,message.getContent(),isSender,mContext,message.getPhotoUrl());
     }
 

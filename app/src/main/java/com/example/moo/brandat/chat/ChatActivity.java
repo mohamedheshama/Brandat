@@ -75,7 +75,7 @@ public class ChatActivity extends AppCompatActivity {
                 mRecieverName=intent.getStringExtra(getString(R.string.key_chat_name_reciever));
             }
             String  test=intent.getStringExtra("mano");
-            Log.d("mano", "onCreate:imge  "+mRecieverUid+"   "+test);
+            Log.d("mano", "ؤ  "+mRecieverUid+"   "+test);
         }
 
         Picasso.with(this)

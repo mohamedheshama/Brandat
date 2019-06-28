@@ -39,6 +39,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Scanner;
 
 public class details extends AppCompatActivity {
     TextView fname;
@@ -138,14 +139,48 @@ public class details extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent1=new Intent(details.this, Main_map.class);
-                double l=30.00351;
-                double g= 30.053748;
-                String ls=""+l;
-                String gs=""+g;
-                intent1.putExtra("long", ls);
-                intent1.putExtra("lat", gs);
-                startActivity(intent1);
+
+                // TODO: code from  firebase from product location
+                DatabaseReference s = mDatabaseReference.child("userss").child(uId).child("products").child(product_key);
+
+                s.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Intent intent1=new Intent(details.this, Main_map.class);
+                        double l=30.00351;
+                        double g= 30.053748;
+
+
+
+                        String location=dataSnapshot.child("location").getValue(String.class);
+                        if (location!=null) {
+                            try {
+                                Scanner input = new Scanner(location);
+
+                                l = input.nextDouble();
+                                g = input.nextDouble();
+                                Log.d("mano", "onClick: " + location + "  l=" + l + "  g" + g);
+
+                                String ls = "" + l;
+                                String gs = "" + g;
+                                intent1.putExtra("long", ls);
+                                intent1.putExtra("lat", gs);
+                                startActivity(intent1);
+                            }catch (Exception ex){
+                                Log.d("mano", "onDataChange: error in location"+location);
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
             }
       });
 //        phone.setOnClickListener(new View.OnClickListener() {
@@ -157,7 +192,6 @@ public class details extends AppCompatActivity {
 //                    Intent intent3 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 //                    startActivity(intent3);
 //                    if (ActivityCompat.checkSelfPermission(details.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-//                        // TODO: Consider calling
 //                        //    ActivityCompat#requestPermissions
 //                        // here to request the missing permissions, and then overriding
 //                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -185,7 +219,6 @@ public class details extends AppCompatActivity {
 //                }
 //else {
 //                    if (ActivityCompat.checkSelfPermission(details.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                        // TODO: Consider calling
 //                        //    ActivityCompat#requestPermissions
 //                        // here to request the missing permissions, and then overriding
 //                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -215,7 +248,6 @@ public class details extends AppCompatActivity {
 //
 //                }
 //                if (ActivityCompat.checkSelfPermission(details.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-//                    // TODO: Consider calling
 //                    //    ActivityCompat#requestPermissions
 //                    // here to request the missing permissions, and then overriding
 //                   //  public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -291,6 +323,7 @@ public class details extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getBaseContext(), ChatActivity.class);
+                intent.putExtra(getString(R.string.key_chat_name_reciever),ow);
                 intent.putExtra(getString(R.string.key_chat_uid_reciever),uId);
                 intent.putExtra(getString(R.string.key_of_img_url_user_recieve),uImg);
                 startActivity(intent);

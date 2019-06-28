@@ -75,6 +75,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import static com.example.moo.brandat.R.layout.list_item_article;
 
@@ -209,14 +210,45 @@ if(intent==null) {
         fab1.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View w) {
-            Intent intent1=new Intent(UserProfile.this, Main_map.class);
-            double l= 30.053748;
-            double g= 30.053748;
-            String ls=""+l;
-            String gs=""+g;
-            intent1.putExtra("long", ls);
-            intent1.putExtra("lat", gs);
-            startActivity(intent1);
+
+
+            // TODO: code from firebase from user
+            DatabaseReference s = mDatabaseReference.child("userss").child(UserId);
+            s.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Intent intent1=new Intent(UserProfile.this, Main_map.class);
+                    double l= 30.053748;
+                    double g= 30.053748;
+                    String ls=""+l;
+                    String gs=""+g;
+
+
+
+                    String location=dataSnapshot.child("location").getValue(String.class);
+
+                    if (location!=null) {
+                        Scanner input = new Scanner(location);
+                        try {
+                            l = input.nextDouble();
+                            g = input.nextDouble();
+                            Log.d("mano", "onClick: " + location + "  l=" + l + "  g" + g);
+                            intent1.putExtra("long", "" + g);
+                            intent1.putExtra("lat", "" + l);
+                            startActivity(intent1);
+                        }catch (Exception ex){
+                            Log.d("mano", "onDataChange: error in location  "+location);
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
         }
     });
 
@@ -298,9 +330,12 @@ if(intent==null) {
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                         products product = postSnapshot.getValue(products.class);
+                        Log.d("mano", "onDataChange: "+postSnapshot.child("imagesrc").getValue(String.class)+product.getImgesrc());
+                        product.setImgesrc(postSnapshot.child("imagesrc").getValue(String.class));
+                        product.setFname(postSnapshot.child("product_name").getValue(String.class));
                         product.setProduct_key(postSnapshot.getKey());
                         productsList.add(product);
-                        // TODO: handle the post
+
                     }
                     setupLayout(productsList);
 

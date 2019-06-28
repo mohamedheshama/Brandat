@@ -141,7 +141,7 @@ namesCategories=new ArrayList<>();
 
                         String product = (String) postSnapshot.getKey();
                         namesCategories.add(product.toString());
-                        // TODO: handle the post
+
                     }
                     setupLayout(namesCategories);
 

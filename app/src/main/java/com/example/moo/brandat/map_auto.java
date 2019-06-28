@@ -64,6 +64,7 @@ Button save_map=(Button) findViewById(R.id.button5);
 
                 String ls=""+l;
                 String gs=""+g;
+
                 Toast.makeText(map_auto.this, gs, Toast.LENGTH_SHORT).show();
                 Toast.makeText(map_auto.this, ls, Toast.LENGTH_SHORT).show();          }
 

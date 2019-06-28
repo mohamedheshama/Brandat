@@ -78,14 +78,15 @@ public class FragmentListUserChat extends Fragment {
                     userDataRefPath2.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                           UserListData userListData=new UserListData();
+                           UserListData userListData;
 
                             Log.d(TAG, "onDataChange: the user id"+dataSnapshot.getKey());
                             userListData=dataSnapshot.getValue(UserListData.class);
-                            userListData.setUserId(dataSnapshot.getKey());
-                            Log.d(TAG, "onDataChange: "+userListData.getName() +"       "+ userListData.getImg_Url());
-                            adatpter.add(userListData);
-
+                            if (userListData!=null) {
+                                userListData.setUserId(dataSnapshot.getKey());
+                                Log.d(TAG, "onDataChange: " + userListData.getName() + "       " + userListData.getImg_Url());
+                                adatpter.add(userListData);
+                            }
                         }
 
                         @Override
