@@ -3,7 +3,7 @@ package com.example.moo.brandat;
 import android.widget.EditText;
 
 public class products {
-    int likes=0;
+//    String  likes="0";
     public products() {
 
     }

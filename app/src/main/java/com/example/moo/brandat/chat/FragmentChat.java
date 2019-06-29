@@ -1,6 +1,7 @@
 package com.example.moo.brandat.chat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -58,6 +59,8 @@ public class FragmentChat extends Fragment {
     private FusedLocationProviderClient client;
     private EditText mMessageEditText;
     private ImageView mSendePhotoImgae,mLocationImage;
+
+    private final static int REQUEST_CODE_1 = 1;
 
     private static int RC_PHOTO_PICKER=3;
 
@@ -383,22 +386,26 @@ public class FragmentChat extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
        if(requestCode==RC_PHOTO_PICKER){
-            Uri selectedPhoto=data.getData();
-            if (selectedPhoto!=null) {
-                final StorageReference filePath = mStorageReference.child("chat").child(selectedPhoto.getLastPathSegment());
-                filePath.putFile(selectedPhoto).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
+           if(resultCode == Activity.RESULT_OK) {
+               Uri selectedPhoto = data.getData();
+               Log.d(TAG, "onActivityResult: "+selectedPhoto);
+               if (selectedPhoto != null) {
+                   final StorageReference filePath = mStorageReference.child("chat").child(selectedPhoto.getLastPathSegment());
+                   filePath.putFile(selectedPhoto).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                       @Override
+                       public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                           filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                               @Override
+                               public void onSuccess(Uri uri) {
+                                   Log.d(TAG, "onActivityResult: "+uri.toString());
 
-                                sendMessage(uri.toString(), true);
-                            }
-                        });
-                    }
-                });
-            }
+                                   sendMessage(uri.toString(), true);
+                               }
+                           });
+                       }
+                   });
+               }
+           }
         }
     }
 
@@ -408,7 +415,7 @@ public class FragmentChat extends Fragment {
         messageData.setSender(mUserIdSender);
         messageData.setReciever(mUserIdRecieve);
         if (isPhoto) {
-            messageData.setPhotoUrl(null);
+            messageData.setPhotoUrl(messageContent);
             mDatabaseReference
                     .child("Notification")
                     .child(mUserIdRecieve)
