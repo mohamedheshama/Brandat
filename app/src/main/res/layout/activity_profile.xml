@@ -200,7 +200,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:paddingTop="10dp"
-                                            android:text="125"
+                                            android:text="0"
                                             android:textColor="#0057FF"
                                             android:textSize="20sp"
                                             android:textStyle="bold" />
@@ -221,10 +221,11 @@
                                             android:textSize="20sp" />
 
                                         <TextView
+                                            android:id="@+id/follower_number"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:paddingTop="10dp"
-                                            android:text="1205"
+                                            android:text="0"
                                             android:textColor="#0057FF"
                                             android:textSize="20sp"
                                             android:textStyle="bold" />
@@ -248,7 +249,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:paddingTop="10dp"
-                                            android:text="360"
+                                            android:text="0"
                                             android:textColor="#0057FF"
                                             android:textSize="20sp"
                                             android:textStyle="bold" />
@@ -390,7 +391,7 @@
 
                                 android:backgroundTint="#EDEAFD"
 
-                                app:srcCompat="@drawable/ic_check_box_blue_24dp"
+                                app:srcCompat="@drawable/follow_uncheck"
                                 tools:ignore="VectorDrawableCompat" />
 
                             <TextView

@@ -219,6 +219,21 @@ public class FragmentChat extends Fragment {
             }
         });
 
+        mDatabaseReference.child("userss").child(mUserIdRecieve).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: "+dataSnapshot.child("state").getValue(String.class));
+                if (dataSnapshot.hasChild("state")) {
+                    ChatActivity.setStateOnline(dataSnapshot.child("state").getValue(String.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         return rootView;
     }
 

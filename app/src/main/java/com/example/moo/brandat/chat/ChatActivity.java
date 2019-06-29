@@ -3,6 +3,7 @@ package com.example.moo.brandat.chat;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.moo.brandat.MainActivity;
 import com.example.moo.brandat.R;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,7 +34,7 @@ public class ChatActivity extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
 
-    private ImageView mImgeRecieverImgeView;
+    private static ImageView mImgeRecieverImgeView,stateUserImgeView;
     private TextView mNameRecieverTextView;
 
     @Override
@@ -49,16 +51,19 @@ public class ChatActivity extends AppCompatActivity {
         LayoutInflater layoutInflater=(LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View myBar=layoutInflater.inflate(R.layout.chat_cutom_bar,null);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("");
+        actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(myBar);
 
 
         mImgeRecieverImgeView=myBar.findViewById(R.id.imge_reciever_message_custom_bar);
         mNameRecieverTextView=myBar.findViewById(R.id.name__reciever_message_custom_bar);
-
+        stateUserImgeView=myBar.findViewById(R.id.state_user);
 
         mFirebaseDatabase=FirebaseDatabase.getInstance();
         mDatabaseReference=mFirebaseDatabase.getReference();
+
 
         mSenderImageUrl= MainActivity.userImageUrl;
         Intent intent=getIntent();
@@ -74,6 +79,9 @@ public class ChatActivity extends AppCompatActivity {
             if (intent.hasExtra(getString(R.string.key_chat_name_reciever))){
                 mRecieverName=intent.getStringExtra(getString(R.string.key_chat_name_reciever));
             }
+            if (intent.hasExtra("state")){
+                setStateOnline(intent.getStringExtra("state"));
+            }
             String  test=intent.getStringExtra("mano");
             Log.d("mano", "ؤ  "+mRecieverUid+"   "+test);
         }
@@ -84,6 +92,8 @@ public class ChatActivity extends AppCompatActivity {
                 .centerCrop()
                 .into(mImgeRecieverImgeView);
         mNameRecieverTextView.setText(mRecieverName);
+
+
 
         FragmentChat fragmentChat=new FragmentChat();
         Bundle bundle=new Bundle();
@@ -105,6 +115,27 @@ public class ChatActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    public static void setStateOnline(String state){
+        if (state.equals("online")){
+            stateUserImgeView.setImageResource(R.drawable.online_green);
+        }else {
+            stateUserImgeView.setImageResource(R.drawable.offline_gray);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("offline");
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("online");
+
     }
 
 }

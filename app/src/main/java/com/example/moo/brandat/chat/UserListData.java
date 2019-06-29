@@ -1,7 +1,19 @@
 package com.example.moo.brandat.chat;
 
 public class UserListData  {
-    private String name, userId,img_url;
+    private String name;
+    private String userId;
+    private String img_url;
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    private String state;
 
     public  UserListData(){
 

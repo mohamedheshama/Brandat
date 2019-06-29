@@ -31,11 +31,18 @@ public class UserListChatAdatpter extends ArrayAdapter {
 
         ImageView imageView=convertView.findViewById(R.id.image_user_chat_list);
         TextView nameUserChatTextView=convertView.findViewById(R.id.name_user_chat_list);
-
+        ImageView stateUser=convertView.findViewById(R.id.state_user);
 
 
             UserListData userListData =(UserListData) getItem(position);
             nameUserChatTextView.setText(userListData.getName());
+            if (userListData.getState()!=null) {
+                if (userListData.getState().equals("online")) {
+                    stateUser.setImageResource(R.drawable.online_green);
+                }else {
+                    stateUser.setImageResource(R.drawable.offline_gray);
+                }
+            }
         Log.d("image", "getView: "+userListData.getImg_Url());
             Picasso.with(getContext())
                     .load(userListData.getImg_Url())

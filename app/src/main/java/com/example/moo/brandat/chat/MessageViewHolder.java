@@ -64,8 +64,10 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
         mLinearPinRecieve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView textView=v.findViewById(R.id.location_sender);
-                Scanner l = new Scanner(textView.getText().toString());
+                TextView textView=v.findViewById(R.id.location_reciever);
+                String text= textView.getText().toString();
+                Log.d("mano", "onClick: man "+text);
+                Scanner l = new Scanner(text);
                 String sr=l.nextLine() ;
                 String []ww=sr.split("jsdflfdsljdfsdfsldkafj");
                 String e=ww[0];

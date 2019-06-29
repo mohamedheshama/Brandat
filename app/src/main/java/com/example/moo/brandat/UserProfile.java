@@ -105,7 +105,7 @@ String img_url=null;
 FloatingActionButton editActivity;
     List<products> productsList;
 productsAdapter cardsAdapter;
-String UserId;
+String UserId,userNameReciever;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabaseProducts;
     private DatabaseReference mDatabaseuser_info;
@@ -182,6 +182,9 @@ if(intent==null) {
 }else{
  UserId= intent.getStringExtra("UserId");
     img_url=intent.getStringExtra("img_url");
+    if (intent.hasExtra(getString(R.string.key_chat_name_reciever))){
+        userNameReciever=intent.getStringExtra(getString(R.string.key_chat_name_reciever));
+    }
     Log.d("imgeUUUrl", "onCreate: "+img_url);
     mDatabaseuser_info=mDatabaseUser.child(UserId);
     mDatabaseProducts=mDatabaseuser_info.child("products");
@@ -202,6 +205,7 @@ if(intent==null) {
                 Intent intent=new Intent(getBaseContext(), ChatActivity.class);
                 intent.putExtra(getString(R.string.key_chat_uid_reciever),UserId);
                 intent.putExtra(getString(R.string.key_of_img_url_user_recieve),img_url);
+                intent.putExtra(getString(R.string.key_chat_name_reciever),userNameReciever);
                 startActivity(intent);
             }
         });
@@ -252,6 +256,50 @@ if(intent==null) {
         }
     });
 
+        final TextView followNumberTextview=(TextView)findViewById(R.id.follower_number);
+        final DatabaseReference followNumPath=mDatabaseReference.child("userss").child(UserId);
+        followNumPath.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d("mano", "onChildAdded: "+dataSnapshot.hasChild("email")+"  "+dataSnapshot.getKey());
+                updateNumberFollower(dataSnapshot);
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                updateNumberFollower(dataSnapshot);
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+               if (dataSnapshot.getKey().equals("followers")){
+                   int x=Integer.valueOf((String) followNumberTextview.getText());
+                   x--;
+                   followNumberTextview.setText(String.valueOf(x));
+               }
+
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+            public void updateNumberFollower(DataSnapshot dataSnapshot){
+                if (dataSnapshot.getKey().equals("followers")){
+                    followNumberTextview.setText(String.valueOf(dataSnapshot.getChildrenCount()));
+
+                }
+            }
+        });
+
 
     final FloatingActionButton fabFollowMe= (FloatingActionButton) findViewById(R.id.follow_me);
     final DatabaseReference path=mDatabaseReference.child("userss").child(UserId).child("followers").child(MainActivity.usernameId);
@@ -261,11 +309,11 @@ if(intent==null) {
             String value=dataSnapshot.getValue(String.class);
             Log.d("mano", "onDataChange:  value  "+value);
             if (value==null){
-
+                fabFollowMe.setImageResource(R.drawable.follow_uncheck);
                 fabFollowMe.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#EDEAFD")));
 
             }else if(value.equals("true")){
-
+                fabFollowMe.setImageResource(R.drawable.follow_check);
                 fabFollowMe.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#5A01FA")));
             }
         }
@@ -289,11 +337,15 @@ if(intent==null) {
                     if (value==null){
 
                         path.setValue("true");
+                        fabFollowMe.setImageResource(R.drawable.follow_check);
                         fabFollowMe.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#5A01FA")));
+                        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("following").child(UserId).setValue("true");
 
                     }else {
                         dataSnapshot.getRef().removeValue();
+                        fabFollowMe.setImageResource(R.drawable.follow_uncheck);
                         fabFollowMe.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#EDEAFD")));
+                        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("following").child(UserId).removeValue();
                     }
                 }
 
@@ -303,7 +355,6 @@ if(intent==null) {
                 }
             });
 
-            Toast.makeText(UserProfile.this, "done", Toast.LENGTH_SHORT).show();
         }
     });
 
@@ -726,6 +777,18 @@ View mView;
     }
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("offline");
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("online");
+
+    }
 
 }

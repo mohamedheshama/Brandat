@@ -89,7 +89,8 @@ public class SearchFragment extends Fragment implements ImageAdapterTwo.ImageCli
                             pro.setproduct_des((String) test.get("product_des"));
                             pro.setFname((String) test.get("product_name"));
                             pro.setUser_id((String) test.get("user_id"));
-                            Log.d(TAG, "onDataChange: result done");
+                            pro.setProduct_key((String) test.get("product_key"));
+                            Log.d(TAG, "onDataChange: result done "+pro.getProduct_key());
                             productsList.add(pro);
                         }
                     }
@@ -127,7 +128,7 @@ public class SearchFragment extends Fragment implements ImageAdapterTwo.ImageCli
         productRecycler.setLayoutManager(sglm);
 
          cardsAdapter = new ImageAdapterTwo(productsList, getContext(),  this,false);
-
+        cardsAdapter.notifyDataSetChanged();
         productRecycler.setAdapter(cardsAdapter);
 
     }

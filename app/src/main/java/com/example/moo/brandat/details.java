@@ -85,7 +85,7 @@ public class details extends AppCompatActivity {
         mCurrentUser=mAuth.getCurrentUser();
         editActivity=(FloatingActionButton)findViewById(R.id.edit_floating_action_button);
 
-         Intent intent = getIntent();
+         final Intent intent = getIntent();
         if (intent.hasExtra("fname")) {
             name = intent.getStringExtra("fname");
             cat = intent.getStringExtra("category");
@@ -100,6 +100,7 @@ public class details extends AppCompatActivity {
             uId = intent.getStringExtra("user_id");
             prodescribe = intent.getStringExtra("prodescribe");
             product_key = intent.getStringExtra("product_key");
+            Log.d("mano", "onCreate: product key from intent "+product_key);
             setUp();
         }else{
             String productId=intent.getStringExtra("productId");
@@ -121,6 +122,8 @@ public class details extends AppCompatActivity {
                     uId = product.getUser_id();
                     prodescribe = product.getproduct_des();
                     product_key = product.getProduct_key();
+                    Log.d("mano", "onCreate: product key from firebase "+product_key);
+
                     setUp();
                 }
 
@@ -139,6 +142,7 @@ public class details extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Log.d("mano", "onClick: the user id "+ uId+"  product key "+product_key);
 
                 // TODO: code from  firebase from product location
                 DatabaseReference s = mDatabaseReference.child("userss").child(uId).child("products").child(product_key);
@@ -146,6 +150,7 @@ public class details extends AppCompatActivity {
                 s.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Log.d("mano", "onClick: ");
                         Intent intent1=new Intent(details.this, Main_map.class);
                         double l=30.00351;
                         double g= 30.053748;
@@ -153,6 +158,8 @@ public class details extends AppCompatActivity {
 
 
                         String location=dataSnapshot.child("location").getValue(String.class);
+                        Log.d("mano", "onClick: "+location);
+
                         if (location!=null) {
                             try {
                                 Scanner input = new Scanner(location);
@@ -313,6 +320,7 @@ public class details extends AppCompatActivity {
                     Intent intent2 = new Intent(details.this, UserProfile.class);
                     intent2.putExtra("UserId", uId);
                     intent2.putExtra("img_url", uImg);
+                    intent2.putExtra((getString(R.string.key_chat_name_reciever)),ow);
 
                     startActivity(intent2);
                 }
@@ -397,6 +405,19 @@ public class details extends AppCompatActivity {
     private void requestPermission(){
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
+
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("offline");
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("online");
 
     }
 }

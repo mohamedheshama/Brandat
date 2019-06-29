@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -36,9 +37,12 @@ import android.widget.Toast;
 import com.example.moo.brandat.chat.ChatActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,6 +57,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class my_profile extends AppCompatActivity implements View.OnClickListener {
@@ -99,13 +104,13 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
     TextView emailTV;
     TextView phoneTV;
     TextView locationTV;
-    TextView desplay_name;
+    TextView desplay_name,delteAccoutnText;
     FloatingActionButton editActivity;
     FloatingActionButton addProduct;
     List<products> productsList;
     productsAdapter cardsAdapter;
     String UserId;
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase,mDatabaseReference;
     private DatabaseReference mDatabaseProducts;
     private DatabaseReference mDatabaseuser_info;
     private DatabaseReference mDatabaseUser;
@@ -140,7 +145,7 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
         };
         mDatabase = FirebaseDatabase.getInstance().getReference().child("categories");
         mDatabaseUser = FirebaseDatabase.getInstance().getReference().child("userss");
-
+        mDatabaseReference=FirebaseDatabase.getInstance().getReference();
 
         mDatabase.keepSynced(true);
         mDatabaseUser.keepSynced(true);
@@ -185,6 +190,50 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
 
         getUserData();
 
+
+        final TextView followNumberTextview=(TextView)findViewById(R.id.follower_number);
+        final DatabaseReference followNumPath=mDatabaseReference.child("userss").child(MainActivity.usernameId);
+        followNumPath.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d("mano", "onChildAdded: "+dataSnapshot.hasChild("email")+"  "+dataSnapshot.getKey());
+                updateNumberFollower(dataSnapshot);
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                updateNumberFollower(dataSnapshot);
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getKey().equals("followers")){
+                    int x=Integer.valueOf((String) followNumberTextview.getText());
+                    x--;
+                    followNumberTextview.setText(String.valueOf(x));
+                }
+
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+            public void updateNumberFollower(DataSnapshot dataSnapshot){
+                if (dataSnapshot.getKey().equals("followers")){
+                    followNumberTextview.setText(String.valueOf(dataSnapshot.getChildrenCount()));
+
+                }
+            }
+        });
         try {
             new fetchProducts().execute();
         } catch (Exception e) {
@@ -617,6 +666,8 @@ View mView;
 
 
         bottom_sheet_gps= (TextView) findViewById(R.id.gps_auto);
+        delteAccoutnText=(TextView)findViewById(R.id.delete_account);
+
       //  go = (Button) findViewById(R.id.go);
 
     }
@@ -631,6 +682,7 @@ View mView;
         bottomSheetBehavior2.setState(BottomSheetBehavior.STATE_HIDDEN);
         bottom_sheet_gps.setOnClickListener(this);
         bottom_sheet_manual.setOnClickListener(  this);
+        delteAccoutnText.setOnClickListener(this);
         //go.setOnClickListener(this);
 
     }
@@ -781,10 +833,62 @@ View mView;
 
 
         break;
-
+            case R.id.delete_account:
+                Toast.makeText(getApplicationContext(), "delete", Toast.LENGTH_SHORT).show();
+                deleteAccount(getApplicationContext(),MainActivity.usernameId);
+            break;
 
     }
 }
+
+    private void deleteAccount(final Context c, final String usernameId) {
+        mDatabaseReference.child("userss").child(usernameId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.hasChild("following")) {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.child("following").getChildren()) {
+                        Log.d("mano", "onDataChange: followin id "+dataSnapshot1.getKey());
+                        mDatabaseReference.child("userss").child(dataSnapshot1.getKey()).child("followers").child(usernameId).removeValue();
+                    }
+                }
+
+                if (dataSnapshot.hasChild("products")) {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.child("products").getChildren()) {
+                        mDatabaseReference
+                                .child("categories")
+                                .child(dataSnapshot1.child("category").getValue(String.class))
+                                .child(dataSnapshot1.getKey()).removeValue();
+                    }
+                }
+                mDatabaseReference.child("userss").child(usernameId).removeValue();
+                FirebaseAuth.getInstance().getCurrentUser().delete()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    finish();
+                                    Intent intent=new Intent(c,splahScreen.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intent.putExtra("Exit",true);
+                                    startActivity(intent);
+                                    ActivityCompat.finishAffinity(my_profile.this);
+
+
+                                }
+                            }
+                        });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
 
     private void setMyLocationToFirebase(double l, double g) {
         String myLocation=l+" "+g;
@@ -799,6 +903,20 @@ View mView;
     private void requestPermission(){
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("offline");
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("online");
 
     }
     @Override

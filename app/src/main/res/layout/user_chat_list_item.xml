@@ -6,21 +6,32 @@
     android:background="@android:color/white"
 
     android:layout_height="85dp">
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.mikhaellopez.circularimageview.CircularImageView
 
-    <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/image_user_chat_list"
+            android:layout_gravity="center"
+            android:layout_marginTop="4dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="70dp"
+            android:layout_height="75dp"
+            android:src="@drawable/ic_account_circle_black_24dp"/>
+        <ImageView
+            android:id="@+id/state_user"
+            android:src="@drawable/offline_gray"
+            android:layout_gravity="right|bottom"
+            android:layout_marginBottom="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_width="21dp"
+            android:layout_height="21dp" />
 
-        android:id="@+id/image_user_chat_list"
-        android:layout_gravity="center"
-        android:layout_marginTop="4dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="70dp"
-        android:layout_height="75dp"
-        android:src="@drawable/ic_account_circle_black_24dp"
 
+    </FrameLayout>
 
-        />
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
