@@ -35,6 +35,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
 
     // TextView variable
     private TextView bottomSheetHeading;
+    private final static int REQUEST_CODE_1 = 1;
 
     // Button variables
     private Button expandBottomSheetButton;
@@ -263,7 +264,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 Intent intent1=new Intent(my_product.this, map_auto.class);
 
-                startActivity(intent1);
+                startActivityForResult(intent1,REQUEST_CODE_1);
                 break;
             case R.id.gps_auto:
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -407,4 +408,30 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
          mDatabaseReference.child("categories").child(categories_key).child(product_key).child("location").setValue(myLocation);
         Log.d("mano", "setMyLocationToFirebase: done");
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
+        super.onActivityResult(requestCode, resultCode, dataIntent);
+
+        // The returned result data is identified by requestCode.
+        // The request code is specified in startActivityForResult(intent, REQUEST_CODE_1); method.
+        switch (requestCode)
+        {
+            // This request code is set by startActivityForResult(intent, REQUEST_CODE_1) method.
+            case REQUEST_CODE_1:
+
+                if(resultCode == RESULT_OK)
+                {
+                    String messageReturn = dataIntent.getStringExtra("long");
+                    String messageReturn2 = dataIntent.getStringExtra("lat");
+                    Toast.makeText(this, messageReturn, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, messageReturn2, Toast.LENGTH_SHORT).show();
+                    double l = Double.parseDouble(messageReturn2);
+                    double g = Double.parseDouble(messageReturn);
+                    setMyLocationToFirebase(l,g);
+
+                }
+        }
+    }
+
 }

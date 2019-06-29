@@ -1,6 +1,7 @@
 package com.example.moo.brandat.chat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,9 +11,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.moo.brandat.Main_map;
 import com.example.moo.brandat.R;
+import com.example.moo.brandat.details;
 import com.squareup.picasso.Picasso;
 
+import java.security.AccessController;
 import java.util.Scanner;
 
 public class MessageViewHolder extends RecyclerView.ViewHolder {
@@ -40,11 +44,20 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
                 TextView textView=v.findViewById(R.id.location_sender);
                 Scanner l = new Scanner(textView.getText().toString());
-                double latitude = l.nextDouble();
-                l.next();
-                double longitude = l.nextDouble();
+                String sr=l.nextLine() ;
+                String []ww=sr.split("jsdflfdsljdfsdfsldkafj");
+                String e=ww[0];
+                String e1=ww[1];
 
-                codeBohlokHere(v.getContext(),latitude,longitude);
+
+
+
+              //  Toast.makeText(v.getContext(), e+"eeee"+e1, Toast.LENGTH_SHORT).show();
+               double latitude = Double.parseDouble(e);
+//                l.next();
+               double longitude = Double.parseDouble(e1);
+//
+               codeBohlokHere(v.getContext(),latitude,longitude);
             }
         });
 
@@ -53,11 +66,21 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
                 TextView textView=v.findViewById(R.id.location_sender);
                 Scanner l = new Scanner(textView.getText().toString());
-                double latitude = l.nextDouble();
-                l.next();
-                double longitude = l.nextDouble();
+                String sr=l.nextLine() ;
+                String []ww=sr.split("jsdflfdsljdfsdfsldkafj");
+                String e=ww[0];
+                String e1=ww[1];
 
-                codeBohlokHere(v.getContext(),latitude,longitude);
+
+
+
+              //  Toast.makeText(v.getContext(), e+"eeee"+e1, Toast.LENGTH_SHORT).show();
+
+            double latitude = Double.parseDouble(e);
+////                l.next();
+             double longitude = Double.parseDouble(e1);
+////
+               codeBohlokHere(v.getContext(),latitude,longitude);
             }
         });
 
@@ -160,7 +183,13 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
     }
 
     public  void codeBohlokHere(Context context,double latitude,double longitude){
-        Toast.makeText(context, "code bohlok last", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, latitude+"ee"+longitude, Toast.LENGTH_SHORT).show();
+        Intent intent1 = new Intent(context, Main_map.class);
+String r=""+latitude;
+        String r1=""+longitude;
+        intent1.putExtra("long", r1);
+        intent1.putExtra("lat", r);
+        context.startActivity(intent1);
         // TODO: code bohlok open map for the two double
     }
 }

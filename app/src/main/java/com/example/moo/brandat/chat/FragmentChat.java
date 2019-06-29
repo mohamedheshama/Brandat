@@ -1,12 +1,19 @@
 package com.example.moo.brandat.chat;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +28,8 @@ import android.widget.Toast;
 
 import com.example.moo.brandat.MainActivity;
 import com.example.moo.brandat.R;
+import com.example.moo.brandat.my_profile;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -31,8 +40,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
+
+import static android.support.v4.content.ContextCompat.getSystemService;
 
 public class FragmentChat extends Fragment {
     public static String TAG="fragmentchat";
@@ -42,6 +54,8 @@ public class FragmentChat extends Fragment {
     private RecyclerView recyclerView;
     private ArrayList<MessageData> mMessagesList;
     private Button mSendMessage;
+    CircularImageView circularImageView;
+    private FusedLocationProviderClient client;
     private EditText mMessageEditText;
     private ImageView mSendePhotoImgae,mLocationImage;
 
@@ -125,10 +139,71 @@ public class FragmentChat extends Fragment {
         mLocationImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Location loc = null;
+                double latitude = 60;
+                double longitude =60;
+                LocationManager locationManager =
+                        (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+                // getting GPS status
+                boolean checkGPS = locationManager
+                        .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+                // getting network status
+                boolean checkNetwork = locationManager
+                        .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+                if (!checkGPS && !checkNetwork) {
+                  //  Toast.makeText(Context, "No Service Provider Available", Toast.LENGTH_SHORT).show();
+                } else {
+                   // this.canGetLocation = true;
+                    // First get location from Network Provider
+                    if (checkNetwork) {
+                    //    Toast.makeText(mContext, "Network", Toast.LENGTH_SHORT).show();
+
+                        try {
+                            locationManager.getAllProviders();
+                            Log.d("Network", "Network");
+                            if (locationManager != null) {
+                               loc = locationManager
+                                        .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+                            }
+
+                            if (loc != null) {
+                               latitude = loc.getLatitude();
+                               longitude = loc.getLongitude();
+                            }
+                        } catch (SecurityException e) {
+
+                        }
+                    }
+                }
+                // if GPS Enabled get lat/long using GPS Services
+                if (checkGPS) {
+               //     Toast.makeText(mContext, "GPS", Toast.LENGTH_SHORT).show();
+                    if (loc == null) {
+                        try {
+                            locationManager.getAllProviders();
+                            Log.d("GPS Enabled", "GPS Enabled");
+                            if (locationManager != null) {
+                                loc = locationManager
+                                        .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                if (loc != null) {
+                                    latitude = loc.getLatitude();
+                                    longitude = loc.getLongitude();
+                                }
+                            }
+                        } catch (SecurityException e) {
+
+                        }
+                    }
+                }
+
                 // TODO: code bohlok get the my location and send
                 Toast.makeText(getContext(), "code bohlok first", Toast.LENGTH_SHORT).show();
-                double latitude=0.444 ,longitud=0.33;
-                String content=String.valueOf(latitude)+" jsdflfdsljdfsdfsldkafj "+String.valueOf(latitude);
+                double latitude1=latitude ,longitud=longitude;
+                String content=String.valueOf(latitude1)+" jsdflfdsljdfsdfsldkafj "+String.valueOf(longitud);
                 sendMessage(content,false);
 
             }

@@ -72,6 +72,7 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
     private FloatingActionButton more;
 
 
+    private final static int REQUEST_CODE_1 = 2;
     TextView bottom_sheet_manual;
     TextView bottom_sheet_gps;
     private FusedLocationProviderClient client;
@@ -646,7 +647,8 @@ View mView;
         bottomSheetBehavior2.setState(BottomSheetBehavior.STATE_HIDDEN);
         Intent intent1 = new Intent(my_profile.this, map_auto.class);
 
-        startActivity(intent1);
+
+            startActivityForResult(intent1,REQUEST_CODE_1);
         break;
         case R.id.gps_auto:
         bottomSheetBehavior2.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -798,5 +800,29 @@ View mView;
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
 
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
+        super.onActivityResult(requestCode, resultCode, dataIntent);
+
+        // The returned result data is identified by requestCode.
+        // The request code is specified in startActivityForResult(intent, REQUEST_CODE_1); method.
+        switch (requestCode)
+        {
+            // This request code is set by startActivityForResult(intent, REQUEST_CODE_1) method.
+            case REQUEST_CODE_1:
+
+                if(resultCode == RESULT_OK)
+                {
+                    String messageReturn = dataIntent.getStringExtra("long");
+                    String messageReturn2 = dataIntent.getStringExtra("lat");
+                    Toast.makeText(this, messageReturn, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, messageReturn2, Toast.LENGTH_SHORT).show();
+                    double l = Double.parseDouble(messageReturn2);
+                    double g = Double.parseDouble(messageReturn);
+                    setMyLocationToFirebase(l,g);
+
+                }
+        }
     }
 }
