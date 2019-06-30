@@ -77,7 +77,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
         pdescribe = (TextView) findViewById(R.id.descripe);
         location = (TextView) findViewById(R.id.location);
         phone = (TextView) findViewById(R.id.phone);
-        email = (TextView) findViewById(R.id.email);
+        email = (TextView) findViewById(R.id.publish_date);
         imageView = findViewById(R.id.viewImage);
         circularImageView = findViewById(R.id.circularImageView);
         mAuth=FirebaseAuth.getInstance();
@@ -88,12 +88,12 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
         final String name = intent.getStringExtra("fname");
         final String cat = intent.getStringExtra("category");
         final String cos = intent.getStringExtra("cost");
-        final String em = intent.getStringExtra("email");
+        final String em = intent.getStringExtra("time");
         final String im = intent.getStringExtra("img");
         final String loc = intent.getStringExtra("location");
         final String ow = intent.getStringExtra("owner");
         final String pcas = intent.getStringExtra("pcase");
-        final String fon = intent.getStringExtra("phone");
+        final String fon = intent.getStringExtra("quantity");
         final String uImg = intent.getStringExtra("img_url");
         final String uId = intent.getStringExtra("user_id");
         final String prodescribe=intent.getStringExtra("prodescribe");
@@ -104,7 +104,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
         category.setText(cat);
         casee.setText(pcas);
         pdescribe.setText(prodescribe);
-        cost.setText(cos);
+        cost.setText(cos+" .LE");
         email.setText(em);
         location.setText(loc);
         ownername.setText(ow);
@@ -182,7 +182,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                     //   String cost = products.getCost();
                     intent.putExtra("cost", cos);
                     // String email = products.getEmail();
-                    intent.putExtra("email", em);
+                    intent.putExtra("time", em);
                     // String img = products.getImg_src();
                     intent.putExtra("img", im);
                     //  String location = products.getLocation();
@@ -192,7 +192,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                     //  String pcase = products.getproduct_case();
                     intent.putExtra("pcase", pcas);
                     // String phone = products.getPhone();
-                    intent.putExtra("phone", fon);
+                    intent.putExtra("quantity", fon);
                     intent.putExtra("user_id", uId);
                     intent.putExtra("prodescribe", prodescribe);
                     intent.putExtra("product_key",product_key);

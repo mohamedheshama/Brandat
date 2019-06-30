@@ -169,95 +169,6 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:cardBackgroundColor="#ECECEC"
-            app:cardCornerRadius="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView2">
-
-
-            <LinearLayout
-                android:id="@+id/constraintLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="1dp"
-                android:padding="5dp">
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/passwordWrapper"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColorHint="#1C2B0E"
-                    app:helperText="request"
-                    >
-
-                    <EditText
-                        android:id="@+id/password"
-                        style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_https_black_24dp"
-                        android:hint="   Password"
-
-                        android:inputType="textPassword" />
-
-                </android.support.design.widget.TextInputLayout>
-
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardView23"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:cardBackgroundColor="#ECECEC"
-            app:cardCornerRadius="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView">
-
-
-            <LinearLayout
-                android:id="@+id/constraintLayout2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="1dp"
-                android:padding="5dp">
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/confirmPasswordWrapper"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColorHint="#1C2B0E"
-                    app:helperText="request">
-
-                    <EditText
-                        android:id="@+id/confirmPassword"
-                        style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_https_black_24dp"
-                        android:hint="   confirm Password"
-
-                        android:inputType="textPassword" />
-
-                </android.support.design.widget.TextInputLayout>
-
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
             android:id="@+id/cardView4"
             android:layout_width="330dp"
             android:layout_height="wrap_content"
@@ -268,7 +179,7 @@
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView23">
+            app:layout_constraintTop_toBottomOf="@+id/cardView2">
 
 
             <LinearLayout

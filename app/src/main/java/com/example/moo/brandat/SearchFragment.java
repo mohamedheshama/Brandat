@@ -89,6 +89,8 @@ public class SearchFragment extends Fragment implements ImageAdapterTwo.ImageCli
                             pro.setproduct_des((String) test.get("product_des"));
                             pro.setFname((String) test.get("product_name"));
                             pro.setUser_id((String) test.get("user_id"));
+                            pro.setProduct_key((String) test.get("product_key"));
+
                             Log.d(TAG, "onDataChange: result done");
                             productsList.add(pro);
                         }
@@ -158,6 +160,11 @@ public class SearchFragment extends Fragment implements ImageAdapterTwo.ImageCli
         intent.putExtra("phone", phone);
         intent.putExtra("user_id",products.getUser_id());
 
+        String prodescribe=products.getproduct_des();
+
+        intent.putExtra("prodescribe",prodescribe);
+        //String userImg = products.getPhone();
+        intent.putExtra("product_key",products.getProduct_key());
         //String userImg = products.getPhone();
         intent.putExtra("img_url",products.getImg_url());
         Log.d("imgitem", "onImageClick: "+products.getImg_url());

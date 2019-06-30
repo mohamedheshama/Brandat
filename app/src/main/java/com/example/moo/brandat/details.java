@@ -37,7 +37,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public class details extends AppCompatActivity {
@@ -58,17 +62,27 @@ public class details extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     FloatingActionButton editActivity;
-
+    FloatingActionButton like;
+    FloatingActionButton favs;
+TextView noLikes;
+    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabasecat;
+    DatabaseReference productsData;
+    DatabaseReference categoriesData;
      String name,cat,cos,em,im,loc,ow,pcas,fon,uImg,uId,prodescribe,product_key;
+    ArrayList<String>likes;    ArrayList<String>favour;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-
+noLikes=(TextView) findViewById(R.id.nolikes);
         mFirebaseDatabase=FirebaseDatabase.getInstance();
         mDatabaseReference=mFirebaseDatabase.getReference();
-
+likes=new ArrayList<>();
+favour=new ArrayList<>();
         fname = (TextView) findViewById(R.id.fullName);
         category = (TextView) findViewById(R.id.category);
         casee = (TextView) findViewById(R.id.case2);
@@ -77,28 +91,36 @@ public class details extends AppCompatActivity {
         pdescribe = (TextView) findViewById(R.id.descripe);
         location = (TextView) findViewById(R.id.location);
         phone = (TextView) findViewById(R.id.phone);
-        email = (TextView) findViewById(R.id.email);
+        email = (TextView) findViewById(R.id.publish_date);
         imageView = findViewById(R.id.viewImage);
         circularImageView = findViewById(R.id.circularImageView);
+        like=(FloatingActionButton) findViewById(R.id.like);
+        favs=(FloatingActionButton) findViewById(R.id.fav);
+
+
         mAuth=FirebaseAuth.getInstance();
         mCurrentUser=mAuth.getCurrentUser();
         editActivity=(FloatingActionButton)findViewById(R.id.edit_floating_action_button);
+        mDatabase= FirebaseDatabase.getInstance().getReference().child("userss").child(mCurrentUser.getUid());
 
+        mDatabasecat= FirebaseDatabase.getInstance().getReference().child("categories");
          Intent intent = getIntent();
         if (intent.hasExtra("fname")) {
             name = intent.getStringExtra("fname");
             cat = intent.getStringExtra("category");
             cos = intent.getStringExtra("cost");
-            em = intent.getStringExtra("email");
+            em = intent.getStringExtra("time");
             im = intent.getStringExtra("img");
             loc = intent.getStringExtra("location");
             ow = intent.getStringExtra("owner");
             pcas = intent.getStringExtra("pcase");
-            fon = intent.getStringExtra("phone");
+            fon = intent.getStringExtra("quantity");
             uImg = intent.getStringExtra("img_url");
             uId = intent.getStringExtra("user_id");
             prodescribe = intent.getStringExtra("prodescribe");
             product_key = intent.getStringExtra("product_key");
+            //likes=intent.getStringArrayListExtra("likes");
+
             setUp();
         }else{
             String productId=intent.getStringExtra("productId");
@@ -110,12 +132,12 @@ public class details extends AppCompatActivity {
                     name = product.getFname();
                     cat = product.getCategory();
                     cos = product.getCost();
-                    em = product.getEmail();
+                    em = product.getTime();
                     im = product.getImgesrc();
                     loc = product.getLocation();
                     ow = product.getOwnername();
                     pcas = product.getproduct_case();
-                    fon = product.getPhone();
+                    fon = product.getQuantity();
                     uImg = product.getImg_url();
                     uId = product.getUser_id();
                     prodescribe = product.getproduct_des();
@@ -129,6 +151,268 @@ public class details extends AppCompatActivity {
                 }
             });
         }
+
+
+
+        mDatabase= FirebaseDatabase.getInstance().getReference().child("userss").child(uId);
+        mDatabasecat= FirebaseDatabase.getInstance().getReference().child("categories");
+        final DatabaseReference favv=FirebaseDatabase.getInstance().getReference().child("userss").child(mCurrentUser.getUid());
+
+        final DatabaseReference path1=favv.child("favs");
+        final DatabaseReference path2=favv.child("favs").child(product_key);
+
+
+
+        path1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+//likes.clear();
+                int i=0;
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    favour.add(postSnapshot.getKey());
+
+                    if(favour.get(i).equals(product_key)){
+                        favs.setImageResource(R.drawable.ic_star_on_24dp);
+
+                    }i++;
+                    Log.d("errrror", "onCancelledd: "+favour.get(0));
+
+
+                }}
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("errrror", "onCancelled: "+"likes error");
+            }
+        });
+
+
+
+
+
+        favs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final List<String> newfavs=new ArrayList<>();
+
+                path1.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                            newfavs.add(postSnapshot.getKey());
+
+
+                        }}
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.d("errrror", "onCancelled: "+"likes error");
+                    }
+                });
+
+                path2.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String value=dataSnapshot.getValue(String.class);
+
+                        if (newfavs.contains(product_key)&&value!=null) {
+
+
+                            dataSnapshot.getRef().removeValue();
+                           // categoriesData.child(mCurrentUser.getUid()).getRef().removeValue();
+                            favs.setImageResource(R.drawable.ic_star_off_24dp);
+                            //likes.remove(mCurrentUser.getUid());
+                            Toast.makeText(getApplicationContext(), "done2", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            path2.setValue(cat);
+                           // categoriesData.child(mCurrentUser.getUid()).setValue("true");
+                            favs.setImageResource(R.drawable.ic_star_on_24dp);
+                            Toast.makeText(getApplicationContext(), "done", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                        // dataSnapshot.child(mCurrentUser.getUid()).getRef().removeValue();
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+        productsData=mDatabase.child("products").child(product_key).child("likes");
+        String  key=productsData.getKey();
+        categoriesData=mDatabasecat.child(cat).child(product_key).child("likes");
+        final DatabaseReference path=productsData.child(mCurrentUser.getUid());
+        Log.d("userrrrr id", "onCreate: "+mCurrentUser.getUid());
+
+        productsData.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+//likes.clear();
+                int i=0;
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    likes.add(postSnapshot.getKey());
+
+                    if(likes.get(i).equals(mCurrentUser.getUid())){
+                        like.setImageResource(R.drawable.like6);
+
+                    }i++;
+                    Log.d("errrror", "onCancelledd: "+likes.get(0));
+
+
+                }
+            noLikes.setText(""+i);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("errrror", "onCancelled: "+"likes error");
+            }
+        });
+        if(likes.contains(mCurrentUser.getUid())){
+
+            like.setImageResource(R.drawable.like6);
+            Log.d("errrror", "onCancelledddddd: "+likes.get(0));
+            Log.d("errrror", "onCancelledddddddddddddddddddddddd: "+mCurrentUser.getUid());
+
+        }
+
+        like.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+
+                                        final List<String> newLikes=new ArrayList<>();
+
+                                        productsData.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+
+                                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                                    newLikes.add(postSnapshot.getKey());
+
+
+                                                }
+                                            noLikes.setText(""+newLikes.size());
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                Log.d("errrror", "onCancelled: "+"likes error");
+                                            }
+                                        });
+
+                                        path.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                 String value=dataSnapshot.getValue(String.class);
+
+                                                if (newLikes.contains(mCurrentUser.getUid())&&value!=null) {
+
+
+                                                    dataSnapshot.getRef().removeValue();
+                                                    categoriesData.child(mCurrentUser.getUid()).getRef().removeValue();
+                                                    like.setImageResource(R.drawable.like3);
+                                                    //likes.remove(mCurrentUser.getUid());
+                                                    Toast.makeText(getApplicationContext(), "done2", Toast.LENGTH_SHORT).show();
+
+                                                    final List<String> newLikes=new ArrayList<>();
+
+                                                    productsData.addValueEventListener(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+
+                                                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                                                newLikes.add(postSnapshot.getKey());
+
+
+                                                            }
+                                                            noLikes.setText(""+newLikes.size());
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                            Log.d("errrror", "onCancelled: "+"likes error");
+                                                        }
+                                                    });
+
+
+
+
+                                                } else {
+                                                    path.setValue("true");
+                                                    categoriesData.child(mCurrentUser.getUid()).setValue("true");
+                                                    like.setImageResource(R.drawable.like6);
+                                                    Toast.makeText(getApplicationContext(), "done", Toast.LENGTH_SHORT).show();
+                                                    final List<String> newLikes=new ArrayList<>();
+
+                                                    productsData.addValueEventListener(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+
+                                                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                                                newLikes.add(postSnapshot.getKey());
+
+
+                                                            }
+                                                            noLikes.setText(""+newLikes.size());
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                            Log.d("errrror", "onCancelled: "+"likes error");
+                                                        }
+                                                    });
+
+
+                                                }
+
+                                                // dataSnapshot.child(mCurrentUser.getUid()).getRef().removeValue();
+
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+
+                                            }
+                                        });
+
+                                    }
+                                });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         client = LocationServices.getFusedLocationProviderClient(details.this);
@@ -318,9 +602,9 @@ public class details extends AppCompatActivity {
                     //   String cost = products.getCost();
                     intent.putExtra("cost", cos);
                     // String email = products.getEmail();
-                    intent.putExtra("email", em);
+                    intent.putExtra("time", em);
                     // String img = products.getImg_src();
-                    intent.putExtra("img", im);
+                    intent.putExtra("getImg_src", im);
                     //  String location = products.getLocation();
                     intent.putExtra("location", loc);
                     // String owner = products.getOwnername();
@@ -328,7 +612,7 @@ public class details extends AppCompatActivity {
                     //  String pcase = products.getproduct_case();
                     intent.putExtra("pcase", pcas);
                     // String phone = products.getPhone();
-                    intent.putExtra("phone", fon);
+                    intent.putExtra("quantity", fon);
                     intent.putExtra("user_id", uId);
                     intent.putExtra("prodescribe", prodescribe);
                     intent.putExtra("product_key",product_key);
@@ -351,7 +635,7 @@ public class details extends AppCompatActivity {
         category.setText(cat);
         casee.setText(pcas);
         pdescribe.setText(prodescribe);
-        cost.setText(cos);
+        cost.setText(cos+" .LE");
         email.setText(em);
         location.setText(loc);
         ownername.setText(ow);
@@ -367,3 +651,5 @@ public class details extends AppCompatActivity {
 
     }
 }
+
+

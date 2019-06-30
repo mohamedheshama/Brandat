@@ -52,6 +52,7 @@ import com.squareup.picasso.Picasso;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -70,7 +71,10 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
     private Button showBottomSheetDialogButton;
     private Button go;
     private FloatingActionButton more;
-
+    DatabaseReference favv;
+    DatabaseReference path1;
+TextView showmore1;
+    TextView showmore2;
 
     TextView bottom_sheet_manual;
     TextView bottom_sheet_gps;
@@ -84,7 +88,8 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
     private FirebaseAuth.AuthStateListener mAuthListner;
 
     StorageReference mstorStorageReference;
-
+    private DatabaseReference mDatabasecat;
+    private FirebaseUser mCurrentUser;
     EditText fullname;
     EditText email;
     EditText password;
@@ -97,21 +102,28 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
     CircularImageView circularImageView;
     TextView emailTV;
     TextView phoneTV;
-    TextView locationTV;
+    TextView addressTV;
     TextView desplay_name;
+    TextView isshop;
     FloatingActionButton editActivity;
     FloatingActionButton addProduct;
     List<products> productsList;
+    List<products> productsfavList;
+
     productsAdapter cardsAdapter;
+    productsAdapter cardsAdapter2;
+
     String UserId;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabaseProducts;
     private DatabaseReference mDatabaseuser_info;
     private DatabaseReference mDatabaseUser;
     RecyclerView productRecycler;
+    RecyclerView productfavRecycler;
+
     Context c;
-
-
+    ArrayList<String>favour;
+    ArrayList<String>favourcat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,13 +131,15 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
         more = (FloatingActionButton) findViewById(R.id.more);
         initViews();
         initListeners();
-
+        favour=new ArrayList<>();
+        favourcat=new ArrayList<>();
         client = LocationServices.getFusedLocationProviderClient(my_profile.this);
         requestPermission();
 
         productsList = new ArrayList<>();
-
+        productsfavList=new ArrayList<>();
         mAuth = FirebaseAuth.getInstance();
+        mCurrentUser=mAuth.getCurrentUser();
         mAuthListner = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -145,22 +159,37 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
         mDatabaseUser.keepSynced(true);
 
         productRecycler = (RecyclerView) findViewById(R.id.prodRec);
-
+        productfavRecycler=(RecyclerView)findViewById(R.id.favRec);
         circularImageView = (CircularImageView) findViewById(R.id.circularImageView);
         desplay_name = (TextView) findViewById(R.id.textView11);
         emailTV =(TextView) findViewById(R.id.email);
+        phoneTV =(TextView) findViewById(R.id.phonn);
+        addressTV=(TextView)findViewById(R.id.address);
+        isshop=(TextView)findViewById(R.id.textView12) ;
+showmore1=(TextView)findViewById(R.id.viewmore1);
+        showmore2=(TextView)findViewById(R.id.viewmore2);
+
+showmore1.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+    Intent t=new Intent(my_profile.this,categoryItem.class);
+    t.putExtra("products",1);
+        startActivity(t);
+    }
+});
+showmore2.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Intent t2=new Intent(my_profile.this,categoryItem.class);
+        t2.putExtra("favs",2);
+        startActivity(t2);
+    }
+});
         editActivity = (FloatingActionButton) findViewById(R.id.edit_floating_action_button);
         addProduct = (FloatingActionButton) findViewById(R.id.add);
 
 
-        editActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(my_profile.this, profileEdit.class));
 
-
-            }
-        });
 
 
         addProduct.setOnClickListener(new View.OnClickListener() {
@@ -181,14 +210,132 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
         mDatabaseProducts = mDatabaseuser_info.child("products");
         mDatabaseProducts.keepSynced(true);
         mDatabaseuser_info.keepSynced(true);
-
         getUserData();
+
+
+
+
+
+        editActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+
+                startActivity(new Intent(my_profile.this, profileEdit.class));
+
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+        mDatabasecat= FirebaseDatabase.getInstance().getReference().child("categories");
+        //DatabaseReference  categoriesData=mDatabasecat.child(cat).child(product_key);
+
+
+         favv=FirebaseDatabase.getInstance().getReference().child("userss").child(mCurrentUser.getUid());
+        Log.d("errrror", "onCancelledd: "+"heyyyyy"+mCurrentUser.getUid());
+
+        path1=favv.child("favs");
+
+
+        mDatabasecat.keepSynced(true);
+        favv.keepSynced(true);
+        path1.keepSynced(true);
+      //  final DatabaseReference path2=favv.child("favs").child(product_key);
+
+        Log.d("errrror", "onCancelledd: "+"heyyyyy");
+
+
+        path1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+//likes.clear();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    favour.add(postSnapshot.getKey());
+                    favourcat.add((String) postSnapshot.getValue());
+
+                    Log.d("errrror", "onCancelledd: 0"+favour.get(0));
+                    Log.d("errrror", "onCancelledd: "+favourcat.get(0));
+
+
+
+
+                }
+
+                try {
+
+                    Log.d("errrror", "onCancelledd:1 "+favour.get(1));
+                    Log.d("errrror", "onCancelledd: "+favourcat.get(1));
+
+                    Log.d("errrror", "onCancelledd: 2"+favour.get(2));
+                    Log.d("errrror", "onCancelledd: "+favourcat.get(2));
+
+                    Log.d("errrror", "onCancelledd:3 "+favour.get(3));
+                    Log.d("errrror", "onCancelledd: "+favourcat.get(3));
+
+                    Log.d("errrror", "onCancelledd: 4"+favour.get(4));
+                    Log.d("errrror", "onCancelledd: "+favourcat.get(4));
+
+
+
+                 //   Log.d("errrror", "onCancelledd: before"+favour.get(0));
+                    new fetchfavs().execute();
+                 //   Log.d("errrror", "onCancelledd: after "+favour.get(0));
+                } catch (Exception e) {
+                    Log.d("error", "error"+e.getMessage());
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("errrror", "onCancelled: "+"likes error");
+            }
+        });
+
+        String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+        Log.d("dateeee", "onCreate: "+mydate);
+
+
+
+//     Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr: "+favour.get(0));
+//       Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr: "+favourcat.get(0));
+
+
+
+
 
         try {
             new fetchProducts().execute();
         } catch (Exception e) {
-            Log.d("error", "error");
+            Log.d("error", "error"+e.getMessage());
         }
+
+
+
+
+
+
+//        Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr2: "+favour.get(0));
+
+
+
+
+
+
+
 //        LinearLayoutManager layoutManager=new LinearLayoutManager(this);
 //        layoutManager.setReverseLayout(true);
 //        layoutManager.setStackFromEnd(true);
@@ -323,6 +470,7 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
         }
 
 
+
         @Override
         public void onImageClick(products products) {
 
@@ -346,9 +494,12 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
             intent.putExtra("pcase", pcase);
             String phone = products.getPhone();
             intent.putExtra("phone", phone);
+            String prodescribe=products.getproduct_des();
+            intent.putExtra("prodescribe",prodescribe);
             intent.putExtra("user_id",products.getUser_id());
             intent.putExtra("product_key",products.getProduct_key());
-
+            intent.putExtra("quantity",products.getQuantity());
+            intent.putExtra("time",products.getTime());
             //  String userImg = products.getPhone();
             intent.putExtra("img_url",products.getImg_url());
             startActivity(intent);
@@ -359,6 +510,112 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
 
 
 
+    public class fetchfavs extends AsyncTask<String, Void, List> implements  productsAdapter.ImageClickHandler {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            productsfavList.clear();
+            //  pb.setVisibility(View.VISIBLE);
+            Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr3: "+favour.get(0));
+
+
+        }
+
+        @Override
+        protected List doInBackground(String... params) {
+
+
+            for (int i = 0; i < favour.size(); i++) {
+                Log.d("errrror", "onCancelledd: 0"+favour.get(i));
+                Log.d("errrror", "onCancelledd: 0"+favourcat.get(i));
+
+                DatabaseReference categoriesData = mDatabasecat.child(favourcat.get(i)).child(favour.get(i));
+
+                categoriesData.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+//likes.clear();
+                        //  for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        products product = dataSnapshot.getValue(products.class);
+
+                        productsfavList.add(product);
+
+
+                        Log.d("errrror", "onCancelleddrrrrrrrr:4 " + product.getCost());
+                        setupLayout(productsfavList);
+
+                    }
+
+
+                    //}
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.d("errrror", "onCancelled: " + "likes error");
+                    }
+                });
+
+
+            }
+            return productsfavList;
+        }
+
+
+
+
+
+        @Override
+        protected void onPostExecute(List movies) {
+
+            if (movies != null) {
+                productsfavList.clear();
+               // setupLayout(movies);
+                //  productsList = movies;
+
+
+
+
+//                GridLayoutManager gridLayoutManager = new GridLayoutManager(MainActivity2.this, 2);
+//                gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//
+//                pAdapter = new ImageAdapter(moviesList, getApplicationContext(), this);
+//                recyclerView.setAdapter(imageAdapter);
+//
+//                recyclerView.setLayoutManager(gridLayoutManager);
+//                recyclerView.setHasFixedSize(true);
+//                pb.setVisibility(View.GONE);
+
+
+            } else {
+                Toast.makeText(my_profile.this, "error", Toast.LENGTH_LONG).show();
+
+            }
+        }
+
+        public void setupLayout(List<products> products){
+            productsfavList= products;
+//    LinearLayoutManager layoutManager=new LinearLayoutManager(UserProfile.this);
+//    layoutManager.setReverseLayout(true);
+//    layoutManager.setStackFromEnd(true);
+            Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr:5 "+favour.get(0));
+
+            productfavRecycler.setHasFixedSize(true);
+
+            StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
+            productfavRecycler.setLayoutManager(sglm);
+
+            //productRecycler.setLayoutManager(layoutManager);
+
+
+
+            cardsAdapter2 = new productsAdapter(productsfavList, getApplicationContext(),  this);
+            Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr:6 "+favour.get(0));
+
+            productfavRecycler.setAdapter(cardsAdapter2);
+            Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr:7 "+favour.get(0));
+
+        }
 
 
 
@@ -366,6 +623,45 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
 
 
 
+
+        @Override
+        public void onImageClick(products products) {
+
+            Intent intent = new Intent(my_profile.this, details.class);
+
+            String fname = products.getFname();
+            intent.putExtra("fname", fname);
+            String category = products.getCategory();
+            intent.putExtra("category", category);
+            String cost = products.getCost();
+            intent.putExtra("cost", cost);
+            String email = products.getEmail();
+            intent.putExtra("email", email);
+            String img = products.getImgesrc();
+            intent.putExtra("img", img);
+            String location = products.getLocation();
+            intent.putExtra("location", location);
+            String owner = products.getOwnername();
+            intent.putExtra("owner", owner);
+            String pcase = products.getproduct_case();
+            intent.putExtra("pcase", pcase);
+            String phone = products.getPhone();
+            String prodescribe=products.getproduct_des();
+            intent.putExtra("prodescribe",prodescribe);
+            intent.putExtra("phone", phone);
+            intent.putExtra("user_id",products.getUser_id());
+            intent.putExtra("product_key",products.getProduct_key());
+            intent.putExtra("quantity",products.getQuantity());
+            intent.putExtra("time",products.getTime());
+            //  String userImg = products.getPhone();
+            intent.putExtra("img_url",products.getImg_url());
+            startActivity(intent);
+            Toast.makeText(getApplicationContext(),""+products.getCategory(),Toast.LENGTH_SHORT).show();
+
+        }
+
+
+        }
 
 
 
@@ -403,16 +699,18 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 desplay_name.setText((String)dataSnapshot.child("name").getValue())  ;
+                addressTV.setText((String)dataSnapshot.child("address").getValue())  ;
+                isshop.setText((String)dataSnapshot.child("shop").getValue())  ;
+               // boolean s= (boolean) dataSnapshot.child("shop").getValue();
 
-                if(dataSnapshot.child("phone").getValue()!=null){
+
+
+
 
                     phoneTV.setText((String)dataSnapshot.child("phone").getValue())  ;
 
 
-                }else{
-//                phoneTV.setText("none")  ;
 
-                }
              emailTV.setText((String)dataSnapshot.child("email").getValue())  ;
               // locationTV.setText((String)dataSnapshot.child("location").getValue())  ;
                 if(img_url!=null){

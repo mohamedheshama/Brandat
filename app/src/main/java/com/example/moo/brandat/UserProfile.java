@@ -99,8 +99,9 @@ String img_url=null;
     CircularImageView circularImageView;
     TextView emailTV;
     TextView phoneTV;
-    TextView locationTV;
+    TextView addressTV;
     TextView desplay_name;
+    TextView isshop;
 FloatingActionButton editActivity;
     List<products> productsList;
 productsAdapter cardsAdapter;
@@ -151,9 +152,15 @@ productRecycler=(RecyclerView)findViewById(R.id.prodRec);
 
         circularImageView=(CircularImageView)findViewById(R.id.circularImageView);
         desplay_name=(TextView)findViewById(R.id.textView11);
+        emailTV=(TextView)findViewById(R.id.email);
+        phoneTV=(TextView)findViewById(R.id.phonn);
+        addressTV=(TextView)findViewById(R.id.address);
+        isshop=(TextView)findViewById(R.id.textView12);
 
 
-Intent intent=getIntent();
+
+
+        Intent intent=getIntent();
 if(intent==null) {
 
 
@@ -191,6 +198,7 @@ if(intent==null) {
     } catch (Exception e) {
         Log.d("error", "error");
     }
+
     getUserData();
 
 }
@@ -402,13 +410,14 @@ productsList= products;
                 //String userImg = products.getPhone();
                 intent.putExtra("img_url",products.getImg_url());
                 intent.putExtra("product_key",products.getProduct_key());
-
+                intent.putExtra("quantity",products.getQuantity());
+                intent.putExtra("time",products.getTime());
                 Log.d("imgitem", "onImageClick: "+products.getImg_url());
                 startActivity(intent);
                 Toast.makeText(UserProfile.this,""+products.getCategory(),Toast.LENGTH_SHORT).show();
 
 
-     /*       }else {
+           }else {
 
 
                 Intent intent = new Intent(UserProfile.this, details.class);
@@ -421,7 +430,7 @@ productsList= products;
                 intent.putExtra("cost", cost);
                 String email = products.getEmail();
                 intent.putExtra("email", email);
-                String img = products.getImg_src();
+                String img = products.getImgesrc();
                 intent.putExtra("img", img);
                 String location = products.getLocation();
                 intent.putExtra("location", location);
@@ -437,10 +446,11 @@ productsList= products;
                 //String userImg = products.getPhone();
                 intent.putExtra("img_url", products.getImg_url());
                 intent.putExtra("product_key", products.getProduct_key());
-
+                intent.putExtra("quantity",products.getQuantity());
+                intent.putExtra("time",products.getTime());
                 Log.d("imgitem", "onImageClick: " + products.getImg_url());
                 startActivity(intent);
-                Toast.makeText(UserProfile.this, "" + products.getCategory(), Toast.LENGTH_SHORT).show();*/
+                Toast.makeText(UserProfile.this, "" + products.getCategory(), Toast.LENGTH_SHORT).show();
 
 
             }
@@ -494,16 +504,18 @@ productsList= products;
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
              desplay_name.setText((String)dataSnapshot.child("name").getValue())  ;
+                emailTV.setText((String)dataSnapshot.child("email").getValue())  ;
+                addressTV.setText((String)dataSnapshot.child("address").getValue())  ;
+               isshop.setText((String)dataSnapshot.child("shop").getValue())  ;
 
-             if(dataSnapshot.child("phone").getValue()!=null){
+
+
+
 
                     phoneTV.setText((String)dataSnapshot.child("phone").getValue())  ;
 
 
-             }else{
-//                 phoneTV.setText("01012345656")  ;
 
-             }
 //                emailTV.setText((String)dataSnapshot.child("email").getValue())  ;
 //                locationTV.setText((String)dataSnapshot.child("location").getValue())  ;
                 if(img_url!=null){

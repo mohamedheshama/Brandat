@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,6 +29,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import java.util.Calendar;
 
 public class UpdateProduct extends AppCompatActivity {
 
@@ -89,12 +92,12 @@ public class UpdateProduct extends AppCompatActivity {
         final String name = intent.getStringExtra("fname");
         final String cat = intent.getStringExtra("category");
         final String cos = intent.getStringExtra("cost");
-        final String em = intent.getStringExtra("email");
+        final String em = intent.getStringExtra("time");
         final Uri im = Uri.parse(intent.getStringExtra("img"));
         final String loc = intent.getStringExtra("location");
         final String ow = intent.getStringExtra("owner");
         final String pcas = intent.getStringExtra("pcase");
-        final String fon = intent.getStringExtra("phone");
+        final String fon = intent.getStringExtra("quantity");
         final String uImg = intent.getStringExtra("img_url");
          String uId = intent.getStringExtra("user_id");
         String prodescribe=intent.getStringExtra("prodescribe");
@@ -179,9 +182,7 @@ email.setText(em);
                         String key = productsData.getKey();
                         final DatabaseReference categoriesData = mDatabasecat.child(categories).child(key);
 
-                        mDatabase.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                                 productsData.child("product_name").setValue(pname);
                                 productsData.child("category").setValue(categories);
                                 productsData.child("product_case").setValue(caseee);
@@ -189,9 +190,12 @@ email.setText(em);
                                 productsData.child("ownername").setValue(oname);
                                 productsData.child("product_des").setValue(prodes);
                                 productsData.child("location").setValue(loc);
-                                productsData.child("phone").setValue(fone);
-                                productsData.child("email").setValue(emai);
-                                productsData.child("imagesrc").setValue(downloadUri.toString());
+                        productsData.child("quantity").setValue(fone);
+                        Log.d("quantity", "onComplete: "+fone+"  "+java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
+                        productsData.child("time").setValue(java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
+
+                        productsData.child("imagesrc").setValue(downloadUri.toString());
+                        Log.d("photo", "onComplete: "+downloadUri);
                                 productsData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
                                 productsData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
 
@@ -203,23 +207,20 @@ email.setText(em);
                                 categoriesData.child("ownername").setValue(oname);
                                 categoriesData.child("product_des").setValue(prodes);
                                 categoriesData.child("location").setValue(loc);
-                                categoriesData.child("phone").setValue(fone);
-                                categoriesData.child("email").setValue(emai);
-                                categoriesData.child("imagesrc").setValue(downloadUri.toString());
+                        categoriesData.child("quantity").setValue(fone);
+                        categoriesData.child("time").setValue(java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
+
+                        categoriesData.child("imagesrc").setValue(downloadUri.toString());
                                 categoriesData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
 
                                 categoriesData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
 
                                 mProgress.dismiss();
-                                Toast.makeText(getApplicationContext(), "Your ptoduct's data has inserted succesfully.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Your ptoduct's data has updated succesfully.", Toast.LENGTH_SHORT).show();
 
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
-                            }
-                        });
+
+startActivity(new Intent(UpdateProduct.this,MainActivity.class));
 
 
                     } else {
@@ -240,9 +241,7 @@ email.setText(em);
             String key = productsData.getKey();
             final DatabaseReference categoriesData = mDatabasecat.child(categories).child(product_key);
 
-            mDatabase.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                     productsData.child("product_name").setValue(pname);
                     productsData.child("category").setValue(categories);
                     productsData.child("product_case").setValue(caseee);
@@ -250,9 +249,10 @@ email.setText(em);
                     productsData.child("ownername").setValue(oname);
                     productsData.child("product_des").setValue(prodes);
                     productsData.child("location").setValue(loc);
-                    productsData.child("phone").setValue(fone);
-                    productsData.child("email").setValue(emai);
-                 //   productsData.child("imagesrc").setValue(downloadUri.toString());
+            productsData.child("quantity").setValue(fone);
+            productsData.child("time").setValue(java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
+
+            // productsData.child("imagesrc").setValue(downloadUri.toString());
                     productsData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
                     productsData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
 
@@ -264,28 +264,24 @@ email.setText(em);
                     categoriesData.child("ownername").setValue(oname);
                     categoriesData.child("product_des").setValue(prodes);
                     categoriesData.child("location").setValue(loc);
-                    categoriesData.child("phone").setValue(fone);
-                    categoriesData.child("email").setValue(emai);
-                 //   categoriesData.child("imagesrc").setValue(downloadUri.toString());
+            categoriesData.child("quantity").setValue(fone);
+            categoriesData.child("time").setValue(java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
+
+            //categoriesData.child("imagesrc").setValue(downloadUri.toString());
                     categoriesData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
 
                     categoriesData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
 
                     mProgress.dismiss();
                     Toast.makeText(getApplicationContext(), "Your ptoduct's data has inserted succesfully.", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(UpdateProduct.this,MainActivity.class));
 
 
                 }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
-                }
-            });
 
 
         }
-    }
+
 
 
 

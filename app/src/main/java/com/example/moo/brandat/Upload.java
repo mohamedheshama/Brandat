@@ -33,6 +33,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Calendar;
+
 import static android.app.Activity.RESULT_OK;
 
 public class Upload  extends AppCompatActivity {
@@ -118,7 +120,7 @@ publish.setOnClickListener(new View.OnClickListener() {
         final String prodes=pdescribe.getText().toString().trim();
       final  String loc=location.getText().toString().trim();
         final String fone=phone.getText().toString().trim();
-        final String emai=email.getText().toString().trim();
+//        final String emai=email.getText().toString().trim();
 mProgress.setMessage("Posting ...");
 mProgress.show();
 
@@ -155,8 +157,8 @@ productsData.child("product_name").setValue(pname);
                             productsData.child("ownername").setValue(oname);
                             productsData.child("product_des").setValue(prodes);
                             productsData.child("location").setValue(loc);
-                            productsData.child("phone").setValue(fone);
-                            productsData.child("email").setValue(emai);
+                            productsData.child("quantity").setValue(fone);
+                            productsData.child("time").setValue(java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
                             productsData.child("imagesrc").setValue(downloadUri.toString());
                             productsData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
                             productsData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
@@ -172,8 +174,8 @@ productsData.child("product_name").setValue(pname);
                             categoriesData.child("ownername").setValue(oname);
                             categoriesData.child("product_des").setValue(prodes);
                             categoriesData.child("location").setValue(loc);
-                            categoriesData.child("phone").setValue(fone);
-                            categoriesData.child("email").setValue(emai);
+                            categoriesData.child("quantity").setValue(fone);
+                            categoriesData.child("time").setValue(java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
                             categoriesData.child("imagesrc").setValue(downloadUri.toString());
                             categoriesData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
 
@@ -182,7 +184,8 @@ productsData.child("product_name").setValue(pname);
 
 
                             mProgress.dismiss();
-                            Toast.makeText(getApplicationContext(),"Your ptoduct's data has inserted succesfully.",Toast.LENGTH_LONG ).show();
+                            Toast.makeText(getApplicationContext(),"Your ptoduct's data has inserted succesfully.",Toast.LENGTH_SHORT ).show();
+                            startActivity(new Intent(Upload.this,MainActivity.class));
 
                         }
 

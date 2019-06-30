@@ -237,6 +237,10 @@ return rootView;
                 //String userImg = products.getPhone();
                 intent.putExtra("img_url",products.getImg_url());
                 intent.putExtra("product_key",products.getProduct_key());
+                intent.putExtra("quantity",products.getQuantity());
+                intent.putExtra("time",products.getTime());
+
+
 
                 Log.d("imgitem", "onImageClick: "+products.getImg_url());
                 startActivity(intent);
@@ -272,7 +276,8 @@ return rootView;
                 //String userImg = products.getPhone();
                 intent.putExtra("img_url", products.getImg_url());
                 intent.putExtra("product_key", products.getProduct_key());
-
+                intent.putExtra("quantity",products.getQuantity());
+                intent.putExtra("time",products.getTime());
                 Log.d("imgitem", "onImageClick: " + products.getImg_url());
                 startActivity(intent);
                 Toast.makeText(getActivity(), "" + products.getCategory(), Toast.LENGTH_SHORT).show();

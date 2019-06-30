@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +40,8 @@ public class categoryItem extends AppCompatActivity {
     RecyclerView productRecycler;
     Context c;
     String itemToFetch;
+    private FirebaseUser mCurrentUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +49,27 @@ public class categoryItem extends AppCompatActivity {
         setContentView(R.layout.activity_article_list);
 //URL="https://api.themoviedb.org/3/movie/popular?api_key=cb77b332ccbf1c0fb73ba7dca9973100";
 Intent intent=getIntent();
-itemToFetch=intent.getStringExtra("item");
         productRecycler = (RecyclerView) findViewById(R.id.recycler_view);
         //  moviesList = new ArrayList<>();
         productsList = new ArrayList<>();
+        mAuth=FirebaseAuth.getInstance();
+        mCurrentUser=mAuth.getCurrentUser();
+        if(intent.hasExtra("item")){
+            itemToFetch=intent.getStringExtra("item");
 
+            mDatabase = FirebaseDatabase.getInstance().getReference().child("categories").child(itemToFetch);
+
+
+        }else if(intent.hasExtra("products")){
+            mDatabase = FirebaseDatabase.getInstance().getReference().child("userss").child(mCurrentUser.getUid()).child("products");
+
+
+        }else if(intent.hasExtra("favs")){
+
+        }
 
         mAuth = FirebaseAuth.getInstance();
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("categories").child(itemToFetch);
         mDatabaseUser = FirebaseDatabase.getInstance().getReference().child("userss");
 
 
@@ -173,7 +188,8 @@ itemToFetch=intent.getStringExtra("item");
                 //String userImg = products.getPhone();
                 intent.putExtra("img_url",products.getImg_url());
                 intent.putExtra("product_key",products.getProduct_key());
-
+                intent.putExtra("quantity",products.getQuantity());
+                intent.putExtra("time",products.getTime());
                 Log.d("imgitem", "onImageClick: "+products.getImg_url());
                 startActivity(intent);
                 Toast.makeText(categoryItem.this,""+products.getCategory(),Toast.LENGTH_SHORT).show();
@@ -208,7 +224,8 @@ itemToFetch=intent.getStringExtra("item");
                 //String userImg = products.getPhone();
                 intent.putExtra("img_url", products.getImg_url());
                 intent.putExtra("product_key", products.getProduct_key());
-
+                intent.putExtra("quantity",products.getQuantity());
+                intent.putExtra("time",products.getTime());
                 Log.d("imgitem", "onImageClick: " + products.getImg_url());
                 startActivity(intent);
                 Toast.makeText(categoryItem.this, "" + products.getCategory(), Toast.LENGTH_SHORT).show();

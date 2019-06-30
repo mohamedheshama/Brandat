@@ -8,7 +8,7 @@ public class products {
     }
     String imagesrc;
 
-    public products(String fname, String category, String product_case, String cost, String product_des, String location, String ownername, String phone, String email, String imagesrc,String img_url,String user_id,String product_key) {
+    public products(String fname, String category, String product_case, String cost, String product_des, String location, String ownername, String phone, String email, String imagesrc,String img_url,String user_id,String product_key,String quantity,String time) {
         this.product_name = fname;
         this.category = category;
         this.product_case = product_case;
@@ -22,6 +22,8 @@ public class products {
         this.img_url=img_url;
         this.user_id=user_id;
         this.product_key=product_key;
+        this.quantity=quantity;
+        this.time=time;
 
     }
 
@@ -98,6 +100,24 @@ public class products {
     }
 
     String product_name;String category;String product_case;String cost;String product_des;String location;String ownername;String phone;String email;
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    String quantity;String time;
 
     public String getProduct_key() {
         return product_key;

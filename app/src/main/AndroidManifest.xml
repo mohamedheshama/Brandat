@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:name="android.support.multidex.MultiDexApplication"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".my_product"></activity>
         <activity android:name=".my_profile" />
         <activity android:name=".search" />
