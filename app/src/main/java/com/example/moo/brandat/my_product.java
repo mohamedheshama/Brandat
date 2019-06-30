@@ -61,7 +61,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
     private FusedLocationProviderClient client;
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
-    FloatingActionButton editActivity;
+    FloatingActionButton editActivity,deleteButton;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     String product_key,categories_key;

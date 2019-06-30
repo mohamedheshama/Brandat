@@ -199,7 +199,7 @@ email.setText(em);
                                 productsData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
                                 productsData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
 
-
+                                categoriesData.child("product_key").setValue(product_key);
                                 categoriesData.child("product_name").setValue(pname);
                                 categoriesData.child("category").setValue(categories);
                                 categoriesData.child("product_case").setValue(caseee);
@@ -256,7 +256,7 @@ startActivity(new Intent(UpdateProduct.this,MainActivity.class));
                     productsData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
                     productsData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
 
-
+                    categoriesData.child("product_key").setValue(product_key);
                     categoriesData.child("product_name").setValue(pname);
                     categoriesData.child("category").setValue(categories);
                     categoriesData.child("product_case").setValue(caseee);
