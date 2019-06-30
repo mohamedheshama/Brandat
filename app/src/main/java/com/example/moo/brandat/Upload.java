@@ -82,6 +82,8 @@ mStorageReference= FirebaseStorage.getInstance().getReference();
         mCurrentUser=mAuth.getCurrentUser();
 mDatabase= FirebaseDatabase.getInstance().getReference().child("userss").child(mCurrentUser.getUid());
 
+
+        ownername.setText(MainActivity.usernameUser);
         mDatabasecat= FirebaseDatabase.getInstance().getReference().child("categories");
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override

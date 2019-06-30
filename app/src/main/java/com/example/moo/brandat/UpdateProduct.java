@@ -45,7 +45,7 @@ public class UpdateProduct extends AppCompatActivity {
     private DatabaseReference mDatabasecat;
     private DatabaseReference mDatabaseuser;
     private static final int PHOTO_PICKER = 2;
-
+    private String img_src;
 
     private ProgressDialog mProgress;
     private FirebaseAuth mAuth;
@@ -93,6 +93,7 @@ public class UpdateProduct extends AppCompatActivity {
         final String cat = intent.getStringExtra("category");
         final String cos = intent.getStringExtra("cost");
         final String em = intent.getStringExtra("time");
+        img_src=intent.getStringExtra("img");
         final Uri im = Uri.parse(intent.getStringExtra("img"));
         final String loc = intent.getStringExtra("location");
         final String ow = intent.getStringExtra("owner");
@@ -256,6 +257,7 @@ startActivity(new Intent(UpdateProduct.this,MainActivity.class));
                     productsData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
                     productsData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
 
+                    categoriesData.child("imagesrc").setValue(img_src);
                     categoriesData.child("product_key").setValue(product_key);
                     categoriesData.child("product_name").setValue(pname);
                     categoriesData.child("category").setValue(categories);

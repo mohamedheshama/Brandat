@@ -1206,19 +1206,7 @@ View mView;
 
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("offline");
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("online");
-
-    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
         super.onActivityResult(requestCode, resultCode, dataIntent);

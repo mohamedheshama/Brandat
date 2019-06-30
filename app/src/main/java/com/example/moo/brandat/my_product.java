@@ -435,17 +435,5 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
     }
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("offline");
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("online");
-
-    }
 }
