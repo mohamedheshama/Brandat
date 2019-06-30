@@ -198,7 +198,7 @@
                     android:orientation="vertical">
 
                     <android.support.design.widget.FloatingActionButton
-                        android:id="@+id/notification"
+                        android:id="@+id/reporting"
                         style="@style/Widget.Design.FloatingActionButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -209,6 +209,7 @@
                         tools:ignore="VectorDrawableCompat" />
 
                     <TextView
+                        android:id="@+id/text_report"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
                         android:text="Reporting"

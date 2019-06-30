@@ -144,7 +144,7 @@ return rootView;
                             Log.d("mano", "onDataChange: "+postSnapshote.hasChild("likes"));
                             if (postSnapshote.hasChild("likes")){
                                 Map<String ,String > likes= (Map<String,String >) postSnapshote.child("likes").getValue();
-//                                product.likes=String.valueOf(likes.size());
+                                product.likes=String.valueOf(likes.size());
                                 Log.d("mano ", "onDataChange: likes "+likes.size());
                             }
                             product.setProduct_key(postSnapshote.getKey());
@@ -154,17 +154,15 @@ return rootView;
                             }
 
                         }
-//                        sort(list, new Comparator<products>() {
-//                            @Override
-//                            public int compare(products o1, products o2) {
-//
-//                                // ascending order
-//                                // return (int) (this.salary - compareSalary);
-//
-//                                // descending order
-//                                return (int) (o2.likes - o1.likes);
-//                            }
-//                        });
+                        sort(list, new Comparator<products>() {
+                            @Override
+                            public int compare(products o1, products o2) {
+                                int x1=Integer.valueOf(o1.likes);
+                                int x2=Integer.valueOf(o2.likes);
+                                
+                                return (int) (x2 - x1);
+                            }
+                        });
                         productsList.add(list);
 
 

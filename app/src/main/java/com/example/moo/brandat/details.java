@@ -2,6 +2,7 @@ package com.example.moo.brandat;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
@@ -15,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -63,6 +65,10 @@ public class details extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     FloatingActionButton editActivity;
+     FloatingActionButton fab3;
+    TextView reportTextView;
+    ValueEventListener s;
+    String name,cat,cos,em,im,loc,ow,pcas,fon,uImg,uId,prodescribe,product_key;
     FloatingActionButton like;
     FloatingActionButton favs;
 TextView noLikes;
@@ -70,7 +76,6 @@ TextView noLikes;
     private DatabaseReference mDatabasecat;
     DatabaseReference productsData;
     DatabaseReference categoriesData;
-     String name,cat,cos,em,im,loc,ow,pcas,fon,uImg,uId,prodescribe,product_key;
     ArrayList<String>likes;    ArrayList<String>favour;
 
 
@@ -79,7 +84,7 @@ TextView noLikes;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-noLikes=(TextView) findViewById(R.id.nolikes);
+        noLikes=(TextView) findViewById(R.id.nolikes);
         mFirebaseDatabase=FirebaseDatabase.getInstance();
         mDatabaseReference=mFirebaseDatabase.getReference();
 likes=new ArrayList<>();
@@ -102,6 +107,9 @@ favour=new ArrayList<>();
         mAuth=FirebaseAuth.getInstance();
         mCurrentUser=mAuth.getCurrentUser();
         editActivity=(FloatingActionButton)findViewById(R.id.edit_floating_action_button);
+         fab3 = (FloatingActionButton) findViewById(R.id.reporting);
+          reportTextView=(TextView)findViewById(R.id.text_report);
+
         mDatabase= FirebaseDatabase.getInstance().getReference().child("userss").child(mCurrentUser.getUid());
 
          final Intent intent = getIntent();
@@ -238,6 +246,7 @@ favour=new ArrayList<>();
                             Toast.makeText(getApplicationContext(), "done", Toast.LENGTH_SHORT).show();
 
                         }
+
 
                         // dataSnapshot.child(mCurrentUser.getUid()).getRef().removeValue();
 
@@ -420,6 +429,69 @@ favour=new ArrayList<>();
 
 
 
+
+        fab3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("mano", "onClick: doneeee");
+                if (reportTextView.getText().toString().equals("report")) {
+                    reportTextView.setText("reported");
+                    Log.d("mano", "onClick: "+uId+"  set value true");
+
+                    final CharSequence[] items = { "محتوي احتيالي", "مكان الاعلان غير مناسب", "اعلان غير اخلاقي", "مبيعات غير مسرح بها" };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(details.this);
+                    builder.setTitle("Make your selection");
+                    builder.setItems(items, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int item) {
+
+                            // will toast your selection
+
+
+                            mDatabaseReference
+                                    .child("userss")
+                                    .child(uId)
+                                    .child("products")
+                                    .child(product_key)
+                                    .child("reporting")
+                                    .child(MainActivity.usernameId)
+                                    .setValue(String.valueOf(item));
+                            mDatabaseReference
+                                    .child("categories")
+                                    .child(cat)
+                                    .child(product_key)
+                                    .child("reporting")
+                                    .child(MainActivity.usernameId)
+                                    .setValue(String.valueOf(item));
+                            fab3.setImageResource(R.drawable.ic_report_green_24dp);
+                            Log.d("mano", "onClick: ");
+                            dialog.dismiss();
+
+                        }
+                    }).show();
+
+                }else {
+                    reportTextView.setText("report");
+                    Log.d("mano", "onClick: "+"  remove vlaue");
+                    mDatabaseReference
+                            .child("userss")
+                            .child(uId)
+                            .child("products")
+                            .child(product_key)
+                            .child("reporting")
+                            .child(MainActivity.usernameId)
+                            .removeValue();
+                    mDatabaseReference
+                            .child("categories")
+                            .child(cat)
+                            .child(product_key)
+                            .child("reporting")
+                            .child(MainActivity.usernameId)
+                            .removeValue();
+                    fab3.setImageResource(R.drawable.ic_report_black_24dp);
+                }
+            }
+        });
         client = LocationServices.getFusedLocationProviderClient(details.this);
         requestPermission();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.more);
@@ -511,7 +583,6 @@ favour=new ArrayList<>();
 //                }
 //else {
 //                    if (ActivityCompat.checkSelfPermission(details.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                        // TODO: Consider calling
 //                        //    ActivityCompat#requestPermissions
 //                        // here to request the missing permissions, and then overriding
 //                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -541,7 +612,6 @@ favour=new ArrayList<>();
 //
 //                }
 //                if (ActivityCompat.checkSelfPermission(details.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-//                    // TODO: Consider calling
 //                    //    ActivityCompat#requestPermissions
 //                    // here to request the missing permissions, and then overriding
 //                   //  public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -687,6 +757,34 @@ favour=new ArrayList<>();
         Picasso.with(this).load(im) .resize(200, 200)
                 .centerCrop().into(imageView);
         Picasso.with(this).load(uImg).into(circularImageView);
+        mDatabaseReference
+                .child("userss")
+                .child(uId)
+                .child("products")
+                .child(product_key)
+                .child("reporting")
+                .child(MainActivity.usernameId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if ((dataSnapshot.getValue()!=null)){
+                    Log.d("mano", "onDataChange:one other is reported before me ");
+                    fab3.setImageResource(R.drawable.ic_report_green_24dp);
+                    reportTextView.setText("reported");
+
+                }else {
+                    Log.d("mano", "onDataChange: no one reported you before");
+                    fab3.setImageResource(R.drawable.ic_report_black_24dp);
+                    reportTextView.setText("report");
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        checkForProduct(uId,product_key,cat);
     }
 
     private void requestPermission(){
@@ -706,7 +804,80 @@ favour=new ArrayList<>();
         super.onResume();
         mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("online");
 
+
     }
+
+    private void checkForProduct(final String userId, final String productKey, final String categories) {
+        Log.d("mano", "checkForProduct: "+userId+"  "+productKey+"  "+categories);
+        mDatabaseReference.child("userss").child(userId).child("products").child(productKey).child("reporting").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int arr[] = new int[4];
+                arr[0] = 0;
+                arr[1] = 0;
+                arr[2]= 0;
+                arr[3]= 0;
+
+                for (DataSnapshot dataReport : dataSnapshot.getChildren()) {
+                    Log.d("mano", "onDataChange reported : "+dataReport.getKey()+"  parent key  "+dataSnapshot.getKey());
+
+                    if (dataReport.getValue(String.class).equals("0")) {
+                        Log.d("mano", "onDataChange: reported  0");
+                        arr[0]++;
+
+                    } else if (dataReport.getValue(String.class).equals("1")) {
+                        Log.d("mano", "onDataChange: reported  1");
+                        arr[1]++;
+                    } else if (dataReport.getValue(String.class).equals("2")) {
+                        Log.d("mano", "onDataChange: reported  2");
+                        arr[2]++;
+                    } else if (dataReport.getValue(String.class).equals("3")) {
+                        Log.d("mano", "onDataChange: reported 3");
+                        arr[3]++;
+                    }
+
+
+                    Log.d("mano", "onDataChange: reported  " + arr[0] + "  " + arr[1]);
+                }
+                if (arr[0] >= 5) {
+                    Log.d("mano", "onDataChange: " + userId);
+                    deleteProduct(userId, productKey, categories);
+                    goToHome();
+                } else if (arr[1] >= 25) {
+                    deleteProduct(userId, productKey, categories);
+                    goToHome();
+                } else if (arr[2] >= 15) {
+                    deleteProduct(userId, productKey, categories);
+                    goToHome();
+                } else if (arr[3] >= 10) {
+                    deleteProduct(userId, productKey, categories);
+                    goToHome();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+    void deleteProduct(String userId,String productKey,String categories){
+        mDatabaseReference.child("categories").child(categories).child(productKey).removeValue();
+        mDatabaseReference.child("userss").child(userId).child("products").child(productKey).removeValue();
+    }
+
+
+    private void goToHome() {
+        Intent intent=new Intent(details.this,MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+
+
+
+    }
+
 }
 
 

@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
@@ -21,6 +22,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Movie;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -32,7 +34,10 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -218,6 +223,64 @@ if(intent==null) {
             }
         });
 
+        checkForLimitReportUser(UserId);
+
+        final FloatingActionButton fab3 = (FloatingActionButton) findViewById(R.id.report_user);
+        final TextView reportTextView=(TextView)findViewById(R.id.text_report_user);
+        mDatabaseReference.child("userss").child(UserId).child("reporting").child(MainActivity.usernameId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if ((dataSnapshot.getValue()!=null)){
+                    fab3.setImageResource(R.drawable.ic_report_green_24dp);
+                    reportTextView.setText("reported");
+
+                }else {
+                    fab3.setImageResource(R.drawable.ic_report_black_24dp);
+                    reportTextView.setText("report");
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        fab3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("mano", "onClick: doneeee");
+                if (reportTextView.getText().toString().equals("report")) {
+
+                    Log.d("mano", "onClick: "+UserId+"  set value true");
+
+                    final CharSequence[] items = { "شخص محتال", "حساب زائف"};
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UserProfile.this);
+                    builder.setTitle("Make your selection");
+                    builder.setItems(items, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int item) {
+
+                            // will toast your selection
+
+                            mDatabaseReference.child("userss").child(UserId).child("reporting").child(MainActivity.usernameId).setValue(String.valueOf(item));
+                            fab3.setImageResource(R.drawable.ic_report_green_24dp);
+                            reportTextView.setText("reported");
+                            Log.d("mano", "onClick: ");
+                            dialog.dismiss();
+
+                        }
+                    }).show();
+
+                }else {
+                    reportTextView.setText("report");
+                    Log.d("mano", "onClick: "+"  remove vlaue");
+                    mDatabaseReference.child("userss").child(UserId).child("reporting").child(MainActivity.usernameId).removeValue();
+                    fab3.setImageResource(R.drawable.ic_report_black_24dp);
+                }
+            }
+        });
+
     FloatingActionButton fab1 = (FloatingActionButton) findViewById(R.id.mapbutton);
         fab1.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -367,6 +430,8 @@ if(intent==null) {
     });
 
     }
+
+
     public class fetchProducts extends AsyncTask<String, Void, List> implements  productsAdapter.ImageClickHandler {
 
         @Override
@@ -802,5 +867,49 @@ View mView;
         mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("online");
 
     }
+
+    private void checkForLimitReportUser(final String userId) {
+        mDatabaseReference.child("userss").child(userId).child("reporting").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int arr[]=new int[2];
+                arr[0]=0;
+                arr[1]=0;
+                for (DataSnapshot dataReport:dataSnapshot.getChildren()){
+                    if (dataReport.getValue(String.class).equals("0")){
+                        Log.d("mano", "onDataChange: reported  0");
+                        arr[0]++;
+
+                    }else if (dataReport.getValue(String.class).equals("1")){
+                        Log.d("mano", "onDataChange: reported  1");
+                        arr[1]++;
+                    }
+
+                    Log.d("mano", "onDataChange: reported  "+arr[0]+"  "+arr[1]);
+                }
+                if (arr[0]>=5){
+                    Log.d("mano", "onDataChange: "+userId);
+                    my_profile.deleteAccount(getApplicationContext(),userId);
+                    goToHome();
+                }else if (arr[1]>=5){
+                    my_profile.deleteAccount(getApplicationContext(),userId);
+                    goToHome();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void goToHome() {
+        Intent intent=new Intent(UserProfile.this,MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
 
 }

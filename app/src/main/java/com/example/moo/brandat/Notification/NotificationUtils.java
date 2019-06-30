@@ -22,7 +22,7 @@ import com.squareup.picasso.Target;
 public class NotificationUtils {
     public static final String CHANNEL_NOTIFICATION_ID="FIRST";
 
-    public static void  setNotification(Context context ,String name,String body,String uid,String imgeSender){
+    public static void  setNotification(Context context ,String name,String body,String uid,String imgeSender,boolean isLocation){
         Log.d("mano", "createContentIntent: "+uid);
 
         NotificationManager notificationManager= (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -30,12 +30,17 @@ public class NotificationUtils {
             NotificationChannel notificationChannel=new NotificationChannel(CHANNEL_NOTIFICATION_ID,"ma", NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(notificationChannel);
         }
+
         NotificationCompat.Builder notificationBuilder=new NotificationCompat.Builder(context,CHANNEL_NOTIFICATION_ID)
                 .setContentTitle(name)
                 .setSmallIcon(R.drawable.mapbox_logo_icon)
                 .setContentIntent(createContentIntent(context,uid,imgeSender,name))
-                .setAutoCancel(true)
-                .setContentText(body);
+                .setAutoCancel(true);
+        if (isLocation){
+            notificationBuilder.setContentText("Location");
+        }else {
+            notificationBuilder.setContentText(body);
+        }
         notificationManager.notify(CHANNEL_NOTIFICATION_ID,1,notificationBuilder.build());
     }
 

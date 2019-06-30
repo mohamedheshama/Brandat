@@ -18,7 +18,7 @@ public class MyFCMService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
         if (remoteMessage.getData().size() > 0) {
             Map<String, String> data = remoteMessage.getData();
-
+            boolean isLocation=false;
             String title = data.get("name");
 
             if (!title.equals("follow")) {
@@ -32,8 +32,16 @@ public class MyFCMService extends FirebaseMessagingService {
                 Log.d("hi", "onMessageReceived: " + title + "   " + message + "  " + sender);
 
                 if (!FragmentChat.IS_ACTIVATE && !FragmentChat.RECIEVER_UID.equals(sender)) {
+                    if (message==null&&imgeSender!=null){
+                        message="photo";
+                        Log.d(TAG, "onMessageReceived: the message is null and is photo "+message);
+                    }else{
+                        if (message.contains("jsdflfdsljdfsdfsldkafj")) {
+                            isLocation=true;
+                        }
+                    }
                     Log.d(TAG, "onMessageReceived: notification from chat");
-                    NotificationUtils.setNotification(getApplicationContext(), title, message, sender, imgeSender);
+                    NotificationUtils.setNotification(getApplicationContext(), title, message, sender, imgeSender,isLocation);
                 }
 
             }else{

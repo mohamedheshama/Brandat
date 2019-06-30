@@ -122,7 +122,8 @@ TextView showmore1;
     productsAdapter cardsAdapter2;
 
     String UserId;
-    private DatabaseReference mDatabase,mDatabaseReference;
+    private DatabaseReference mDatabase;
+    private static DatabaseReference mDatabaseReference;
     private DatabaseReference mDatabaseProducts;
     private DatabaseReference mDatabaseuser_info;
     private DatabaseReference mDatabaseUser;
@@ -1137,12 +1138,25 @@ View mView;
             case R.id.delete_account:
                 Toast.makeText(getApplicationContext(), "delete", Toast.LENGTH_SHORT).show();
                 deleteAccount(getApplicationContext(),MainActivity.usernameId);
+                FirebaseAuth.getInstance().getCurrentUser().delete()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    goToHome();
+                                }
+                            }
+                        });
             break;
 
     }
 }
 
-    private void deleteAccount(final Context c, final String usernameId) {
+    public static void deleteAccount(final Context c, final String usernameId) {
+        if (mDatabaseReference==null){
+            mDatabaseReference=FirebaseDatabase.getInstance().getReference();
+        }
+        Log.d("mano", "deleteAccount: "+usernameId);
         mDatabaseReference.child("userss").child(usernameId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -1163,22 +1177,7 @@ View mView;
                     }
                 }
                 mDatabaseReference.child("userss").child(usernameId).removeValue();
-                FirebaseAuth.getInstance().getCurrentUser().delete()
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    finish();
-                                    Intent intent=new Intent(c,splahScreen.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    intent.putExtra("Exit",true);
-                                    startActivity(intent);
-                                    ActivityCompat.finishAffinity(my_profile.this);
 
-
-                                }
-                            }
-                        });
 
             }
 
@@ -1243,5 +1242,15 @@ View mView;
 
                 }
         }
+    }
+    private void goToHome() {
+        Intent intent=new Intent(my_profile.this,splahScreen.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("Exit",true);
+        startActivity(intent);
+        finish();
+        ActivityCompat.finishAffinity(my_profile.this);
+
+
     }
 }

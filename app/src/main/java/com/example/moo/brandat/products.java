@@ -3,13 +3,14 @@ package com.example.moo.brandat;
 import android.widget.EditText;
 
 public class products {
-//    String  likes="0";
+    String  likes="0";
     public products() {
 
     }
     String imagesrc;
 
-    public products(String fname, String category, String product_case, String cost, String product_des, String location, String ownername, String phone, String email, String imagesrc,String img_url,String user_id,String product_key,String quantity,String time) {
+    public products(String fname, String category, String product_case, String cost, String product_des, String location, String ownername, String phone, String email, String imagesrc,String img_url,String user_id,String product_key,String quantity,String time,String  likes) {
+        this.likes=likes;
         this.product_name = fname;
         this.category = category;
         this.product_case = product_case;
