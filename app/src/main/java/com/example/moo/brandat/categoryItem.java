@@ -113,9 +113,10 @@ Intent intent=getIntent();
 
                         products product = postSnapshot.getValue(products.class);
                       //  product.setProduct_key(postSnapshot.getKey());
+                        product.setImgesrc(postSnapshot.child("imagesrc").getValue(String.class));
+                        product.setFname(postSnapshot.child("product_name").getValue(String.class));
 
                         productsList.add(product);
-                        // TODO: handle the post
                     }
                     setupLayout(productsList);
 

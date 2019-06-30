@@ -1,12 +1,20 @@
 package com.example.moo.brandat.chat;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +29,8 @@ import android.widget.Toast;
 
 import com.example.moo.brandat.MainActivity;
 import com.example.moo.brandat.R;
+import com.example.moo.brandat.my_profile;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -31,8 +41,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
+
+import static android.support.v4.content.ContextCompat.getSystemService;
 
 public class FragmentChat extends Fragment {
     public static String TAG="fragmentchat";
@@ -42,8 +55,12 @@ public class FragmentChat extends Fragment {
     private RecyclerView recyclerView;
     private ArrayList<MessageData> mMessagesList;
     private Button mSendMessage;
+    CircularImageView circularImageView;
+    private FusedLocationProviderClient client;
     private EditText mMessageEditText;
-    private ImageView mImageView;
+    private ImageView mSendePhotoImgae,mLocationImage;
+
+    private final static int REQUEST_CODE_1 = 1;
 
     private static int RC_PHOTO_PICKER=3;
 
@@ -62,7 +79,7 @@ public class FragmentChat extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView=inflater.inflate(R.layout.fragment_chat,container,false);
 
         mFirebaseDatabase=FirebaseDatabase.getInstance();
@@ -73,19 +90,10 @@ public class FragmentChat extends Fragment {
         mSendMessage=rootView.findViewById(R.id.sendButton);
         recyclerView=rootView.findViewById(R.id.message_recycler_view);
         mMessageEditText=rootView.findViewById(R.id.message_edit_text);
-        mImageView=rootView.findViewById(R.id.photoPickerButton);
+        mSendePhotoImgae=rootView.findViewById(R.id.photoPickerButton);
+        mLocationImage=rootView.findViewById(R.id.photoLocationButton);
 
 
-        mImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/jpeg");
-                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
-
-            }
-        });
         //get user id's reciever
         Bundle bundle=getArguments();
         if (bundle!=null) {
@@ -124,24 +132,107 @@ public class FragmentChat extends Fragment {
         mSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MessageData messageData=new MessageData();
-                messageData.setContent(mMessageEditText.getText().toString());
-                messageData.setName(MainActivity.usernameUser);
-                messageData.setSender(mUserIdSender);
-                messageData.setReciever(mUserIdRecieve);
-                messageData.setPhotoUrl(null);
+                String contentMessage=mMessageEditText.getText().toString();
+                if (!contentMessage.replace("\\s","").isEmpty()) {
+                    sendMessage(mMessageEditText.getText().toString(), false);
+                }
 
-                opentChatBetween(mUserIdSender,mUserIdRecieve,messageData);
+            }
+        });
+        mLocationImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Location loc = null;
+                double latitude = 60;
+                double longitude =60;
+                LocationManager locationManager =
+                        (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-                mMessageEditText.setText("");
+                // getting GPS status
+                boolean checkGPS = locationManager
+                        .isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-                mDatabaseReference
-                        .child("Notification")
-                        .child(mUserIdRecieve)
-                        .child(mUserIdSender)
-                        .child("contetnText")
-                        .setValue(messageData.getContent());
+                // getting network status
+                boolean checkNetwork = locationManager
+                        .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
+                if (!checkGPS && !checkNetwork) {
+                  //  Toast.makeText(Context, "No Service Provider Available", Toast.LENGTH_SHORT).show();
+                } else {
+                   // this.canGetLocation = true;
+                    // First get location from Network Provider
+                    if (checkNetwork) {
+                    //    Toast.makeText(mContext, "Network", Toast.LENGTH_SHORT).show();
+
+                        try {
+                            locationManager.getAllProviders();
+                            Log.d("Network", "Network");
+                            if (locationManager != null) {
+                               loc = locationManager
+                                        .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+                            }
+
+                            if (loc != null) {
+                               latitude = loc.getLatitude();
+                               longitude = loc.getLongitude();
+                            }
+                        } catch (SecurityException e) {
+
+                        }
+                    }
+                }
+                // if GPS Enabled get lat/long using GPS Services
+                if (checkGPS) {
+               //     Toast.makeText(mContext, "GPS", Toast.LENGTH_SHORT).show();
+                    if (loc == null) {
+                        try {
+                            locationManager.getAllProviders();
+                            Log.d("GPS Enabled", "GPS Enabled");
+                            if (locationManager != null) {
+                                loc = locationManager
+                                        .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                if (loc != null) {
+                                    latitude = loc.getLatitude();
+                                    longitude = loc.getLongitude();
+                                }
+                            }
+                        } catch (SecurityException e) {
+
+                        }
+                    }
+                }
+
+                // TODO: code bohlok get the my location and send
+                Toast.makeText(getContext(), "code bohlok first", Toast.LENGTH_SHORT).show();
+                double latitude1=latitude ,longitud=longitude;
+                String content=String.valueOf(latitude1)+" jsdflfdsljdfsdfsldkafj "+String.valueOf(longitud);
+                sendMessage(content,false);
+
+            }
+        });
+        mSendePhotoImgae.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpeg");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
+
+            }
+        });
+
+        mDatabaseReference.child("userss").child(mUserIdRecieve).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: "+dataSnapshot.child("state").getValue(String.class));
+                if (dataSnapshot.hasChild("state")) {
+                    ChatActivity.setStateOnline(dataSnapshot.child("state").getValue(String.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
@@ -295,33 +386,62 @@ public class FragmentChat extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
        if(requestCode==RC_PHOTO_PICKER){
-            Uri selectedPhoto=data.getData();
-            final StorageReference filePath=mStorageReference.child("chat").child(selectedPhoto.getLastPathSegment());
-            filePath.putFile(selectedPhoto).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            MessageData messageData=new MessageData();
-                            messageData.setContent(null);
-                            messageData.setPhotoUrl(uri.toString());
-                            messageData.setName(MainActivity.usernameUser);
-                            messageData.setSender(mUserIdSender);
-                            messageData.setReciever(mUserIdRecieve);
+           if(resultCode == Activity.RESULT_OK) {
+               Uri selectedPhoto = data.getData();
+               Log.d(TAG, "onActivityResult: "+selectedPhoto);
+               if (selectedPhoto != null) {
+                   final StorageReference filePath = mStorageReference.child("chat").child(selectedPhoto.getLastPathSegment());
+                   filePath.putFile(selectedPhoto).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                       @Override
+                       public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                           filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                               @Override
+                               public void onSuccess(Uri uri) {
+                                   Log.d(TAG, "onActivityResult: "+uri.toString());
 
-                            opentChatBetween(mUserIdSender,mUserIdRecieve,messageData);
-                            mDatabaseReference
-                                    .child("Notification")
-                                    .child(mUserIdRecieve)
-                                    .child(mUserIdSender)
-                                    .child("contetnText")
-                                    .setValue("photo ");
-                        }
-                    });
-                }
-            });
-
+                                   sendMessage(uri.toString(), true);
+                               }
+                           });
+                       }
+                   });
+               }
+           }
         }
     }
+
+    public void sendMessage(String messageContent,boolean isPhoto){
+        MessageData messageData=new MessageData();
+        messageData.setName(MainActivity.usernameUser);
+        messageData.setSender(mUserIdSender);
+        messageData.setReciever(mUserIdRecieve);
+        if (isPhoto) {
+            messageData.setPhotoUrl(messageContent);
+            mDatabaseReference
+                    .child("Notification")
+                    .child(mUserIdRecieve)
+                    .child(mUserIdSender)
+                    .child("contetnText")
+                    .setValue("photo");
+        }else {
+            messageData.setContent(messageContent);
+            mDatabaseReference
+                    .child("Notification")
+                    .child(mUserIdRecieve)
+                    .child(mUserIdSender)
+                    .child("contetnText")
+                    .setValue(messageData.getContent());
+        }
+
+        opentChatBetween(mUserIdSender,mUserIdRecieve,messageData);
+
+        mMessageEditText.setText("");
+
+        mDatabaseReference
+                .child("Notification")
+                .child(mUserIdRecieve)
+                .child(mUserIdSender)
+                .child("contetnText")
+                .setValue(messageData.getContent());
+    }
+
 }

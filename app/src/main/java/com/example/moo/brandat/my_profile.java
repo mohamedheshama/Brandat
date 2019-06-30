@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -36,9 +37,12 @@ import android.widget.Toast;
 import com.example.moo.brandat.chat.ChatActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,6 +58,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 
 public class my_profile extends AppCompatActivity implements View.OnClickListener {
@@ -76,6 +81,7 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
 TextView showmore1;
     TextView showmore2;
 
+    private final static int REQUEST_CODE_1 = 2;
     TextView bottom_sheet_manual;
     TextView bottom_sheet_gps;
     private FusedLocationProviderClient client;
@@ -103,8 +109,10 @@ TextView showmore1;
     TextView emailTV;
     TextView phoneTV;
     TextView addressTV;
-    TextView desplay_name;
+
     TextView isshop;
+    TextView locationTV;
+    TextView desplay_name,delteAccoutnText;
     FloatingActionButton editActivity;
     FloatingActionButton addProduct;
     List<products> productsList;
@@ -114,7 +122,7 @@ TextView showmore1;
     productsAdapter cardsAdapter2;
 
     String UserId;
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase,mDatabaseReference;
     private DatabaseReference mDatabaseProducts;
     private DatabaseReference mDatabaseuser_info;
     private DatabaseReference mDatabaseUser;
@@ -153,7 +161,7 @@ TextView showmore1;
         };
         mDatabase = FirebaseDatabase.getInstance().getReference().child("categories");
         mDatabaseUser = FirebaseDatabase.getInstance().getReference().child("userss");
-
+        mDatabaseReference=FirebaseDatabase.getInstance().getReference();
 
         mDatabase.keepSynced(true);
         mDatabaseUser.keepSynced(true);
@@ -317,6 +325,50 @@ showmore2.setOnClickListener(new View.OnClickListener() {
 
 
 
+
+        final TextView followNumberTextview=(TextView)findViewById(R.id.follower_number);
+        final DatabaseReference followNumPath=mDatabaseReference.child("userss").child(MainActivity.usernameId);
+        followNumPath.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d("mano", "onChildAdded: "+dataSnapshot.hasChild("email")+"  "+dataSnapshot.getKey());
+                updateNumberFollower(dataSnapshot);
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                updateNumberFollower(dataSnapshot);
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getKey().equals("followers")){
+                    int x=Integer.valueOf((String) followNumberTextview.getText());
+                    x--;
+                    followNumberTextview.setText(String.valueOf(x));
+                }
+
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+            public void updateNumberFollower(DataSnapshot dataSnapshot){
+                if (dataSnapshot.getKey().equals("followers")){
+                    followNumberTextview.setText(String.valueOf(dataSnapshot.getChildrenCount()));
+
+                }
+            }
+        });
         try {
             new fetchProducts().execute();
         } catch (Exception e) {
@@ -397,6 +449,8 @@ showmore2.setOnClickListener(new View.OnClickListener() {
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                         products product = postSnapshot.getValue(products.class);
+                        product.setImgesrc(postSnapshot.child("imagesrc").getValue(String.class));
+                        product.setFname(postSnapshot.child("product_name").getValue(String.class));
                         productsList.add(product);
                         // TODO: handle the post
                     }
@@ -468,7 +522,6 @@ showmore2.setOnClickListener(new View.OnClickListener() {
             productRecycler.setAdapter(cardsAdapter);
 
         }
-
 
 
         @Override
@@ -913,6 +966,8 @@ View mView;
 
 
         bottom_sheet_gps= (TextView) findViewById(R.id.gps_auto);
+        delteAccoutnText=(TextView)findViewById(R.id.delete_account);
+
       //  go = (Button) findViewById(R.id.go);
 
     }
@@ -927,6 +982,7 @@ View mView;
         bottomSheetBehavior2.setState(BottomSheetBehavior.STATE_HIDDEN);
         bottom_sheet_gps.setOnClickListener(this);
         bottom_sheet_manual.setOnClickListener(  this);
+        delteAccoutnText.setOnClickListener(this);
         //go.setOnClickListener(this);
 
     }
@@ -943,7 +999,8 @@ View mView;
         bottomSheetBehavior2.setState(BottomSheetBehavior.STATE_HIDDEN);
         Intent intent1 = new Intent(my_profile.this, map_auto.class);
 
-        startActivity(intent1);
+
+            startActivityForResult(intent1,REQUEST_CODE_1);
         break;
         case R.id.gps_auto:
         bottomSheetBehavior2.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -952,7 +1009,6 @@ View mView;
             Intent intent3 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(intent3);
             if (ActivityCompat.checkSelfPermission(my_profile.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
                 //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -967,6 +1023,9 @@ View mView;
                     if (location != null) {
                         double l = location.getLatitude();
                         double g = location.getLongitude();
+                        //to firebase
+                        setMyLocationToFirebase(l,g);
+
                         String ls = "" + l;
                         String gs = "" + g;
                         Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
@@ -987,6 +1046,8 @@ View mView;
                             double g = location.getLongitude();
                             String ls = "" + l;
                             String gs = "" + g;
+                            //to firebase
+                            setMyLocationToFirebase(l,g);
 
                             Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
                             Toast.makeText(my_profile.this, gs, Toast.LENGTH_SHORT).show();
@@ -995,7 +1056,6 @@ View mView;
                     }
                 });
 
-                // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
                 //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -1012,6 +1072,9 @@ View mView;
                         double g = location.getLatitude();
                         String ls = "" + l;
                         String gs = "" + g;
+                        //to firebase
+                        setMyLocationToFirebase(l,g);
+
                         Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
                         Toast.makeText(my_profile.this, gs, Toast.LENGTH_SHORT).show();
 
@@ -1033,6 +1096,8 @@ View mView;
                         double g = location.getLongitude();
                         String ls = "" + l;
                         String gs = "" + g;
+                        //to firebase
+                        setMyLocationToFirebase(l,g);
 
                         Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
                         Toast.makeText(my_profile.this, gs, Toast.LENGTH_SHORT).show();
@@ -1057,6 +1122,8 @@ View mView;
                     double g = location.getLongitude();
                     String ls = "" + l;
                     String gs = "" + g;
+                    //to firebase
+                    setMyLocationToFirebase(l,g);
 
                     Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
                     Toast.makeText(my_profile.this, gs, Toast.LENGTH_SHORT).show();
@@ -1067,10 +1134,68 @@ View mView;
 
 
         break;
-
+            case R.id.delete_account:
+                Toast.makeText(getApplicationContext(), "delete", Toast.LENGTH_SHORT).show();
+                deleteAccount(getApplicationContext(),MainActivity.usernameId);
+            break;
 
     }
 }
+
+    private void deleteAccount(final Context c, final String usernameId) {
+        mDatabaseReference.child("userss").child(usernameId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.hasChild("following")) {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.child("following").getChildren()) {
+                        Log.d("mano", "onDataChange: followin id "+dataSnapshot1.getKey());
+                        mDatabaseReference.child("userss").child(dataSnapshot1.getKey()).child("followers").child(usernameId).removeValue();
+                    }
+                }
+
+                if (dataSnapshot.hasChild("products")) {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.child("products").getChildren()) {
+                        mDatabaseReference
+                                .child("categories")
+                                .child(dataSnapshot1.child("category").getValue(String.class))
+                                .child(dataSnapshot1.getKey()).removeValue();
+                    }
+                }
+                mDatabaseReference.child("userss").child(usernameId).removeValue();
+                FirebaseAuth.getInstance().getCurrentUser().delete()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    finish();
+                                    Intent intent=new Intent(c,splahScreen.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intent.putExtra("Exit",true);
+                                    startActivity(intent);
+                                    ActivityCompat.finishAffinity(my_profile.this);
+
+
+                                }
+                            }
+                        });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    private void setMyLocationToFirebase(double l, double g) {
+        String myLocation=l+" "+g;
+        mDatabaseUser.child(MainActivity.usernameId).child("location").setValue(myLocation);
+        Log.d("mano", "setMyLocationToFirebase: done");
+    }
 
     public void more(View view) {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -1080,5 +1205,43 @@ View mView;
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("offline");
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("online");
+
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
+        super.onActivityResult(requestCode, resultCode, dataIntent);
+
+        // The returned result data is identified by requestCode.
+        // The request code is specified in startActivityForResult(intent, REQUEST_CODE_1); method.
+        switch (requestCode)
+        {
+            // This request code is set by startActivityForResult(intent, REQUEST_CODE_1) method.
+            case REQUEST_CODE_1:
+
+                if(resultCode == RESULT_OK)
+                {
+                    String messageReturn = dataIntent.getStringExtra("long");
+                    String messageReturn2 = dataIntent.getStringExtra("lat");
+                    Toast.makeText(this, messageReturn, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, messageReturn2, Toast.LENGTH_SHORT).show();
+                    double l = Double.parseDouble(messageReturn2);
+                    double g = Double.parseDouble(messageReturn);
+                    setMyLocationToFirebase(l,g);
+
+                }
+        }
     }
 }

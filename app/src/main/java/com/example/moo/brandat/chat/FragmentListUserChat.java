@@ -57,6 +57,9 @@ public class FragmentListUserChat extends Fragment {
                 intent.putExtra(getString(R.string.key_chat_uid_reciever),userListData.getUserId());
                 intent.putExtra(getString(R.string.key_chat_name_reciever),userListData.getName());
                 intent.putExtra(getString(R.string.key_of_img_url_user_recieve),userListData.getImg_Url());
+                if (userListData.getState()!=null){
+                    intent.putExtra("state",userListData.getState());
+                }
                 startActivity(intent);
             }
         });
@@ -78,14 +81,15 @@ public class FragmentListUserChat extends Fragment {
                     userDataRefPath2.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                           UserListData userListData=new UserListData();
+                           UserListData userListData;
 
                             Log.d(TAG, "onDataChange: the user id"+dataSnapshot.getKey());
                             userListData=dataSnapshot.getValue(UserListData.class);
-                            userListData.setUserId(dataSnapshot.getKey());
-                            Log.d(TAG, "onDataChange: "+userListData.getName() +"       "+ userListData.getImg_Url());
-                            adatpter.add(userListData);
-
+                            if (userListData!=null) {
+                                userListData.setUserId(dataSnapshot.getKey());
+                                Log.d(TAG, "onDataChange: " + userListData.getName() + "       " + userListData.getState());
+                                adatpter.add(userListData);
+                            }
                         }
 
                         @Override

@@ -90,8 +90,7 @@ public class SearchFragment extends Fragment implements ImageAdapterTwo.ImageCli
                             pro.setFname((String) test.get("product_name"));
                             pro.setUser_id((String) test.get("user_id"));
                             pro.setProduct_key((String) test.get("product_key"));
-
-                            Log.d(TAG, "onDataChange: result done");
+                            Log.d(TAG, "onDataChange: result done "+pro.getProduct_key());
                             productsList.add(pro);
                         }
                     }
@@ -146,8 +145,8 @@ public class SearchFragment extends Fragment implements ImageAdapterTwo.ImageCli
         intent.putExtra("category", category);
         String cost = products.getCost();
         intent.putExtra("cost", cost);
-        String email = products.getEmail();
-        intent.putExtra("email", email);
+        String email = products.getTime();
+        intent.putExtra("time", email);
         String img = products.getImgesrc();
         intent.putExtra("img", img);
         String location = products.getLocation();
@@ -156,8 +155,8 @@ public class SearchFragment extends Fragment implements ImageAdapterTwo.ImageCli
         intent.putExtra("owner", owner);
         String pcase = products.getproduct_case();
         intent.putExtra("pcase", pcase);
-        String phone = products.getPhone();
-        intent.putExtra("phone", phone);
+        String phone = products.getQuantity();
+        intent.putExtra("quantity", phone);
         intent.putExtra("user_id",products.getUser_id());
 
         String prodescribe=products.getproduct_des();

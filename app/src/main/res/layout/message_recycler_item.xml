@@ -10,6 +10,7 @@
         android:gravity="end"
         android:textAlignment="textEnd">
         <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="233dp"
             android:gravity="end"
             android:layout_height="wrap_content">
@@ -28,8 +29,24 @@
                 android:id="@+id/photoImageView_sender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:visibility="gone"
                 />
+            <LinearLayout
+                android:id="@+id/pin_location_sender"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/pin_marker"
+                    android:layout_width="122dp"
+                    android:layout_height="122dp" />
+                <TextView
+                    android:id="@+id/location_sender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    />
+            </LinearLayout>
         </LinearLayout>
         <com.mikhaellopez.circularimageview.CircularImageView
 
@@ -62,6 +79,7 @@
 
               />
     <LinearLayout
+        android:orientation="horizontal"
       android:layout_width="233dp"
       android:gravity="start"
       android:layout_height="wrap_content">
@@ -83,6 +101,23 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/pin_location_reciever"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/pin_marker"
+                android:layout_width="122dp"
+                android:layout_height="122dp" />
+            <TextView
+                android:id="@+id/location_reciever"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                />
           </LinearLayout>
       </LinearLayout>
+</LinearLayout>
 </LinearLayout>

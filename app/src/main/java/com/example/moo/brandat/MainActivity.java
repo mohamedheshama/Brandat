@@ -30,6 +30,7 @@ import com.example.moo.brandat.chat.ChatActivity;
 import com.example.moo.brandat.chat.FragmentChat;
 import com.example.moo.brandat.chat.FragmentListUserChat;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     FirebaseAuth mAuth;
 TextView user,signed_in;
     private FirebaseAuth.AuthStateListener mAuthListner;
+    private DatabaseReference mDatabaseReference;
     public static String usernameId ,usernameUser,userImageUrl;
     //android:onClick="onclick"
 
@@ -67,7 +69,10 @@ TextView user,signed_in;
 
 
 
-
+        Intent intent=getIntent();
+        if (intent.hasExtra("Exit")){
+            finish();
+        }
 
         BottomNavigationView navigation =  findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
@@ -77,6 +82,8 @@ TextView user,signed_in;
     signed_in = (TextView) headerLayout.findViewById(R.id.signed_in);
     nav_head_account_image = (CircularImageView) headerLayout.findViewById(R.id.imageView_account);  //for navegation head action image and account
     user = (TextView) headerLayout.findViewById(R.id.user);
+
+    mDatabaseReference=FirebaseDatabase.getInstance().getReference();
 
     loadfragment(new home());
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
@@ -130,6 +137,8 @@ if(mAuth.getCurrentUser()!=null){
     usernameId = mAuth.getCurrentUser().getUid();
     usernameUser=mAuth.getCurrentUser().getDisplayName();
     userImageUrl=mAuth.getCurrentUser().getPhotoUrl().toString();
+
+
     PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
             .edit()
             .putString(getApplicationContext().getString(R.string.user_uid_shared_preference), usernameId)
@@ -434,7 +443,24 @@ String hh= String.valueOf(userImageUrl);
             }
         }
 
-    }*/}
+    }*/
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mDatabaseReference.child("userss").child(usernameId).child("state").setValue("offline");
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDatabaseReference.child("userss").child(usernameId).child("state").setValue("online");
+
+    }
+}
+
 
 
 

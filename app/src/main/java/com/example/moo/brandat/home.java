@@ -40,7 +40,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+
+import static java.util.Collections.sort;
 
 public class home extends Fragment {
     private RecyclerView mRecyclerView;
@@ -120,7 +125,7 @@ return rootView;
         @Override
         protected List doInBackground(String... strings) {
 
-            final Query productQuery = mDatabase;//////////filtering
+            final Query productQuery = mDatabase.orderByChild("cost");//////////filtering
             final List<String> namesCategries=new ArrayList<>();
             productQuery.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -136,13 +141,30 @@ return rootView;
                             products product = postSnapshote.getValue(products.class);
                             product.setImgesrc(postSnapshote.child("imagesrc").getValue(String.class));
                             product.setFname(postSnapshote.child("product_name").getValue(String.class));
+                            Log.d("mano", "onDataChange: "+postSnapshote.hasChild("likes"));
+                            if (postSnapshote.hasChild("likes")){
+                                Map<String ,String > likes= (Map<String,String >) postSnapshote.child("likes").getValue();
+//                                product.likes=String.valueOf(likes.size());
+                                Log.d("mano ", "onDataChange: likes "+likes.size());
+                            }
                             product.setProduct_key(postSnapshote.getKey());
-                            if (i<=5) {
+                            if (i<=9) {
                                 list.add(product);
                                 Log.d("onBindViewHolder", "onDataChange: test "+postSnapshote.hasChild("category")+postSnapshote.child("imagesrc").getValue(String.class));
                             }
 
                         }
+//                        sort(list, new Comparator<products>() {
+//                            @Override
+//                            public int compare(products o1, products o2) {
+//
+//                                // ascending order
+//                                // return (int) (this.salary - compareSalary);
+//
+//                                // descending order
+//                                return (int) (o2.likes - o1.likes);
+//                            }
+//                        });
                         productsList.add(list);
 
 
@@ -150,7 +172,6 @@ return rootView;
 
                           //  products product = postSnapshot.getValue(products.class);
 
-                        // TODO: handle the post
                     }
                     setupLayout(productsList,namesCategries);
 

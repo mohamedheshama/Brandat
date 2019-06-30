@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class details extends AppCompatActivity {
     TextView fname;
@@ -103,8 +104,9 @@ favour=new ArrayList<>();
         editActivity=(FloatingActionButton)findViewById(R.id.edit_floating_action_button);
         mDatabase= FirebaseDatabase.getInstance().getReference().child("userss").child(mCurrentUser.getUid());
 
+         final Intent intent = getIntent();
         mDatabasecat= FirebaseDatabase.getInstance().getReference().child("categories");
-         Intent intent = getIntent();
+
         if (intent.hasExtra("fname")) {
             name = intent.getStringExtra("fname");
             cat = intent.getStringExtra("category");
@@ -119,6 +121,7 @@ favour=new ArrayList<>();
             uId = intent.getStringExtra("user_id");
             prodescribe = intent.getStringExtra("prodescribe");
             product_key = intent.getStringExtra("product_key");
+            Log.d("mano", "onCreate: product key from intent "+product_key);
             //likes=intent.getStringArrayListExtra("likes");
 
             setUp();
@@ -142,6 +145,8 @@ favour=new ArrayList<>();
                     uId = product.getUser_id();
                     prodescribe = product.getproduct_des();
                     product_key = product.getProduct_key();
+                    Log.d("mano", "onCreate: product key from firebase "+product_key);
+
                     setUp();
                 }
 
@@ -422,14 +427,52 @@ favour=new ArrayList<>();
             @Override
             public void onClick(View v) {
 
-                Intent intent1=new Intent(details.this, Main_map.class);
-                double l=30.00351;
-                double g= 30.053748;
-                String ls=""+l;
-                String gs=""+g;
-                intent1.putExtra("long", ls);
-                intent1.putExtra("lat", gs);
-                startActivity(intent1);
+                Log.d("mano", "onClick: the user id "+ uId+"  product key "+product_key);
+
+                // TODO: code from  firebase from product location
+                DatabaseReference s = mDatabaseReference.child("userss").child(uId).child("products").child(product_key);
+
+                s.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Log.d("mano", "onClick: ");
+                        Intent intent1=new Intent(details.this, Main_map.class);
+                        double l=30.00351;
+                        double g= 30.053748;
+
+
+
+                        String location=dataSnapshot.child("location").getValue(String.class);
+                        Log.d("mano", "onClick: "+location);
+
+                        if (location!=null) {
+                            try {
+                                Scanner input = new Scanner(location);
+
+                                l = input.nextDouble();
+                                g = input.nextDouble();
+                                Log.d("mano", "onClick: " + location + "  l=" + l + "  g" + g);
+
+                                String ls = "" + l;
+                                String gs = "" + g;
+                                intent1.putExtra("long", ls);
+                                intent1.putExtra("lat", gs);
+                                startActivity(intent1);
+                            }catch (Exception ex){
+                                Log.d("mano", "onDataChange: error in location"+location);
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
             }
       });
 //        phone.setOnClickListener(new View.OnClickListener() {
@@ -441,7 +484,6 @@ favour=new ArrayList<>();
 //                    Intent intent3 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 //                    startActivity(intent3);
 //                    if (ActivityCompat.checkSelfPermission(details.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-//                        // TODO: Consider calling
 //                        //    ActivityCompat#requestPermissions
 //                        // here to request the missing permissions, and then overriding
 //                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -565,6 +607,7 @@ favour=new ArrayList<>();
                     Intent intent2 = new Intent(details.this, UserProfile.class);
                     intent2.putExtra("UserId", uId);
                     intent2.putExtra("img_url", uImg);
+                    intent2.putExtra((getString(R.string.key_chat_name_reciever)),ow);
 
                     startActivity(intent2);
                 }
@@ -575,6 +618,7 @@ favour=new ArrayList<>();
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getBaseContext(), ChatActivity.class);
+                intent.putExtra(getString(R.string.key_chat_name_reciever),ow);
                 intent.putExtra(getString(R.string.key_chat_uid_reciever),uId);
                 intent.putExtra(getString(R.string.key_of_img_url_user_recieve),uImg);
                 startActivity(intent);
@@ -648,6 +692,19 @@ favour=new ArrayList<>();
     private void requestPermission(){
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
+
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("offline");
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("online");
 
     }
 }

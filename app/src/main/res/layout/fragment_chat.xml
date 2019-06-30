@@ -30,6 +30,11 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:background="@drawable/ic_image_black_24dp" />
+        <ImageButton
+            android:id="@+id/photoLocationButton"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/pinmarkertwo" />
 
         <EditText
             android:id="@+id/message_edit_text"

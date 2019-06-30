@@ -304,7 +304,7 @@ startActivity(new Intent(UpdateProduct.this,MainActivity.class));
         builder.setTitle("select Category type");
 
 // add a list
-        String[] categries = {"Cars", "Mobiles", "Electronics","Animals","Music and Books","Jops","Houses"};
+        String[] categries = {"Cars", "Mobiles", "Electronics","Animals","Music and Books","Jops","Houses","Clothes"};
         builder.setItems(categries, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -330,6 +330,9 @@ startActivity(new Intent(UpdateProduct.this,MainActivity.class));
                     case 6:
                         category.setText("Houses");
                         break;
+                    case 7:
+                        category.setText("Clothes");
+                        break;
 
                 }
             }
@@ -339,4 +342,5 @@ startActivity(new Intent(UpdateProduct.this,MainActivity.class));
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
 }

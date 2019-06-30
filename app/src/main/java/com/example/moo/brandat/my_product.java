@@ -22,8 +22,11 @@ import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
@@ -32,6 +35,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
 
     // TextView variable
     private TextView bottomSheetHeading;
+    private final static int REQUEST_CODE_1 = 1;
 
     // Button variables
     private Button expandBottomSheetButton;
@@ -58,6 +62,9 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
     FloatingActionButton editActivity;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mDatabaseReference;
+    String product_key,categories_key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +91,9 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
         mCurrentUser=mAuth.getCurrentUser();
         editActivity=(FloatingActionButton)findViewById(R.id.edit_floating_action_button);
 
+        mFirebaseDatabase=FirebaseDatabase.getInstance();
+        mDatabaseReference=mFirebaseDatabase.getReference();
+
         final Intent intent = getIntent();
         final String name = intent.getStringExtra("fname");
         final String cat = intent.getStringExtra("category");
@@ -98,7 +108,8 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
         final String uId = intent.getStringExtra("user_id");
         final String prodescribe=intent.getStringExtra("prodescribe");
         final String product_key=intent.getStringExtra("product_key");
-
+        this.product_key=product_key;
+        categories_key=cat;
 
         fname.setText(name);
         category.setText(cat);
@@ -253,7 +264,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 Intent intent1=new Intent(my_product.this, map_auto.class);
 
-                startActivity(intent1);
+                startActivityForResult(intent1,REQUEST_CODE_1);
                 break;
             case R.id.gps_auto:
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -262,7 +273,6 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                     Intent intent3 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     startActivity(intent3);
                     if (ActivityCompat.checkSelfPermission(my_product.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
-                        // TODO: Consider calling
                         //    ActivityCompat#requestPermissions
                         // here to request the missing permissions, and then overriding
                         //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -279,6 +289,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                                 double g=location.getLongitude();
                                 String ls=""+l;
                                 String gs=""+g;
+                                setMyLocationToFirebase(l,g);
                                 Toast.makeText(my_product.this, ls, Toast.LENGTH_SHORT).show();
                                 Toast.makeText(my_product.this, gs, Toast.LENGTH_SHORT).show();
 
@@ -298,7 +309,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                                     double g=location.getLongitude();
                                     String ls=""+l;
                                     String gs=""+g;
-
+                                    setMyLocationToFirebase(l,g);
                                     Toast.makeText(my_product.this, ls, Toast.LENGTH_SHORT).show();
                                     Toast.makeText(my_product.this, gs, Toast.LENGTH_SHORT).show();
 
@@ -306,7 +317,6 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                             }
                         });
 
-                        // TODO: Consider calling
                         //    ActivityCompat#requestPermissions
                         // here to request the missing permissions, and then overriding
                         //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -323,6 +333,8 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                                 double g = location.getLatitude();
                                 String ls = "" + l;
                                 String gs =  ""+ g;
+                                setMyLocationToFirebase(l,g);
+
                                 Toast.makeText(my_product.this, ls, Toast.LENGTH_SHORT).show();
                                 Toast.makeText(my_product.this, gs, Toast.LENGTH_SHORT).show();
 
@@ -344,6 +356,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                                 double g=location.getLongitude();
                                 String ls=""+l;
                                 String gs=""+g;
+                                setMyLocationToFirebase(l,g);
 
                                 Toast.makeText(my_product.this, ls, Toast.LENGTH_SHORT).show();
                                 Toast.makeText(my_product.this, gs, Toast.LENGTH_SHORT).show();
@@ -351,7 +364,6 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                             }
                         }
                     });
-                    // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding
                     //  public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -368,6 +380,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                             double g=location.getLongitude();
                             String ls=""+l;
                             String gs=""+g;
+                            setMyLocationToFirebase(l,g);
 
                             Toast.makeText(my_product.this, ls, Toast.LENGTH_SHORT).show();
                             Toast.makeText(my_product.this, gs, Toast.LENGTH_SHORT).show();
@@ -385,6 +398,54 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+    private void setMyLocationToFirebase(double l, double g) {
+        String myLocation=l+" "+g;
+        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("products").child(product_key).child("location").setValue(myLocation);
+
+
+         mDatabaseReference.child("categories").child(categories_key).child(product_key).child("location").setValue(myLocation);
+        Log.d("mano", "setMyLocationToFirebase: done");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
+        super.onActivityResult(requestCode, resultCode, dataIntent);
+
+        // The returned result data is identified by requestCode.
+        // The request code is specified in startActivityForResult(intent, REQUEST_CODE_1); method.
+        switch (requestCode)
+        {
+            // This request code is set by startActivityForResult(intent, REQUEST_CODE_1) method.
+            case REQUEST_CODE_1:
+
+                if(resultCode == RESULT_OK)
+                {
+                    String messageReturn = dataIntent.getStringExtra("long");
+                    String messageReturn2 = dataIntent.getStringExtra("lat");
+                    Toast.makeText(this, messageReturn, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, messageReturn2, Toast.LENGTH_SHORT).show();
+                    double l = Double.parseDouble(messageReturn2);
+                    double g = Double.parseDouble(messageReturn);
+                    setMyLocationToFirebase(l,g);
+
+                }
+        }
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("offline");
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("online");
 
     }
 }

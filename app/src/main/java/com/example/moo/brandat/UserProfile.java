@@ -75,6 +75,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import static com.example.moo.brandat.R.layout.list_item_article;
 
@@ -105,7 +106,7 @@ String img_url=null;
 FloatingActionButton editActivity;
     List<products> productsList;
 productsAdapter cardsAdapter;
-String UserId;
+String UserId,userNameReciever;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabaseProducts;
     private DatabaseReference mDatabaseuser_info;
@@ -188,6 +189,9 @@ if(intent==null) {
 }else{
  UserId= intent.getStringExtra("UserId");
     img_url=intent.getStringExtra("img_url");
+    if (intent.hasExtra(getString(R.string.key_chat_name_reciever))){
+        userNameReciever=intent.getStringExtra(getString(R.string.key_chat_name_reciever));
+    }
     Log.d("imgeUUUrl", "onCreate: "+img_url);
     mDatabaseuser_info=mDatabaseUser.child(UserId);
     mDatabaseProducts=mDatabaseuser_info.child("products");
@@ -209,6 +213,7 @@ if(intent==null) {
                 Intent intent=new Intent(getBaseContext(), ChatActivity.class);
                 intent.putExtra(getString(R.string.key_chat_uid_reciever),UserId);
                 intent.putExtra(getString(R.string.key_of_img_url_user_recieve),img_url);
+                intent.putExtra(getString(R.string.key_chat_name_reciever),userNameReciever);
                 startActivity(intent);
             }
         });
@@ -217,16 +222,91 @@ if(intent==null) {
         fab1.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View w) {
-            Intent intent1=new Intent(UserProfile.this, Main_map.class);
-            double l= 30.053748;
-            double g= 30.053748;
-            String ls=""+l;
-            String gs=""+g;
-            intent1.putExtra("long", ls);
-            intent1.putExtra("lat", gs);
-            startActivity(intent1);
+
+
+            // TODO: code from firebase from user
+            DatabaseReference s = mDatabaseReference.child("userss").child(UserId);
+            s.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Intent intent1=new Intent(UserProfile.this, Main_map.class);
+                    double l= 30.053748;
+                    double g= 30.053748;
+                    String ls=""+l;
+                    String gs=""+g;
+
+
+
+                    String location=dataSnapshot.child("location").getValue(String.class);
+
+                    if (location!=null) {
+                        Scanner input = new Scanner(location);
+                        try {
+                            l = input.nextDouble();
+                            g = input.nextDouble();
+                            Log.d("mano", "onClick: " + location + "  l=" + l + "  g" + g);
+                            intent1.putExtra("long", "" + g);
+                            intent1.putExtra("lat", "" + l);
+                            startActivity(intent1);
+                        }catch (Exception ex){
+                            Log.d("mano", "onDataChange: error in location  "+location);
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
         }
     });
+
+        final TextView followNumberTextview=(TextView)findViewById(R.id.follower_number);
+        final DatabaseReference followNumPath=mDatabaseReference.child("userss").child(UserId);
+        followNumPath.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d("mano", "onChildAdded: "+dataSnapshot.hasChild("email")+"  "+dataSnapshot.getKey());
+                updateNumberFollower(dataSnapshot);
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                updateNumberFollower(dataSnapshot);
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+               if (dataSnapshot.getKey().equals("followers")){
+                   int x=Integer.valueOf((String) followNumberTextview.getText());
+                   x--;
+                   followNumberTextview.setText(String.valueOf(x));
+               }
+
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+            public void updateNumberFollower(DataSnapshot dataSnapshot){
+                if (dataSnapshot.getKey().equals("followers")){
+                    followNumberTextview.setText(String.valueOf(dataSnapshot.getChildrenCount()));
+
+                }
+            }
+        });
 
 
     final FloatingActionButton fabFollowMe= (FloatingActionButton) findViewById(R.id.follow_me);
@@ -237,11 +317,11 @@ if(intent==null) {
             String value=dataSnapshot.getValue(String.class);
             Log.d("mano", "onDataChange:  value  "+value);
             if (value==null){
-
+                fabFollowMe.setImageResource(R.drawable.follow_uncheck);
                 fabFollowMe.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#EDEAFD")));
 
             }else if(value.equals("true")){
-
+                fabFollowMe.setImageResource(R.drawable.follow_check);
                 fabFollowMe.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#5A01FA")));
             }
         }
@@ -265,11 +345,15 @@ if(intent==null) {
                     if (value==null){
 
                         path.setValue("true");
+                        fabFollowMe.setImageResource(R.drawable.follow_check);
                         fabFollowMe.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#5A01FA")));
+                        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("following").child(UserId).setValue("true");
 
                     }else {
                         dataSnapshot.getRef().removeValue();
+                        fabFollowMe.setImageResource(R.drawable.follow_uncheck);
                         fabFollowMe.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#EDEAFD")));
+                        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("following").child(UserId).removeValue();
                     }
                 }
 
@@ -279,7 +363,6 @@ if(intent==null) {
                 }
             });
 
-            Toast.makeText(UserProfile.this, "done", Toast.LENGTH_SHORT).show();
         }
     });
 
@@ -306,9 +389,12 @@ if(intent==null) {
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                         products product = postSnapshot.getValue(products.class);
+                        Log.d("mano", "onDataChange: "+postSnapshot.child("imagesrc").getValue(String.class)+product.getImgesrc());
+                        product.setImgesrc(postSnapshot.child("imagesrc").getValue(String.class));
+                        product.setFname(postSnapshot.child("product_name").getValue(String.class));
                         product.setProduct_key(postSnapshot.getKey());
                         productsList.add(product);
-                        // TODO: handle the post
+
                     }
                     setupLayout(productsList);
 
@@ -703,6 +789,18 @@ View mView;
     }
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("offline");
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("online");
+
+    }
 
 }
