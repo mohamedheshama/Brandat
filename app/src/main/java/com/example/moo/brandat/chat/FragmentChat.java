@@ -207,8 +207,73 @@ public class FragmentChat extends Fragment {
                 Toast.makeText(getContext(), "code bohlok first", Toast.LENGTH_SHORT).show();
                 double latitude1=latitude ,longitud=longitude;
                 String content=String.valueOf(latitude1)+" jsdflfdsljdfsdfsldkafj "+String.valueOf(longitud);
-                sendMessage(content,false);
+                if ((latitude==60)&&(longitud==60)){
 
+                   locationManager =
+                            (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+                    // getting GPS status
+                    checkGPS = locationManager
+                            .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+                    // getting network status
+                   checkNetwork = locationManager
+                            .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+                    if (!checkGPS && !checkNetwork) {
+                        //  Toast.makeText(Context, "No Service Provider Available", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // this.canGetLocation = true;
+                        // First get location from Network Provider
+                        if (checkNetwork) {
+                            //    Toast.makeText(mContext, "Network", Toast.LENGTH_SHORT).show();
+
+                            try {
+                                locationManager.getAllProviders();
+                                Log.d("Network", "Network");
+                                if (locationManager != null) {
+                                    loc = locationManager
+                                            .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+                                }
+
+                                if (loc != null) {
+                                    latitude = loc.getLatitude();
+                                    longitude = loc.getLongitude();
+                                }
+                            } catch (SecurityException e) {
+
+                            }
+                        }
+                    }
+                    // if GPS Enabled get lat/long using GPS Services
+                    if (checkGPS) {
+                        //     Toast.makeText(mContext, "GPS", Toast.LENGTH_SHORT).show();
+                        if (loc == null) {
+                            try {
+                                locationManager.getAllProviders();
+                                Log.d("GPS Enabled", "GPS Enabled");
+                                if (locationManager != null) {
+                                    loc = locationManager
+                                            .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                    if (loc != null) {
+                                        latitude = loc.getLatitude();
+                                        longitude = loc.getLongitude();
+                                    }
+                                }
+                            } catch (SecurityException e) {
+
+                            }
+                        }
+                    }
+                }
+                if ((latitude==60)&&(longitud==60)){
+                    Toast.makeText(getContext(), "error in gps ", Toast.LENGTH_SHORT).show();
+
+
+                }else {
+                    sendMessage(content, false);
+                }
             }
         });
         mSendePhotoImgae.setOnClickListener(new View.OnClickListener() {

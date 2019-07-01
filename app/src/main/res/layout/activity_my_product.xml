@@ -484,17 +484,17 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Address"
+                    android:text="phone"
                     android:textAlignment="center"
                     android:layout_marginBottom="5dp"
                     android:textColor="#0057FF"
                     />
                 <TextView
-                    android:id="@+id/location"
+                    android:id="@+id/phone1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_place_blue_24dp"
-                    android:text="   shipeen elkoom "
+                    android:text=""
 
                     />
 

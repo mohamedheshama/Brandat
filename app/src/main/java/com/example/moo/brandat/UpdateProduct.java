@@ -69,7 +69,7 @@ public class UpdateProduct extends AppCompatActivity {
         cost=(EditText)findViewById(R.id.cost);
         ownername=(EditText)findViewById(R.id.ownerName);
         pdescribe=(EditText)findViewById(R.id.descripe);
-        location=(EditText)findViewById(R.id.location);
+      //  location=(EditText)findViewById(R.id.location);
         phone=(EditText)findViewById(R.id.phoneNumber);
         email=(EditText)findViewById(R.id.email);
         publish=(TextView) findViewById(R.id.textView6);
@@ -95,7 +95,7 @@ public class UpdateProduct extends AppCompatActivity {
         final String em = intent.getStringExtra("time");
         img_src=intent.getStringExtra("img");
         final Uri im = Uri.parse(intent.getStringExtra("img"));
-        final String loc = intent.getStringExtra("location");
+        //final String loc = intent.getStringExtra("location");
         final String ow = intent.getStringExtra("owner");
         final String pcas = intent.getStringExtra("pcase");
         final String fon = intent.getStringExtra("quantity");
@@ -109,7 +109,7 @@ casee.setText(pcas);
 cost.setText(cos);
 ownername.setText(ow);
 pdescribe.setText(prodescribe);
-location.setText(loc);
+//location.setText(loc);
 phone.setText(fon);
 email.setText(em);
         Picasso.with(this)
@@ -137,7 +137,81 @@ email.setText(em);
         publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                publish();
+
+
+
+
+                int i=1;
+                if ( !(fname.getText().toString().length() == 0) ){
+                    fname.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+                }else {
+                    fname.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+                    i=2;
+
+                }
+                if (!(casee.getText().toString().length() == 0) ){
+                    casee.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+                }
+                else{
+                    casee.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+                    i=2;
+
+                }
+
+
+
+                if (!(category.getText().toString().length() == 0) ){
+                    category.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+                }
+                else{
+                    category.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+                    i=2;
+
+                }
+
+                if ( !(cost.getText().toString().length() == 0)&&(cost.getText().toString().length() <= 3) ){
+                    cost.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+                }
+                else{
+                    cost.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+                    i=2;
+
+                }
+                if (!(ownername.getText().toString().length() == 0) ){
+                    ownername.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+                }
+                else{
+                    ownername.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+                    i=2;
+
+                }
+                if (!(pdescribe.getText().toString().length() == 0) ){
+                    pdescribe.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+                }
+                else{
+                    pdescribe.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+                    i=2;
+
+                }
+                if ( !(phone.getText().toString().length() == 0) ){
+                    phone.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+                }
+                else {
+                    phone.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+                    i=2;
+
+                }
+
+
+
+
+                if (i==1) {
+
+                    publish();
+                }else {
+                    alertOneButton();
+
+                }
 
             }
         });
@@ -154,7 +228,7 @@ email.setText(em);
         final String costs = cost.getText().toString().trim();
         final String oname = ownername.getText().toString().trim();
         final String prodes = pdescribe.getText().toString().trim();
-        final String loc = location.getText().toString().trim();
+//        final String loc = location.getText().toString().trim();
         final String fone = phone.getText().toString().trim();
         final String emai = email.getText().toString().trim();
         mProgress.setMessage("Posting ...");
@@ -190,7 +264,7 @@ email.setText(em);
                                 productsData.child("cost").setValue(costs);
                                 productsData.child("ownername").setValue(oname);
                                 productsData.child("product_des").setValue(prodes);
-                                productsData.child("location").setValue(loc);
+                            //    productsData.child("location").setValue(loc);
                         productsData.child("quantity").setValue(fone);
                         Log.d("quantity", "onComplete: "+fone+"  "+java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
                         productsData.child("time").setValue(java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
@@ -207,7 +281,7 @@ email.setText(em);
                                 categoriesData.child("cost").setValue(costs);
                                 categoriesData.child("ownername").setValue(oname);
                                 categoriesData.child("product_des").setValue(prodes);
-                                categoriesData.child("location").setValue(loc);
+                              //  categoriesData.child("location").setValue(loc);
                         categoriesData.child("quantity").setValue(fone);
                         categoriesData.child("time").setValue(java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
 
@@ -249,7 +323,7 @@ startActivity(new Intent(UpdateProduct.this,MainActivity.class));
                     productsData.child("cost").setValue(costs);
                     productsData.child("ownername").setValue(oname);
                     productsData.child("product_des").setValue(prodes);
-                    productsData.child("location").setValue(loc);
+                  //  productsData.child("location").setValue(loc);
             productsData.child("quantity").setValue(fone);
             productsData.child("time").setValue(java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
 
@@ -265,7 +339,7 @@ startActivity(new Intent(UpdateProduct.this,MainActivity.class));
                     categoriesData.child("cost").setValue(costs);
                     categoriesData.child("ownername").setValue(oname);
                     categoriesData.child("product_des").setValue(prodes);
-                    categoriesData.child("location").setValue(loc);
+                  //  categoriesData.child("location").setValue(loc);
             categoriesData.child("quantity").setValue(fone);
             categoriesData.child("time").setValue(java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
 
@@ -343,6 +417,18 @@ startActivity(new Intent(UpdateProduct.this,MainActivity.class));
 // create and show the alert dialog
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+    public void alertOneButton() {
+
+        new AlertDialog.Builder(UpdateProduct.this)
+                .setTitle("error in input")
+                .setMessage("error in data ")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                    }
+                }).show();
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.moo.brandat;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -95,7 +96,7 @@ favour=new ArrayList<>();
         cost = (TextView) findViewById(R.id.cost);
         ownername = (TextView) findViewById(R.id.ownerName);
         pdescribe = (TextView) findViewById(R.id.descripe);
-        location = (TextView) findViewById(R.id.location);
+     //   location = (TextView) findViewById(R.id.location);
         phone = (TextView) findViewById(R.id.phone);
         email = (TextView) findViewById(R.id.publish_date);
         imageView = findViewById(R.id.viewImage);
@@ -499,54 +500,45 @@ favour=new ArrayList<>();
             @Override
             public void onClick(View v) {
 
-                Log.d("mano", "onClick: the user id "+ uId+"  product key "+product_key);
-
-                // TODO: code from  firebase from product location
-                DatabaseReference s = mDatabaseReference.child("userss").child(uId).child("products").child(product_key);
-
-                s.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Log.d("mano", "onClick: ");
-                        Intent intent1=new Intent(details.this, Main_map.class);
-                        double l=30.00351;
-                        double g= 30.053748;
+if (loc !=null) {
+    if(loc.isEmpty()){
+        Toast.makeText(details.this, "rrrrrrrrrrrrrr", Toast.LENGTH_SHORT).show();
+        alertOneButton();
 
 
-
-                        String location=dataSnapshot.child("location").getValue(String.class);
-                        Log.d("mano", "onClick: "+location);
-
-                        if (location!=null) {
-                            try {
-                                Scanner input = new Scanner(location);
-
-                                l = input.nextDouble();
-                                g = input.nextDouble();
-                                Log.d("mano", "onClick: " + location + "  l=" + l + "  g" + g);
-
-                                String ls = "" + l;
-                                String gs = "" + g;
-                                intent1.putExtra("long", ls);
-                                intent1.putExtra("lat", gs);
-                                startActivity(intent1);
-                            }catch (Exception ex){
-                                Log.d("mano", "onDataChange: error in location"+location);
-                            }
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+    }else{
+    Toast.makeText(details.this, "ll", Toast.LENGTH_SHORT).show();
 
 
+double l;
+double g;
+
+                    Scanner input = new Scanner(loc);
+Intent intent1=new Intent(details.this,Main_map.class);
+String []ss=loc.split(" ");
+
+                    g = Double.parseDouble (ss[0]);
+                    l = Double.parseDouble (ss[1]);
+                    Toast.makeText(details.this, ""+l+"kkkkk"+g, Toast.LENGTH_SHORT).show();
+                    String ls = "" + l;
+                    String gs = "" + g;
+                    intent1.putExtra("long", ls);
+                    intent1.putExtra("lat", gs);
+                    startActivity(intent1);
 
             }
+
+
+
+
+
+}
+else {
+    alertOneButton();
+}
+            }
       });
+
 //        phone.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View w) {
@@ -744,6 +736,20 @@ favour=new ArrayList<>();
 
     }
 
+    public void alertOneButton() {
+
+        new AlertDialog.Builder(details.this)
+                .setTitle("NO location")
+                .setMessage("this user don't add location")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                    }
+                }).show();
+    }
+
+
     private void setUp() {
         fname.setText(name);
         category.setText(cat);
@@ -751,7 +757,7 @@ favour=new ArrayList<>();
         pdescribe.setText(prodescribe);
         cost.setText(cos+" .LE");
         email.setText(em);
-        location.setText(loc);
+       // location.setText(loc);
         ownername.setText(ow);
         phone.setText(fon);
         Picasso.with(this).load(im) .resize(200, 200)

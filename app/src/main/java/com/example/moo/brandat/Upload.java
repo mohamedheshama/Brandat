@@ -10,12 +10,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +41,7 @@ import java.util.Calendar;
 
 import static android.app.Activity.RESULT_OK;
 
-public class Upload  extends AppCompatActivity {
+public class Upload  extends AppCompatActivity implements TextWatcher {
 
 TextView publish;
     EditText fname;EditText category;EditText casee;EditText cost;EditText pdescribe;EditText location;EditText ownername;EditText phone;EditText email;
@@ -51,7 +54,7 @@ TextView publish;
     private DatabaseReference mDatabaseuser;
     private static final int PHOTO_PICKER = 2;
 
-
+    Switch isShop1;
     private ProgressDialog mProgress;
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
@@ -63,7 +66,7 @@ TextView publish;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
 
-
+        isShop1=(Switch) findViewById(R.id.switch11);
 
         fname=(EditText)findViewById(R.id.fullName);
         category=(EditText)findViewById(R.id.category);
@@ -71,7 +74,7 @@ TextView publish;
         cost=(EditText)findViewById(R.id.cost);
         ownername=(EditText)findViewById(R.id.ownerName);
         pdescribe=(EditText)findViewById(R.id.descripe);
-        location=(EditText)findViewById(R.id.location);
+      //  location=(EditText)findViewById(R.id.location);
         phone=(EditText)findViewById(R.id.phoneNumber);
         email=(EditText)findViewById(R.id.email);
         publish=(TextView)findViewById(R.id.textView6);
@@ -98,11 +101,91 @@ mDatabase= FirebaseDatabase.getInstance().getReference().child("userss").child(m
             }
         });
 
-publish.setOnClickListener(new View.OnClickListener() {
+        category.addTextChangedListener(this);
+        casee.addTextChangedListener(this);
+        fname.addTextChangedListener(this);
+        cost.addTextChangedListener(this);
+        ownername.addTextChangedListener(this);
+        pdescribe.addTextChangedListener(this);
+        //location.addTextChangedListener(this);
+        phone.addTextChangedListener(this);
+        //email.addTextChangedListener(this);
+
+
+        publish.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
-        publish();
+        int i=1;
+        if ( !(fname.getText().toString().length() == 0) ){
+            fname.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }else {
+            fname.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+i=2;
 
+        }
+        if (!(casee.getText().toString().length() == 0) ){
+            casee.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }
+        else{
+            casee.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+            i=2;
+
+        }
+
+
+
+        if (!(category.getText().toString().length() == 0) ){
+            category.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }
+        else{
+            category.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+            i=2;
+
+        }
+
+        if ( !(cost.getText().toString().length() == 0)&&(cost.getText().toString().length() <= 3) ){
+            cost.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }
+        else{
+            cost.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+            i=2;
+
+        }
+        if (!(ownername.getText().toString().length() == 0) ){
+            ownername.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }
+        else{
+            ownername.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+            i=2;
+
+        }
+        if (!(pdescribe.getText().toString().length() == 0) ){
+            pdescribe.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }
+        else{
+            pdescribe.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+            i=2;
+
+        }
+        if ( !(phone.getText().toString().length() == 0) ){
+            phone.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }
+        else {
+            phone.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+            i=2;
+
+        }
+
+
+
+
+if (i==1) {
+
+    publish();
+}else {
+    alertOneButton();
+
+}
     }
 });
     }
@@ -121,12 +204,20 @@ publish.setOnClickListener(new View.OnClickListener() {
         final String costs=cost.getText().toString().trim();
         final String oname=ownername.getText().toString().trim();
         final String prodes=pdescribe.getText().toString().trim();
-      final  String loc=location.getText().toString().trim();
+      //final  String loc=location.getText().toString().trim();
         final String fone=phone.getText().toString().trim();
 //        final String emai=email.getText().toString().trim();
 mProgress.setMessage("Posting ...");
 mProgress.show();
+        boolean s=isShop1.isChecked();
+        if(s==true){
 
+            // TODO: code saad get the my location and send
+        }else{
+            // TODO: code saad get the my location and send
+
+
+        }
   final StorageReference filepath=mStorageReference.child("App_Images").child(mImgUri.getLastPathSegment());
        UploadTask uploadTask = filepath.putFile(mImgUri);
 
@@ -158,7 +249,7 @@ final DatabaseReference productsData=mDatabase.child("products").push();
                             productsData.child("cost").setValue(costs);
                             productsData.child("ownername").setValue(oname);
                             productsData.child("product_des").setValue(prodes);
-                            productsData.child("location").setValue(loc);
+                          //  productsData.child("location").setValue(loc);
                             productsData.child("quantity").setValue(fone);
                             productsData.child("time").setValue(date);
                             productsData.child("imagesrc").setValue(downloadUri.toString());
@@ -173,7 +264,7 @@ final DatabaseReference productsData=mDatabase.child("products").push();
                             categoriesData.child("cost").setValue(costs);
                             categoriesData.child("ownername").setValue(oname);
                             categoriesData.child("product_des").setValue(prodes);
-                            categoriesData.child("location").setValue(loc);
+                            //categoriesData.child("location").setValue(loc);
                             categoriesData.child("quantity").setValue(fone);
                             categoriesData.child("time").setValue(date);
                             categoriesData.child("imagesrc").setValue(downloadUri.toString());
@@ -269,4 +360,152 @@ final DatabaseReference productsData=mDatabase.child("products").push();
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+
+    @Override
+    public void beforeTextChanged(CharSequence editable, int i, int i1, int i2) {
+        if (fname.getText().hashCode() == editable.hashCode()&& !(fname.getText().toString().length() == 0) ){
+            fname.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }else {
+            fname.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_radio_button_unchecked_black_24dp,0, 0, 0);
+
+
+        }
+        if (casee.getText().hashCode() == editable.hashCode()&& !(casee.getText().toString().length() == 0) ){
+            casee.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }
+        else{
+            casee.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_radio_button_unchecked_black_24dp,0, 0, 0);
+
+
+        }
+
+
+
+        if (category.getText().hashCode() == editable.hashCode()&& !(category.getText().toString().length() == 0) ){
+            category.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }
+        else{
+            category.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_radio_button_unchecked_black_24dp,0, 0, 0);
+
+
+        }
+
+        if (cost.getText().hashCode() == editable.hashCode()&& !(cost.getText().toString().length() == 0) ){
+            cost.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }
+        else{
+            cost.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_radio_button_unchecked_black_24dp,0, 0, 0);
+
+
+        }
+        if (ownername.getText().hashCode() == editable.hashCode()&& !(ownername.getText().toString().length() == 0) ){
+            ownername.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }
+        else{
+            ownername.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_radio_button_unchecked_black_24dp,0, 0, 0);
+
+
+        }
+        if (pdescribe.getText().hashCode() == editable.hashCode()&& !(pdescribe.getText().toString().length() == 0) ){
+            pdescribe.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }
+        else{
+            pdescribe.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_radio_button_unchecked_black_24dp,0, 0, 0);
+
+
+        }
+        if (phone.getText().hashCode() == editable.hashCode()&& !(phone.getText().toString().length() == 0) ){
+            phone.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }
+        else{
+            phone.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_radio_button_unchecked_black_24dp,0, 0, 0);
+
+
+        }
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence editable, int i, int i1, int i2) {
+
+
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        if (fname.getText().hashCode() == editable.hashCode()&& !(fname.getText().toString().length() == 0) ){
+            fname.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }else {
+            fname.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_radio_button_unchecked_black_24dp,0, 0, 0);
+
+
+        }
+        if (casee.getText().hashCode() == editable.hashCode()&& !(casee.getText().toString().length() == 0) ){
+            casee.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }
+        else{
+            casee.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_radio_button_unchecked_black_24dp,0, 0, 0);
+
+
+        }
+
+
+
+        if (category.getText().hashCode() == editable.hashCode()&& !(category.getText().toString().length() == 0) ){
+            category.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }
+        else{
+            category.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_radio_button_unchecked_black_24dp,0, 0, 0);
+
+
+        }
+
+        if (cost.getText().hashCode() == editable.hashCode()&& !(cost.getText().toString().length() == 0)&&(cost.getText().toString().length() <= 3) ){
+            cost.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }
+        else{
+            cost.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_radio_button_unchecked_black_24dp,0, 0, 0);
+
+
+        }
+        if (ownername.getText().hashCode() == editable.hashCode()&& !(ownername.getText().toString().length() == 0) ){
+            ownername.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }
+        else{
+            ownername.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_radio_button_unchecked_black_24dp,0, 0, 0);
+
+
+        }
+        if (pdescribe.getText().hashCode() == editable.hashCode()&& !(pdescribe.getText().toString().length() == 0) ){
+            pdescribe.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }
+        else{
+            pdescribe.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_radio_button_unchecked_black_24dp,0, 0, 0);
+
+
+        }
+        if (phone.getText().hashCode() == editable.hashCode()&& !(phone.getText().toString().length() == 0) ){
+            phone.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+        }
+        else {
+            phone.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_radio_button_unchecked_black_24dp,0, 0, 0);
+
+
+        }
+    }
+    public void alertOneButton() {
+
+        new AlertDialog.Builder(Upload.this)
+                .setTitle("error in input")
+                .setMessage("error in data ")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                    }
+                }).show();
+    }
+
 }

@@ -345,31 +345,6 @@
 
                     >
 
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/locationWrapper"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColorHint="#1C2B0E"
-                        tools:ignore="MissingConstraints"
-                        tools:layout_editor_absoluteX="5dp"
-                        tools:layout_editor_absoluteY="5dp"
-
-                        app:helperText="choose">
-
-                        <EditText
-                            android:id="@+id/location"
-                            style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:drawableLeft="@drawable/ic_wplace_black_24dp"
-                            android:hint="   Enter Location  "
-
-                            android:inputType="textAutoComplete" />
-                        <Spinner
-                            android:id="@+id/casespinner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent" />
-                    </android.support.design.widget.TextInputLayout>
 
 
                 </LinearLayout>
