@@ -152,7 +152,7 @@ i=2;
 
         }
 
-        if ( !(cost.getText().toString().length() == 0)&&(cost.getText().toString().length() <= 3) ){
+        if ( !(cost.getText().toString().length() == 0) ){
             cost.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
         }
         else{
