@@ -16,6 +16,7 @@
             android:layout_height="match_parent"
             android:background="#fff">
             <ImageView
+                android:id="@+id/viewImage"
                 android:layout_width="115dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="8dp"
@@ -305,7 +306,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_place_black_24dp"
-                            android:hint="   Enter Location  "
+                            android:hint="   Enter address  "
 
                             android:inputType="textAutoComplete" />
                         <Spinner

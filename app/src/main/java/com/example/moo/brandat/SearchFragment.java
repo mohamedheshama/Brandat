@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +39,7 @@ public class SearchFragment extends Fragment implements ImageAdapterTwo.ImageCli
     private static DatabaseReference mDatabaseReference;
     private RecyclerView productRecycler;
     private ImageAdapterTwo cardsAdapter;
+    FirebaseAuth mAuth;
 
     public SearchFragment(){
         mFirebaseDatabase=FirebaseDatabase.getInstance();
@@ -56,6 +58,7 @@ public class SearchFragment extends Fragment implements ImageAdapterTwo.ImageCli
         productsList =new ArrayList<products>();
 
         setupLayout(productsList);
+        mAuth=FirebaseAuth.getInstance();
 
         return rootView;
     }
@@ -79,12 +82,12 @@ public class SearchFragment extends Fragment implements ImageAdapterTwo.ImageCli
                             products pro=new products();
                             pro.setCategory((String) test.get("product_name"));
                             pro.setCost((String) test.get("cost"));
-                            pro.setEmail((String) test.get("email"));
+                            pro.setTime((String) test.get("time"));
                             pro.setImgesrc((String) test.get("imagesrc"));
                             pro.setImg_url((String) test.get("img_url"));
                             pro.setLocation((String) test.get("location"));
                             pro.setOwnername((String) test.get("ownername"));
-                            pro.setPhone((String) test.get("phone"));
+                            pro.setQuantity((String) test.get("quantity"));
                             pro.setproduct_case((String) test.get("product_case"));
                             pro.setproduct_des((String) test.get("product_des"));
                             pro.setFname((String) test.get("product_name"));
@@ -137,43 +140,81 @@ public class SearchFragment extends Fragment implements ImageAdapterTwo.ImageCli
     public void onImageClick(products products) {
 
 
-        Intent intent = new Intent(getActivity(), details.class);
+        if (mAuth.getCurrentUser().getUid().equals(products.getUser_id())) {
 
-        String fname = products.getFname();
-        intent.putExtra("fname", fname);
-        String category = products.getCategory();
-        intent.putExtra("category", category);
-        String cost = products.getCost();
-        intent.putExtra("cost", cost);
-        String email = products.getTime();
-        intent.putExtra("time", email);
-        String img = products.getImgesrc();
-        intent.putExtra("img", img);
-        String location = products.getLocation();
-        intent.putExtra("location", location);
-        String owner = products.getOwnername();
-        intent.putExtra("owner", owner);
-        String pcase = products.getproduct_case();
-        intent.putExtra("pcase", pcase);
-        String phone = products.getQuantity();
-        intent.putExtra("quantity", phone);
-        intent.putExtra("user_id",products.getUser_id());
-
-        String prodescribe=products.getproduct_des();
-
-        intent.putExtra("prodescribe",prodescribe);
-        //String userImg = products.getPhone();
-        intent.putExtra("product_key",products.getProduct_key());
-        //String userImg = products.getPhone();
-        intent.putExtra("img_url",products.getImg_url());
-        Log.d("imgitem", "onImageClick: "+products.getImg_url());
-        startActivity(intent);
-        Toast.makeText(getActivity(),""+products.getCategory(),Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getActivity(), my_product.class);
+            String fname = products.getFname();
+            intent.putExtra("fname", fname);
+            String category = products.getCategory();
+            intent.putExtra("category", category);
+            String cost = products.getCost();
+            intent.putExtra("cost", cost);
+            String email = products.getEmail();
+            intent.putExtra("email", email);
+            String img = products.getImgesrc();
+            intent.putExtra("img", img);
+            String location = products.getLocation();
+            intent.putExtra("location", location);
+            String owner = products.getOwnername();
+            intent.putExtra("owner", owner);
+            String pcase = products.getproduct_case();
+            intent.putExtra("pcase", pcase);
+            String phone = products.getPhone();
+            intent.putExtra("phone", phone);
+            intent.putExtra("user_id", products.getUser_id());
+            String prodescribe = products.getproduct_des();
+            intent.putExtra("prodescribe", prodescribe);
+            //String userImg = products.getPhone();
+            intent.putExtra("img_url", products.getImg_url());
+            intent.putExtra("product_key", products.getProduct_key());
+            intent.putExtra("quantity", products.getQuantity());
+            intent.putExtra("time", products.getTime());
 
 
+            Log.d("imgitem", "onImageClick: " + products.getImg_url());
+            startActivity(intent);
+            Toast.makeText(getActivity(), "" + products.getCategory(), Toast.LENGTH_SHORT).show();
 
+
+        } else {
+
+
+            Intent intent = new Intent(getActivity(), details.class);
+
+            String fname = products.getFname();
+            intent.putExtra("fname", fname);
+            String category = products.getCategory();
+            intent.putExtra("category", category);
+            String cost = products.getCost();
+            intent.putExtra("cost", cost);
+            String email = products.getTime();
+            intent.putExtra("time", email);
+            String img = products.getImgesrc();
+            intent.putExtra("img", img);
+            String location = products.getLocation();
+            intent.putExtra("location", location);
+            String owner = products.getOwnername();
+            intent.putExtra("owner", owner);
+            String pcase = products.getproduct_case();
+            intent.putExtra("pcase", pcase);
+            String phone = products.getQuantity();
+            intent.putExtra("quantity", phone);
+            intent.putExtra("user_id", products.getUser_id());
+
+            String prodescribe = products.getproduct_des();
+
+            intent.putExtra("prodescribe", prodescribe);
+            //String userImg = products.getPhone();
+            intent.putExtra("product_key", products.getProduct_key());
+            //String userImg = products.getPhone();
+            intent.putExtra("img_url", products.getImg_url());
+            Log.d("imgitem", "onImageClick: " + products.getImg_url());
+            startActivity(intent);
+            Toast.makeText(getActivity(), "" + products.getCategory(), Toast.LENGTH_SHORT).show();
+
+
+        }
     }
-
 
 
 }

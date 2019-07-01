@@ -80,7 +80,7 @@ public class my_profile extends AppCompatActivity implements View.OnClickListene
     DatabaseReference path1;
 TextView showmore1;
     TextView showmore2;
-
+TextView noproducts;
     private final static int REQUEST_CODE_1 = 2;
     TextView bottom_sheet_manual;
     TextView bottom_sheet_gps;
@@ -177,6 +177,7 @@ TextView showmore1;
         isshop=(TextView)findViewById(R.id.textView12) ;
 showmore1=(TextView)findViewById(R.id.viewmore1);
         showmore2=(TextView)findViewById(R.id.viewmore2);
+        noproducts=(TextView)findViewById(R.id.noproducts);
 
 showmore1.setOnClickListener(new View.OnClickListener() {
     @Override
@@ -269,13 +270,12 @@ showmore2.setOnClickListener(new View.OnClickListener() {
         path1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-//likes.clear();
+favour.clear();
+favourcat.clear();
+
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     favour.add(postSnapshot.getKey());
                     favourcat.add((String) postSnapshot.getValue());
-
-                    Log.d("errrror", "onCancelledd: 0"+favour.get(0));
-                    Log.d("errrror", "onCancelledd: "+favourcat.get(0));
 
 
 
@@ -284,22 +284,15 @@ showmore2.setOnClickListener(new View.OnClickListener() {
 
                 try {
 
-                    Log.d("errrror", "onCancelledd:1 "+favour.get(1));
-                    Log.d("errrror", "onCancelledd: "+favourcat.get(1));
-
-                    Log.d("errrror", "onCancelledd: 2"+favour.get(2));
-                    Log.d("errrror", "onCancelledd: "+favourcat.get(2));
-
-                    Log.d("errrror", "onCancelledd:3 "+favour.get(3));
-                    Log.d("errrror", "onCancelledd: "+favourcat.get(3));
-
-                    Log.d("errrror", "onCancelledd: 4"+favour.get(4));
-                    Log.d("errrror", "onCancelledd: "+favourcat.get(4));
 
 
+
+
+
+                    new fetchfavs().execute();
 
                  //   Log.d("errrror", "onCancelledd: before"+favour.get(0));
-                    new fetchfavs().execute();
+
                  //   Log.d("errrror", "onCancelledd: after "+favour.get(0));
                 } catch (Exception e) {
                     Log.d("error", "error"+e.getMessage());
@@ -372,6 +365,8 @@ showmore2.setOnClickListener(new View.OnClickListener() {
         });
         try {
             new fetchProducts().execute();
+            Log.d("error", "error product list"+productsList.size());
+
         } catch (Exception e) {
             Log.d("error", "error"+e.getMessage());
         }
@@ -455,7 +450,13 @@ showmore2.setOnClickListener(new View.OnClickListener() {
                         productsList.add(product);
                         // TODO: handle the post
                     }
+
+
+                    noproducts.setText(""+productsList.size());
+                    Log.d("error", "error product list"+productsList.size());
+
                     setupLayout(productsList);
+
 
 
 
@@ -571,7 +572,7 @@ showmore2.setOnClickListener(new View.OnClickListener() {
             super.onPreExecute();
             productsfavList.clear();
             //  pb.setVisibility(View.VISIBLE);
-            Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr3: "+favour.get(0));
+           // Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr3: "+favour.get(0));
 
 
         }
@@ -581,8 +582,8 @@ showmore2.setOnClickListener(new View.OnClickListener() {
 
 
             for (int i = 0; i < favour.size(); i++) {
-                Log.d("errrror", "onCancelledd: 0"+favour.get(i));
-                Log.d("errrror", "onCancelledd: 0"+favourcat.get(i));
+             //   Log.d("errrror", "onCancelledd: 0"+favour.get(i));
+             //   Log.d("errrror", "onCancelledd: 0"+favourcat.get(i));
 
                 DatabaseReference categoriesData = mDatabasecat.child(favourcat.get(i)).child(favour.get(i));
 
@@ -596,8 +597,8 @@ showmore2.setOnClickListener(new View.OnClickListener() {
                         productsfavList.add(product);
 
 
-                        Log.d("errrror", "onCancelleddrrrrrrrr:4 " + product.getCost());
-                        setupLayout(productsfavList);
+                     //   Log.d("errrror", "onCancelleddrrrrrrrr:4 " + product.getCost());
+
 
                     }
 
@@ -612,6 +613,8 @@ showmore2.setOnClickListener(new View.OnClickListener() {
 
 
             }
+
+          //  setupLayout(productsfavList);
             return productsfavList;
         }
 
@@ -624,7 +627,7 @@ showmore2.setOnClickListener(new View.OnClickListener() {
 
             if (movies != null) {
                 productsfavList.clear();
-               // setupLayout(movies);
+                setupLayout(movies);
                 //  productsList = movies;
 
 
@@ -652,7 +655,7 @@ showmore2.setOnClickListener(new View.OnClickListener() {
 //    LinearLayoutManager layoutManager=new LinearLayoutManager(UserProfile.this);
 //    layoutManager.setReverseLayout(true);
 //    layoutManager.setStackFromEnd(true);
-            Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr:5 "+favour.get(0));
+          //  Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr:5 "+favour.get(0));
 
             productfavRecycler.setHasFixedSize(true);
 
@@ -664,10 +667,10 @@ showmore2.setOnClickListener(new View.OnClickListener() {
 
 
             cardsAdapter2 = new productsAdapter(productsfavList, getApplicationContext(),  this);
-            Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr:6 "+favour.get(0));
+           // Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr:6 "+favour.get(0));
 
             productfavRecycler.setAdapter(cardsAdapter2);
-            Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr:7 "+favour.get(0));
+           // Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr:7 "+favour.get(0));
 
         }
 

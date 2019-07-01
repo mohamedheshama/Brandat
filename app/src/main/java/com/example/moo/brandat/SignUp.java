@@ -53,6 +53,7 @@ EditText password;
     private StorageReference mStorageReference;
 
 private DatabaseReference mDatabase;
+    private Uri downloadUri;
 
 
     @Override
@@ -104,65 +105,164 @@ email=(EditText)findViewById(R.id.email);
         FirebaseUser currentUser = mAuth.getCurrentUser();
     }
 
-    public void submitVerification(){
+    public void submitVerification() {
 
-        final String fname=fullname.getText().toString().trim();
-    String pass=password.getText().toString().trim();
-    final String cpass=confirmpass.getText().toString().trim();
-    final String emai=email.getText().toString().trim();
+        final String fname = fullname.getText().toString().trim();
+        String pass = password.getText().toString().trim();
+        final String cpass = confirmpass.getText().toString().trim();
+        final String emai = email.getText().toString().trim();
 
-    final String fone=phone.getText().toString().trim();
-    final String locash=location.getText().toString().trim();
-
-
-if(!TextUtils.isEmpty(fname)&&!TextUtils.isEmpty(pass)&&!TextUtils.isEmpty(cpass)&&!TextUtils.isEmpty(emai)&&!TextUtils.isEmpty(fone)&&!TextUtils.isEmpty(locash)) {
-    progressDialog.setMessage("Signing up ...");
-    progressDialog.show();
+        final String fone = phone.getText().toString().trim();
+        final String locash = location.getText().toString().trim();
 
 
-    mAuth.createUserWithEmailAndPassword(emai, pass)
-            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-
-                        // mImgUri=(Uri) mAuth.getCurrentUser().getPhotoUrl();
+        if (!TextUtils.isEmpty(fname) && !TextUtils.isEmpty(pass) && !TextUtils.isEmpty(cpass) && !TextUtils.isEmpty(emai) && !TextUtils.isEmpty(fone) && !TextUtils.isEmpty(locash)) {
+            progressDialog.setMessage("Signing up ...");
+            progressDialog.show();
+            Log.d("usser", "User profile updated." + emai+""+pass);
+            Log.d("usser", "User profile updated."+""+pass);
 
 
-                        Log.d("usser", "User profile updated.");
+
+            mAuth.createUserWithEmailAndPassword(emai, cpass)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("usser", "User profile updated." + "user created");
+                                // mImgUri=(Uri) mAuth.getCurrentUser().getPhotoUrl();
 
 
-                        String Uid = mAuth.getCurrentUser().getUid();
+                               photoAndprofile(fname,emai,cpass,fone,locash);
 
-                        DatabaseReference currentUserDB = mDatabase.child(Uid);
-                        currentUserDB.child("name").setValue(fname);
-                        currentUserDB.child("email").setValue(emai);
-
-                        currentUserDB.child("password").setValue(cpass);
-                        currentUserDB.child("phone").setValue(fone);
-                        currentUserDB.child("location").setValue(locash);
-                        currentUserDB.child("image_url").setValue(mAuth.getCurrentUser().getPhotoUrl());
-
-                        currentUserDB.child("shop").setValue(isShop.isEnabled());
-
-                        progressDialog.dismiss();
-                        startActivity(new Intent(SignUp.this, MainActivity.class));
-                    } else {
-                        Toast.makeText(SignUp.this, "error inserting your data", Toast.LENGTH_LONG).show();
-                    }
-
-                }
-
-            });
+                            }else{
+                                progressDialog.dismiss();
+                                Log.d("usser", "User profile updated." + "error");
+                            }
+                        }
 
 
-}}
+                    });
+
+        }
+    }
+   private void photoAndprofile (final String fname, final String emai, final String cpass, final String fone, final String locash){
 
 
 
 
 
+      final Uri downloaduri= uploadphoto() ;
 
+
+
+                   FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                   UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                           .setDisplayName(fname)
+                           .setPhotoUri(downloaduri)
+                           .build();
+
+                   user.updateProfile(profileUpdates)
+                           .addOnCompleteListener(new OnCompleteListener<Void>() {
+                               @Override
+                               public void onComplete(@NonNull Task<Void> task) {
+                                   if (task.isSuccessful()) {
+
+
+                                       Log.d("usser", "User profile updated." + "user profile updated");
+
+
+                                       String Uid = mAuth.getCurrentUser().getUid();
+
+                                       DatabaseReference currentUserDB = mDatabase.child(Uid);
+                                       currentUserDB.child("name").setValue(fname);
+                                       currentUserDB.child("email").setValue(emai);
+
+                                       currentUserDB.child("password").setValue(cpass);
+                                       currentUserDB.child("phone").setValue(fone);
+                                       currentUserDB.child("location").setValue(locash);
+                                       currentUserDB.child("image_url").setValue(downloaduri.toString());
+
+                                       //currentUserDB.child("shop").setValue(isShop.isEnabled());
+
+                                       boolean s = isShop.isChecked();
+                                       if (s == true) {
+
+                                           currentUserDB.child("shop").setValue("I'am shop owner");
+                                       } else {
+                                           currentUserDB.child("shop").setValue("I'am not shop owner");
+
+
+                                       }
+
+                                       Log.d("usser", "User profile updated." + "finish");
+                                       progressDialog.dismiss();
+                                       startActivity(new Intent(SignUp.this, MainActivity.class));
+                                   } else {
+                                       Log.d("usser", "User profile updated." + "user update error");
+                                       progressDialog.dismiss();
+                                       Toast.makeText(SignUp.this, "error inserting your data", Toast.LENGTH_LONG).show();
+                                   }
+
+
+                               }
+
+                           });
+
+
+
+
+
+
+
+
+
+
+   }
+
+  private Uri uploadphoto(){
+
+      final StorageReference filepath = mStorageReference.child("App_Images").child(mImgUri.getLastPathSegment());
+      UploadTask uploadTask = filepath.putFile(mImgUri);
+      Log.d("usser", "User profile updated. first" + mImgUri.toString());
+
+
+
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+@Override
+public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+        if (!task.isSuccessful()) {
+        Log.d("usser", "User profile updated.error img" + "img ctreated");
+        throw task.getException();
+        }
+        filepath.getDownloadUrl();
+    Log.d("usser", "User profile updated.error img download uri" + filepath.getDownloadUrl());
+
+    // Continue with the task to get the download URL
+        return filepath.getDownloadUrl();
+        }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+@Override
+public void onComplete(@NonNull Task<Uri> task) {
+        if (task.isSuccessful()) {
+      downloadUri = task.getResult();
+        Log.d("usser", "User profile updated." + downloadUri);
+
+
+
+
+
+        }else{
+            Log.d("usser", "User profile updated." + "error download uri");
+
+
+        }
+}
+        });
+
+return downloadUri;
+        }
 
 
 

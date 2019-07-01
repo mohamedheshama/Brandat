@@ -77,7 +77,7 @@ private FirebaseAuth.AuthStateListener mAuthListner;
         SharedPreferences pref2 = getSharedPreferences("DialogPREF", Context.MODE_PRIVATE);
         if(pref2.getBoolean("Dialog_executed", false)){
 
-        } else {
+        }/* else {
             final Dialog dialog = new Dialog(this);
 
             //dialog.setTitle("Setting");
@@ -108,7 +108,7 @@ private FirebaseAuth.AuthStateListener mAuthListner;
             SharedPreferences.Editor ed = pref2.edit();
             ed.putBoolean("Dialog_executed", true);
             ed.commit();
-        }
+        }*/
 
         //        radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
 //        btnDisplay = (Button) findViewById(R.id.btnDisplay);

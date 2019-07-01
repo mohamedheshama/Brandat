@@ -120,7 +120,7 @@ RecyclerView productRecycler;
 Context c;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
-
+TextView noproducts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +162,7 @@ productRecycler=(RecyclerView)findViewById(R.id.prodRec);
         phoneTV=(TextView)findViewById(R.id.phonn);
         addressTV=(TextView)findViewById(R.id.address);
         isshop=(TextView)findViewById(R.id.textView12);
+        noproducts=(TextView)findViewById(R.id.noproducts);
 
 
 
@@ -178,6 +179,7 @@ if(intent==null) {
 
     try {
         new fetchProducts().execute();
+
     } catch (Exception e) {
         Log.d("error", "error");
     }
@@ -461,6 +463,12 @@ if(intent==null) {
                         productsList.add(product);
 
                     }
+
+
+
+                    noproducts.setText(""+productsList.size());
+                    Log.d("error", "error product list"+productsList.size());
+
                     setupLayout(productsList);
 
 

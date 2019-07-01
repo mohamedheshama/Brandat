@@ -259,6 +259,7 @@ imageView=(ImageView)findViewById(R.id.viewImageeeeee);
                                     .setPhotoUri(downloadUri)
                                     .build();
 
+                            assert user != null;
                             user.updateProfile(profileUpdates)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override

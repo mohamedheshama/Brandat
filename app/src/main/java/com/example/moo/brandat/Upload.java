@@ -123,6 +123,7 @@ publish.setOnClickListener(new View.OnClickListener() {
 //        final String emai=email.getText().toString().trim();
 mProgress.setMessage("Posting ...");
 mProgress.show();
+final String time=java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
 
   final StorageReference filepath=mStorageReference.child("App_Images").child(mImgUri.getLastPathSegment());
        UploadTask uploadTask = filepath.putFile(mImgUri);
@@ -147,9 +148,7 @@ final DatabaseReference productsData=mDatabase.child("products").push();
  key=productsData.getKey();
                     final DatabaseReference categoriesData=mDatabasecat.child(categories).child(key);
 
-                    mDatabase.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
 productsData.child("product_name").setValue(pname);
                             productsData.child("category").setValue(categories);
                             productsData.child("product_case").setValue(caseee);
@@ -158,7 +157,7 @@ productsData.child("product_name").setValue(pname);
                             productsData.child("product_des").setValue(prodes);
                             productsData.child("location").setValue(loc);
                             productsData.child("quantity").setValue(fone);
-                            productsData.child("time").setValue(java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
+                            productsData.child("time").setValue(time);
                             productsData.child("imagesrc").setValue(downloadUri.toString());
                             productsData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
                             productsData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
@@ -175,7 +174,7 @@ productsData.child("product_name").setValue(pname);
                             categoriesData.child("product_des").setValue(prodes);
                             categoriesData.child("location").setValue(loc);
                             categoriesData.child("quantity").setValue(fone);
-                            categoriesData.child("time").setValue(java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
+                            categoriesData.child("time").setValue(time);
                             categoriesData.child("imagesrc").setValue(downloadUri.toString());
                             categoriesData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
 
@@ -187,13 +186,8 @@ productsData.child("product_name").setValue(pname);
                             Toast.makeText(getApplicationContext(),"Your ptoduct's data has inserted succesfully.",Toast.LENGTH_SHORT ).show();
                             startActivity(new Intent(Upload.this,MainActivity.class));
 
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG ).show();
-                        }
-                    });
+
 
 
                 } else {

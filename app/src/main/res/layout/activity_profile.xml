@@ -200,7 +200,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:paddingTop="10dp"
-                                            android:id="@+id/noproductss"
+                                            android:id="@+id/noproducts"
                                             android:text="0"
                                             android:textColor="#0057FF"
                                             android:textSize="20sp"
