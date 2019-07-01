@@ -57,6 +57,7 @@ dependencies {
     implementation 'com.android.support:palette-v7:28.0.0'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:7.3.2'
     implementation 'com.github.bhargavms:DotLoader:1.1.1'
+    implementation "android.arch.lifecycle:extensions:1.1.1"
 
 //    implementation 'com.jakewharton:butterknife:10.1.0'
 //    implementation 'com.jakewharton:butterknife-compiler:10.1.0'

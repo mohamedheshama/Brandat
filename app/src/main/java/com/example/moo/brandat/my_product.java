@@ -61,7 +61,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
     private FusedLocationProviderClient client;
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
-    FloatingActionButton editActivity;
+    FloatingActionButton editActivity,deleteProduct;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     String product_key,categories_key;
@@ -125,19 +125,29 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
         requestPermission();
 
 
-        location.setOnClickListener(new View.OnClickListener() {
+        deleteProduct.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View w) {
-                Intent intent1=new Intent(my_product.this, Main_map.class);
-                double l=30.00351;
-                double g= 30.053748;
-                String ls=""+l;
-                String gs=""+g;
-                intent1.putExtra("long", ls);
-                intent1.putExtra("lat", gs);
-                startActivity(intent1);
+            public void onClick(View v) {
+                mDatabaseReference.child("categories").child(cat).child(product_key).removeValue();
+                mDatabaseReference.child("userss").child(MainActivity.usernameId).child("products").child(product_key).removeValue();
+
             }
         });
+
+
+//        location.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View w) {
+//                Intent intent1=new Intent(my_product.this, Main_map.class);
+//                double l=30.00351;
+//                double g= 30.053748;
+//                String ls=""+l;
+//                String gs=""+g;
+//                intent1.putExtra("long", ls);
+//                intent1.putExtra("lat", gs);
+//                startActivity(intent1);
+//            }
+//        });
         initViews();
         initListeners();
            FloatingActionButton fab1 = (FloatingActionButton) findViewById(R.id.more);
@@ -435,17 +445,5 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
     }
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("offline");
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("online");
-
-    }
 }

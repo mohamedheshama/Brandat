@@ -862,19 +862,7 @@ View mView;
     }
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("offline");
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("online");
-
-    }
 
     private void checkForLimitReportUser(final String userId) {
         mDatabaseReference.child("userss").child(userId).child("reporting").addValueEventListener(new ValueEventListener() {

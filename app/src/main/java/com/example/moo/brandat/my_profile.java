@@ -289,6 +289,8 @@ favourcat.clear();
 
 
 
+
+                 //   Log.d("errrror", "onCancelledd: before"+favour.get(0));
                     new fetchfavs().execute();
 
                  //   Log.d("errrror", "onCancelledd: before"+favour.get(0));
@@ -580,6 +582,7 @@ favourcat.clear();
         @Override
         protected List doInBackground(String... params) {
 
+            Log.d("mano", "doInBackground: ");
 
             for (int i = 0; i < favour.size(); i++) {
              //   Log.d("errrror", "onCancelledd: 0"+favour.get(i));
@@ -1209,19 +1212,7 @@ View mView;
 
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("offline");
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mDatabaseReference.child("userss").child(MainActivity.usernameId).child("state").setValue("online");
-
-    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
         super.onActivityResult(requestCode, resultCode, dataIntent);

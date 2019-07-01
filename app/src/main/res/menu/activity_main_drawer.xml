@@ -38,6 +38,10 @@
 
             >
             <item
+                android:id="@+id/about_app"
+                android:icon="@mipmap/baseline_reply_black_48"
+                android:title="about app" />
+            <item
                 android:id="@+id/nav_LogOut"
                 android:icon="@mipmap/baseline_reply_black_48"
                 android:title="Log Out" />

@@ -68,11 +68,21 @@ TextView user,signed_in;
         setSupportActionBar(toolbar);
 
 
-
         Intent intent=getIntent();
         if (intent.hasExtra("Exit")){
             finish();
         }
+    LifeCyclerr.getInstance().setOnVisibilityChangeListener(new LifeCyclerr.ValueChangeListener() {
+        @Override
+        public void onChanged(Boolean value) {
+            Log.d("isAppInBackground", String.valueOf(value));
+            if (String.valueOf(value).equals("true")){
+                mDatabaseReference.child("userss").child(usernameId).child("state").setValue("offline");
+            }else {
+                mDatabaseReference.child("userss").child(usernameId).child("state").setValue("online");
+            }
+        }
+    });
 
         BottomNavigationView navigation =  findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
@@ -182,6 +192,9 @@ String hh= String.valueOf(userImageUrl);
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListner);
+        mDatabaseReference.child("userss").child(usernameId).child("state").setValue("online");
+
+
     }
 
     public void uploadimg(View v){
@@ -317,6 +330,15 @@ String hh= String.valueOf(userImageUrl);
                     onBackPressed();
 
                 break;
+            case R.id.about_app:
+
+               Intent intent=new Intent(this,AboutApp.class);
+               startActivity(intent);
+                //   startActivity(new Intent(MainActivity.this,splash.class));
+
+                onBackPressed();
+
+                break;
             case R.id.nav_manage:
                 fragment=new home();
                 onBackPressed();
@@ -417,7 +439,7 @@ String hh= String.valueOf(userImageUrl);
             });
 
             requestQueue.add(stringRequest);
-            return moviesList;
+            return moviesList;o
 
         }
 
@@ -447,19 +469,9 @@ String hh= String.valueOf(userImageUrl);
     }*/
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mDatabaseReference.child("userss").child(usernameId).child("state").setValue("offline");
 
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mDatabaseReference.child("userss").child(usernameId).child("state").setValue("online");
 
-    }
 }
 
 
