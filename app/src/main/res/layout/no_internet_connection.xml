@@ -38,7 +38,7 @@
             android:layout_marginTop="120dp"
             android:scaleType="fitXY"
 
-            android:src="@drawable/Ooops" />
+            android:src="@drawable/monky_no_internet" />
 
         <TextView
             android:id="@+id/oops"
