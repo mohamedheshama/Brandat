@@ -270,12 +270,14 @@ showmore2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
 //likes.clear();
+                favour.clear();
+                favourcat.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     favour.add(postSnapshot.getKey());
                     favourcat.add((String) postSnapshot.getValue());
 
-                    Log.d("errrror", "onCancelledd: 0"+favour.get(0));
-                    Log.d("errrror", "onCancelledd: "+favourcat.get(0));
+                    Log.d("errrror", "onCancelledd: 0");
+                    Log.d("errrror", "onCancelledd: ");
 
 
 
@@ -283,18 +285,6 @@ showmore2.setOnClickListener(new View.OnClickListener() {
                 }
 
                 try {
-
-                    Log.d("errrror", "onCancelledd:1 "+favour.get(1));
-                    Log.d("errrror", "onCancelledd: "+favourcat.get(1));
-
-                    Log.d("errrror", "onCancelledd: 2"+favour.get(2));
-                    Log.d("errrror", "onCancelledd: "+favourcat.get(2));
-
-                    Log.d("errrror", "onCancelledd:3 "+favour.get(3));
-                    Log.d("errrror", "onCancelledd: "+favourcat.get(3));
-
-                    Log.d("errrror", "onCancelledd: 4"+favour.get(4));
-                    Log.d("errrror", "onCancelledd: "+favourcat.get(4));
 
 
 
@@ -579,14 +569,14 @@ showmore2.setOnClickListener(new View.OnClickListener() {
         @Override
         protected List doInBackground(String... params) {
 
+            Log.d("mano", "doInBackground: ");
 
             for (int i = 0; i < favour.size(); i++) {
-                Log.d("errrror", "onCancelledd: 0"+favour.get(i));
-                Log.d("errrror", "onCancelledd: 0"+favourcat.get(i));
+
 
                 DatabaseReference categoriesData = mDatabasecat.child(favourcat.get(i)).child(favour.get(i));
 
-                categoriesData.addValueEventListener(new ValueEventListener() {
+                categoriesData.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
 //likes.clear();
@@ -597,7 +587,8 @@ showmore2.setOnClickListener(new View.OnClickListener() {
 
 
                         Log.d("errrror", "onCancelleddrrrrrrrr:4 " + product.getCost());
-                        setupLayout(productsfavList);
+
+                        Log.d("mano", "doInBackground: ");
 
                     }
 
@@ -610,8 +601,9 @@ showmore2.setOnClickListener(new View.OnClickListener() {
                     }
                 });
 
-
+                Log.d("mano", "doInBackground: "+i);
             }
+            Log.d("mano", "doInBackground:  ");
             return productsfavList;
         }
 
@@ -621,10 +613,13 @@ showmore2.setOnClickListener(new View.OnClickListener() {
 
         @Override
         protected void onPostExecute(List movies) {
-
+            Log.d("mano", "onPostExecute: in post ");
             if (movies != null) {
+                Log.d("mano", "onPostExecute:  movies is not null");
                 productsfavList.clear();
-               // setupLayout(movies);
+
+                setupLayout(movies);
+
                 //  productsList = movies;
 
 
@@ -642,6 +637,7 @@ showmore2.setOnClickListener(new View.OnClickListener() {
 
 
             } else {
+                Log.d("mano", "onPostExecute: movies is null ");
                 Toast.makeText(my_profile.this, "error", Toast.LENGTH_LONG).show();
 
             }
@@ -652,7 +648,6 @@ showmore2.setOnClickListener(new View.OnClickListener() {
 //    LinearLayoutManager layoutManager=new LinearLayoutManager(UserProfile.this);
 //    layoutManager.setReverseLayout(true);
 //    layoutManager.setStackFromEnd(true);
-            Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr:5 "+favour.get(0));
 
             productfavRecycler.setHasFixedSize(true);
 
@@ -664,10 +659,8 @@ showmore2.setOnClickListener(new View.OnClickListener() {
 
 
             cardsAdapter2 = new productsAdapter(productsfavList, getApplicationContext(),  this);
-            Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr:6 "+favour.get(0));
 
             productfavRecycler.setAdapter(cardsAdapter2);
-            Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr:7 "+favour.get(0));
 
         }
 

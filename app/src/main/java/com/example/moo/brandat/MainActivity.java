@@ -329,6 +329,15 @@ String hh= String.valueOf(userImageUrl);
                     onBackPressed();
 
                 break;
+            case R.id.about_app:
+
+               Intent intent=new Intent(this,AboutApp.class);
+               startActivity(intent);
+                //   startActivity(new Intent(MainActivity.this,splash.class));
+
+                onBackPressed();
+
+                break;
             case R.id.nav_manage:
                 fragment=new home();
                 onBackPressed();

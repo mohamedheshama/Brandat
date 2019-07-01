@@ -52,7 +52,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
     TextView bottom_sheet_manual;
     TextView bottom_sheet_gps;
     TextView pdescribe;
-
+    TextView location;
     TextView ownername;
     TextView phone;
     TextView email;
@@ -61,7 +61,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
     private FusedLocationProviderClient client;
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
-    FloatingActionButton editActivity,deleteButton;
+    FloatingActionButton editActivity,deleteProduct;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     String product_key,categories_key;
@@ -82,7 +82,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
         cost = (TextView) findViewById(R.id.cost);
         ownername = (TextView) findViewById(R.id.ownerName);
         pdescribe = (TextView) findViewById(R.id.descripe);
-
+        location = (TextView) findViewById(R.id.location);
         phone = (TextView) findViewById(R.id.phone);
         email = (TextView) findViewById(R.id.publish_date);
         imageView = findViewById(R.id.viewImage);
@@ -117,12 +117,22 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
         pdescribe.setText(prodescribe);
         cost.setText(cos+" .LE");
         email.setText(em);
-
+        location.setText(loc);
         ownername.setText(ow);
         phone.setText(fon);
         fname.setText(name);
         client = LocationServices.getFusedLocationProviderClient(my_product.this);
         requestPermission();
+
+
+        deleteProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDatabaseReference.child("categories").child(cat).child(product_key).removeValue();
+                mDatabaseReference.child("userss").child(MainActivity.usernameId).child("products").child(product_key).removeValue();
+
+            }
+        });
 
 
 //        location.setOnClickListener(new View.OnClickListener() {
@@ -197,7 +207,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                     // String img = products.getImg_src();
                     intent.putExtra("img", im);
                     //  String location = products.getLocation();
-
+                    intent.putExtra("location", loc);
                     // String owner = products.getOwnername();
                     intent.putExtra("owner", ow);
                     //  String pcase = products.getproduct_case();

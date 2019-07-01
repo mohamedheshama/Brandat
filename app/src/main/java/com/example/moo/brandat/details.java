@@ -85,7 +85,7 @@ TextView noLikes;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        noLikes=(TextView) findViewById(R.id.nolikes);
+noLikes=(TextView) findViewById(R.id.nolikes);
         mFirebaseDatabase=FirebaseDatabase.getInstance();
         mDatabaseReference=mFirebaseDatabase.getReference();
 likes=new ArrayList<>();
@@ -123,6 +123,7 @@ favour=new ArrayList<>();
             em = intent.getStringExtra("time");
             im = intent.getStringExtra("img");
             loc = intent.getStringExtra("location");
+
             ow = intent.getStringExtra("owner");
             pcas = intent.getStringExtra("pcase");
             fon = intent.getStringExtra("quantity");
@@ -247,7 +248,6 @@ favour=new ArrayList<>();
                             Toast.makeText(getApplicationContext(), "done", Toast.LENGTH_SHORT).show();
 
                         }
-
 
                         // dataSnapshot.child(mCurrentUser.getUid()).getRef().removeValue();
 

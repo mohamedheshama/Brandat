@@ -297,7 +297,7 @@ public class FragmentChat extends Fragment {
 
     private void recieveAllMessages(final String userIdSender, final String userIdRecieve) {
         DatabaseReference userDataRefPath=mDatabaseReference.child("userss").child(userIdSender).child("mymessages").child(userIdRecieve);
-        userDataRefPath.addValueEventListener(new ValueEventListener() {
+        userDataRefPath.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String idMessages=dataSnapshot.getValue(String.class);

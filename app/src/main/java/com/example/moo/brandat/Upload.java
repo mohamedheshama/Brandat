@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,7 @@ TextView publish;
     private DatabaseReference mDatabasecat;
     private DatabaseReference mDatabaseuser;
     private static final int PHOTO_PICKER = 2;
-
+    private String loc="";
     Switch isShop1;
     private ProgressDialog mProgress;
     private FirebaseAuth mAuth;
@@ -183,19 +184,55 @@ i=2;
             i=2;
 
         }
+        String message="";
+        boolean s=isShop1.isChecked();
+        if(s){
 
+            // TODO: code saad get the my location and send
+            final int finalI = i;
+            mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Log.d("mano", "onDataChange: "+dataSnapshot.hasChild("location"));
+                    if (dataSnapshot.hasChild("location")){
+                        loc=dataSnapshot.child("location").getValue(String.class);
+                        Log.d("mano", "onDataChange: you have location  "+finalI);
+                        if (finalI ==1) {
 
+                            publish();
+                        }else if (finalI==3){
+                        alertOnimage();
+                    }
+                        else {
+                            alertOneButton("error in input data");
 
+                        }
+                    }else {
+                        alertOneButton("you don't put location yet please put it first");
 
-if (i==1) {
+                    }
+                }
 
-    publish();
-}else if (i==3){
-    alertOnimage();
-}else {
-    alertOneButton();
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-}
+                }
+            });
+
+        }else {
+
+            if (i == 1) {
+
+                publish();
+            }else if (i==3){
+                         alertOnimage();
+        }else {
+
+                alertOneButton("error in input data");
+
+            }
+        }
+
     }
 });
     }
@@ -219,15 +256,7 @@ if (i==1) {
 //        final String emai=email.getText().toString().trim();
 mProgress.setMessage("Posting ...");
 mProgress.show();
-        boolean s=isShop1.isChecked();
-        if(s==true){
 
-            // TODO: code saad get the my location and send
-        }else{
-            // TODO: code saad get the my location and send
-
-
-        }
   final StorageReference filepath=mStorageReference.child("App_Images").child(mImgUri.getLastPathSegment());
        UploadTask uploadTask = filepath.putFile(mImgUri);
 
@@ -259,7 +288,7 @@ final DatabaseReference productsData=mDatabase.child("products").push();
                             productsData.child("cost").setValue(costs);
                             productsData.child("ownername").setValue(oname);
                             productsData.child("product_des").setValue(prodes);
-                          //  productsData.child("location").setValue(loc);
+                            productsData.child("location").setValue(loc);
                             productsData.child("quantity").setValue(fone);
                             productsData.child("time").setValue(date);
                             productsData.child("imagesrc").setValue(downloadUri.toString());
@@ -274,7 +303,7 @@ final DatabaseReference productsData=mDatabase.child("products").push();
                             categoriesData.child("cost").setValue(costs);
                             categoriesData.child("ownername").setValue(oname);
                             categoriesData.child("product_des").setValue(prodes);
-                            //categoriesData.child("location").setValue(loc);
+                            categoriesData.child("location").setValue(loc);
                             categoriesData.child("quantity").setValue(fone);
                             categoriesData.child("time").setValue(date);
                             categoriesData.child("imagesrc").setValue(downloadUri.toString());
@@ -505,11 +534,11 @@ final DatabaseReference productsData=mDatabase.child("products").push();
 
         }
     }
-    public void alertOneButton() {
+    public void alertOneButton(String message) {
 
         new AlertDialog.Builder(Upload.this)
-                .setTitle("error in input")
-                .setMessage("error in data ")
+                .setTitle("error ")
+                .setMessage(message)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
