@@ -71,7 +71,7 @@ public class ImageAdapterTwo extends RecyclerView.Adapter<ImageAdapterTwo.ImageV
 
         }
         imageViewHolder.arttitle.setText(prod.getCost()+" "+"LE");
-        imageViewHolder.artsubtitle.setText(prod.getCategory());
+        imageViewHolder.artsubtitle.setText(prod.getFname());
 
 
     }

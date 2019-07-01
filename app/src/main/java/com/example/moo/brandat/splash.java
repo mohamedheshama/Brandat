@@ -313,7 +313,7 @@ private FirebaseAuth.AuthStateListener mAuthListner;
                           //  Log.d(TAG, "signInWithCredential:success");
                           //  FirebaseUser user = mAuth.getCurrentUser();
                           //  user.get
-                            mImgUri=(Uri) mAuth.getCurrentUser().getPhotoUrl();
+                            mImgUri=Uri.parse(MainActivity.userImageUrl);
 
 //                            final StorageReference filepath=mStorageReference.child("App_Images").child(mImgUri.getLastPathSegment());
 //                            UploadTask uploadTask = filepath.putFile(mImgUri);

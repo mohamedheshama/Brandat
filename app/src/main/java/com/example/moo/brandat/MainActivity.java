@@ -30,8 +30,11 @@ import com.example.moo.brandat.chat.ChatActivity;
 import com.example.moo.brandat.chat.FragmentChat;
 import com.example.moo.brandat.chat.FragmentListUserChat;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -146,30 +149,68 @@ if(mAuth.getCurrentUser()!=null){
     FragmentChat.IS_ACTIVATE=true;
     usernameId = mAuth.getCurrentUser().getUid();
     usernameUser=mAuth.getCurrentUser().getDisplayName();
-    userImageUrl=mAuth.getCurrentUser().getPhotoUrl().toString();
+    if(mAuth.getCurrentUser().getPhotoUrl()==null) {
+        mDatabaseReference.child("userss").child(usernameId).child("img_url").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue(String.class) != null) {
+                    userImageUrl = dataSnapshot.getValue(String.class);
 
 
-    PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-            .edit()
-            .putString(getApplicationContext().getString(R.string.user_uid_shared_preference), usernameId)
-            .putString(getApplicationContext().getString(R.string.user_imge_url_shared_preference),userImageUrl)
-            .apply();
-    user.setText(usernameUser);
-    signed_in.setText("Signed in..");
-String hh= String.valueOf(userImageUrl);
-    if(hh!=null){
- Picasso.with(this)
-         .load(hh)
-       .resize(80, 80)
-         .centerCrop()
-        .into(nav_head_account_image);}
-        else{
-        nav_head_account_image.setImageResource(R.mipmap.baseline_account_circle_black_48);
+                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                            .edit()
+                            .putString(getApplicationContext().getString(R.string.user_uid_shared_preference), usernameId)
+                            .putString(getApplicationContext().getString(R.string.user_imge_url_shared_preference), userImageUrl)
+                            .apply();
+                    user.setText(usernameUser);
+                    signed_in.setText("Signed in..");
+                    String hh = String.valueOf(userImageUrl);
+                    if (hh != null) {
+                        Picasso.with(MainActivity.this)
+                                .load(hh)
+                                .resize(80, 80)
+                                .centerCrop()
+                                .into(nav_head_account_image);
+                    } else {
+                        nav_head_account_image.setImageResource(R.mipmap.baseline_account_circle_black_48);
 
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }else {
+        userImageUrl = mAuth.getCurrentUser().getPhotoUrl().toString();
+
+
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                .edit()
+                .putString(getApplicationContext().getString(R.string.user_uid_shared_preference), usernameId)
+                .putString(getApplicationContext().getString(R.string.user_imge_url_shared_preference), userImageUrl)
+                .apply();
+        user.setText(usernameUser);
+        signed_in.setText("Signed in..");
+        String hh = String.valueOf(userImageUrl);
+        if (hh != null) {
+            Picasso.with(MainActivity.this)
+                    .load(hh)
+                    .resize(80, 80)
+                    .centerCrop()
+                    .into(nav_head_account_image);
+        } else {
+            nav_head_account_image.setImageResource(R.mipmap.baseline_account_circle_black_48);
+
+        }
+
+        Log.d("immmg", "onCreate: " + mAuth.getCurrentUser().getPhotoUrl());
+        nav_head_account_image.setImageURI(mAuth.getCurrentUser().getPhotoUrl());
     }
-
-    Log.d("immmg", "onCreate: "+mAuth.getCurrentUser().getPhotoUrl());
-  nav_head_account_image.setImageURI(mAuth.getCurrentUser().getPhotoUrl());
 
 }
   nav_head_account_image.setOnClickListener(new View.OnClickListener() {
@@ -303,7 +344,7 @@ String hh= String.valueOf(userImageUrl);
                 fragment=new FragmentListUserChat();
                 break;
             case R.id.navigation_shopping_car:
-                fragment=new navegation();
+                fragment=new FavoriteFragment();
                 break;
 
             case R.id.nav_camera:

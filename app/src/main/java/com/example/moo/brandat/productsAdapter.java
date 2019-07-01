@@ -16,6 +16,7 @@ import java.util.List;
 
 public class productsAdapter extends RecyclerView.Adapter<productsAdapter.ImageViewHolder> {
 private List<products> mList;
+private boolean isFragment;
 private Context context;
     final   private ImageClickHandler imageClickHandler;
     public interface ImageClickHandler{
@@ -23,10 +24,11 @@ private Context context;
     }
 
 
-public productsAdapter(List<products> mList, Context context, ImageClickHandler clickHandler) {
+public productsAdapter(List<products> mList, Context context, ImageClickHandler clickHandler,boolean isFragment) {
     this.mList = mList;
     this.context = context;
     this.imageClickHandler = clickHandler;
+    this.isFragment=isFragment;
 
         }
 
@@ -34,7 +36,12 @@ public productsAdapter(List<products> mList, Context context, ImageClickHandler 
 @Override
 public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 final Context context = viewGroup.getContext();
-        int idOfImageAdapter = R.layout.list_item_article;
+        int idOfImageAdapter=0;
+        if (isFragment){
+            idOfImageAdapter=R.layout.list_item_main;
+        }else {
+             idOfImageAdapter = R.layout.list_item_article;
+        }
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         Boolean shouldAttatchFromParent = false;
         View view = layoutInflater.inflate(idOfImageAdapter,viewGroup,shouldAttatchFromParent);
@@ -50,7 +57,7 @@ public void onBindViewHolder(@NonNull ImageViewHolder imageViewHolder, int i) {
     Log.d("imgg", "onBindViewHolder: "+prod.imagesrc);
         Picasso.with(context).load(prod.getImgesrc()).into(imageViewHolder.imageView);
         imageViewHolder.arttitle.setText(prod.getCost()+""+" LE");
-        imageViewHolder.artsubtitle.setText(prod.getCategory());
+        imageViewHolder.artsubtitle.setText(prod.getFname());
 
 
         }

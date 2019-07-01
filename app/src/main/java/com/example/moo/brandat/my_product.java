@@ -82,7 +82,6 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
         cost = (TextView) findViewById(R.id.cost);
         ownername = (TextView) findViewById(R.id.ownerName);
         pdescribe = (TextView) findViewById(R.id.descripe);
-        location = (TextView) findViewById(R.id.location);
         phone = (TextView) findViewById(R.id.phone);
         email = (TextView) findViewById(R.id.publish_date);
         imageView = findViewById(R.id.viewImage);
@@ -90,6 +89,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
         mAuth=FirebaseAuth.getInstance();
         mCurrentUser=mAuth.getCurrentUser();
         editActivity=(FloatingActionButton)findViewById(R.id.edit_floating_action_button);
+        deleteProduct=findViewById(R.id.delete_product);
 
         mFirebaseDatabase=FirebaseDatabase.getInstance();
         mDatabaseReference=mFirebaseDatabase.getReference();
@@ -117,7 +117,7 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
         pdescribe.setText(prodescribe);
         cost.setText(cos+" .LE");
         email.setText(em);
-        location.setText(loc);
+//        location.setText(loc);
         ownername.setText(ow);
         phone.setText(fon);
         fname.setText(name);
@@ -128,12 +128,16 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
         deleteProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("mano", "onClick: delete is don e");
                 mDatabaseReference.child("categories").child(cat).child(product_key).removeValue();
                 mDatabaseReference.child("userss").child(MainActivity.usernameId).child("products").child(product_key).removeValue();
 
+                Intent intent1=new Intent(my_product.this,MainActivity.class);
+                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent1);
+                finish();
             }
         });
-
 
 //        location.setOnClickListener(new View.OnClickListener() {
 //            @Override
