@@ -3,6 +3,7 @@ package com.example.moo.brandat.chat;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -16,6 +17,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,6 +31,7 @@ import android.widget.Toast;
 
 import com.example.moo.brandat.MainActivity;
 import com.example.moo.brandat.R;
+import com.example.moo.brandat.Upload;
 import com.example.moo.brandat.my_profile;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -157,25 +160,29 @@ public class FragmentChat extends Fragment {
                         .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
                 if (!checkGPS && !checkNetwork) {
-                  //  Toast.makeText(Context, "No Service Provider Available", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "No Service Provider Available", Toast.LENGTH_SHORT).show();
+                    if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                        Intent intent3 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent3);
+                    }
                 } else {
-                   // this.canGetLocation = true;
+//                  this.canGetLocation = true;
                     // First get location from Network Provider
                     if (checkNetwork) {
-                    //    Toast.makeText(mContext, "Network", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "Network", Toast.LENGTH_SHORT).show();
 
                         try {
                             locationManager.getAllProviders();
                             Log.d("Network", "Network");
                             if (locationManager != null) {
-                               loc = locationManager
+                                loc = locationManager
                                         .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
                             }
 
                             if (loc != null) {
-                               latitude = loc.getLatitude();
-                               longitude = loc.getLongitude();
+                                latitude = loc.getLatitude();
+                                longitude = loc.getLongitude();
                             }
                         } catch (SecurityException e) {
 
@@ -184,9 +191,55 @@ public class FragmentChat extends Fragment {
                 }
                 // if GPS Enabled get lat/long using GPS Services
                 if (checkGPS) {
-               //     Toast.makeText(mContext, "GPS", Toast.LENGTH_SHORT).show();
+                    //     Toast.makeText(mContext, "GPS", Toast.LENGTH_SHORT).show();
                     if (loc == null) {
                         try {
+                            locationManager =
+                                    (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+                            // getting GPS status
+                            checkGPS = locationManager
+                                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+                            // getting network status
+                            checkNetwork = locationManager
+                                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+                            if (!checkGPS && !checkNetwork) {
+                                Toast.makeText(getContext(), "No Service Provider Available", Toast.LENGTH_SHORT).show();
+                                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                                    Intent intent3 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                    startActivity(intent3);
+                                    Intent intent2 = new Intent();
+                                    startActivity(intent3);
+                                }
+                            } else {
+//                  this.canGetLocation = true;
+                                // First get location from Network Provider
+                                if (checkNetwork) {
+                                    Toast.makeText(getContext(), "Network", Toast.LENGTH_SHORT).show();
+
+                                    try {
+                                        locationManager.getAllProviders();
+                                        Log.d("Network", "Network");
+                                        if (locationManager != null) {
+                                            loc = locationManager
+                                                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+                                        }
+
+                                        if (loc != null) {
+                                            latitude = loc.getLatitude();
+                                            longitude = loc.getLongitude();
+                                        }
+                                    } catch (SecurityException e) {
+
+                                    }
+                                }
+                            }
+                            Toast.makeText(getContext(), "mmmmmmmmmmmmmmmmmmmmmmmmmmmmm", Toast.LENGTH_SHORT).show();
+
+
                             locationManager.getAllProviders();
                             Log.d("GPS Enabled", "GPS Enabled");
                             if (locationManager != null) {
@@ -204,76 +257,13 @@ public class FragmentChat extends Fragment {
                 }
 
                 // TODO: code bohlok get the my location and send
-                Toast.makeText(getContext(), "code bohlok first", Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(getContext(), "code bohlok first", Toast.LENGTH_SHORT).show();
                 double latitude1=latitude ,longitud=longitude;
                 String content=String.valueOf(latitude1)+" jsdflfdsljdfsdfsldkafj "+String.valueOf(longitud);
-                if ((latitude==60)&&(longitud==60)){
-
-                   locationManager =
-                            (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-
-                    // getting GPS status
-                    checkGPS = locationManager
-                            .isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-                    // getting network status
-                   checkNetwork = locationManager
-                            .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-                    if (!checkGPS && !checkNetwork) {
-                        //  Toast.makeText(Context, "No Service Provider Available", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // this.canGetLocation = true;
-                        // First get location from Network Provider
-                        if (checkNetwork) {
-                            //    Toast.makeText(mContext, "Network", Toast.LENGTH_SHORT).show();
-
-                            try {
-                                locationManager.getAllProviders();
-                                Log.d("Network", "Network");
-                                if (locationManager != null) {
-                                    loc = locationManager
-                                            .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-                                }
-
-                                if (loc != null) {
-                                    latitude = loc.getLatitude();
-                                    longitude = loc.getLongitude();
-                                }
-                            } catch (SecurityException e) {
-
-                            }
-                        }
-                    }
-                    // if GPS Enabled get lat/long using GPS Services
-                    if (checkGPS) {
-                        //     Toast.makeText(mContext, "GPS", Toast.LENGTH_SHORT).show();
-                        if (loc == null) {
-                            try {
-                                locationManager.getAllProviders();
-                                Log.d("GPS Enabled", "GPS Enabled");
-                                if (locationManager != null) {
-                                    loc = locationManager
-                                            .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                                    if (loc != null) {
-                                        latitude = loc.getLatitude();
-                                        longitude = loc.getLongitude();
-                                    }
-                                }
-                            } catch (SecurityException e) {
-
-                            }
-                        }
-                    }
+                if(latitude==60&&longitud==60){
+                    alertOneButton();
                 }
-                if ((latitude==60)&&(longitud==60)){
-                    Toast.makeText(getContext(), "error in gps ", Toast.LENGTH_SHORT).show();
-
-
-                }else {
-                    sendMessage(content, false);
-                }
+                else{sendMessage(content, false);}
             }
         });
         mSendePhotoImgae.setOnClickListener(new View.OnClickListener() {
@@ -507,6 +497,18 @@ public class FragmentChat extends Fragment {
                 .child(mUserIdSender)
                 .child("contetnText")
                 .setValue(messageData.getContent());
+    }
+    public void alertOneButton() {
+
+        new AlertDialog.Builder(getContext())
+                .setTitle("error in input")
+                .setMessage("error in data error in gps ")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                    }
+                }).show();
     }
 
 }

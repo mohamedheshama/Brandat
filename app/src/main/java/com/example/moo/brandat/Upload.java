@@ -115,7 +115,15 @@ mDatabase= FirebaseDatabase.getInstance().getReference().child("userss").child(m
         publish.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
-        int i=1;
+
+
+        int i = 1;
+        if (mImgUri != null) {
+i=1;
+        } else
+        {
+            i=3;
+        }
         if ( !(fname.getText().toString().length() == 0) ){
             fname.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
         }else {
@@ -182,6 +190,8 @@ i=2;
 if (i==1) {
 
     publish();
+}else if (i==3){
+    alertOnimage();
 }else {
     alertOneButton();
 
@@ -500,6 +510,18 @@ final DatabaseReference productsData=mDatabase.child("products").push();
         new AlertDialog.Builder(Upload.this)
                 .setTitle("error in input")
                 .setMessage("error in data ")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                    }
+                }).show();
+    }
+    public void alertOnimage() {
+
+        new AlertDialog.Builder(Upload.this)
+                .setTitle("error in input image")
+                .setMessage("error in image input ")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
