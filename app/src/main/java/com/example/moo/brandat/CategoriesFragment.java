@@ -134,7 +134,7 @@ namesCategories=new ArrayList<>();
 
             Query productQuery = mDatabase;//////////filtering
 
-            productQuery.addValueEventListener(new ValueEventListener() {
+            productQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
