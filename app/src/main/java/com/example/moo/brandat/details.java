@@ -501,7 +501,11 @@ favour=new ArrayList<>();
             public void onClick(View v) {
 
 if (loc !=null) {
-    if(loc.isEmpty()){
+    Scanner input22 = new Scanner(loc);
+
+   char dd22=loc.charAt(2);
+   int ee=dd22;
+    if(loc.isEmpty()||(ee>=60&&ee<=90)||(ee>=97&&ee<=122)){
         Toast.makeText(details.this, "rrrrrrrrrrrrrr", Toast.LENGTH_SHORT).show();
         alertOneButton();
 
@@ -516,7 +520,6 @@ double g;
                     Scanner input = new Scanner(loc);
 Intent intent1=new Intent(details.this,Main_map.class);
 String []ss=loc.split(" ");
-
                     g = Double.parseDouble (ss[0]);
                     l = Double.parseDouble (ss[1]);
                     Toast.makeText(details.this, ""+l+"kkkkk"+g, Toast.LENGTH_SHORT).show();
