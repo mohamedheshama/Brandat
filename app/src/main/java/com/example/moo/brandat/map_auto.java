@@ -65,8 +65,6 @@ public class map_auto extends AppCompatActivity implements OnMapReadyCallback,
 
                 String ls=""+l;
                 String gs=""+g;
-                Toast.makeText(map_auto.this, gs, Toast.LENGTH_SHORT).show();
-                Toast.makeText(map_auto.this, ls, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 intent.putExtra("long",gs );
                 intent.putExtra("lat",ls );

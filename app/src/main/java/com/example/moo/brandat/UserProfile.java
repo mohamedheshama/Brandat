@@ -210,6 +210,7 @@ if(intent==null) {
         Log.d("error", "error");
     }
 
+
     getUserData();
 
 }
@@ -512,7 +513,6 @@ if(intent==null) {
 
 
             } else {
-                Toast.makeText(UserProfile.this, "error", Toast.LENGTH_LONG);
 
             }
         }
@@ -573,7 +573,6 @@ productsList= products;
                 intent.putExtra("time",products.getTime());
                 Log.d("imgitem", "onImageClick: "+products.getImg_url());
                 startActivity(intent);
-                Toast.makeText(UserProfile.this,""+products.getCategory(),Toast.LENGTH_SHORT).show();
 
 
            }else {
@@ -609,7 +608,6 @@ productsList= products;
                 intent.putExtra("time",products.getTime());
                 Log.d("imgitem", "onImageClick: " + products.getImg_url());
                 startActivity(intent);
-                Toast.makeText(UserProfile.this, "" + products.getCategory(), Toast.LENGTH_SHORT).show();
 
 
             }

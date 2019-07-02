@@ -299,7 +299,6 @@ email.setText(em);
                                 categoriesData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
 
                                 mProgress.dismiss();
-                                Toast.makeText(getApplicationContext(), "Your ptoduct's data has updated succesfully.", Toast.LENGTH_SHORT).show();
 
 
 
@@ -309,7 +308,6 @@ startActivity(new Intent(UpdateProduct.this,MainActivity.class));
                     } else {
                         mProgress.dismiss();
 
-                        Toast.makeText(getApplicationContext(), "task not succesful", Toast.LENGTH_LONG).show();
 
                         // Handle failures
                         // ...
@@ -357,7 +355,6 @@ startActivity(new Intent(UpdateProduct.this,MainActivity.class));
                     categoriesData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
 
                     mProgress.dismiss();
-                    Toast.makeText(getApplicationContext(), "Your ptoduct's data has inserted succesfully.", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(UpdateProduct.this,MainActivity.class));
 
 

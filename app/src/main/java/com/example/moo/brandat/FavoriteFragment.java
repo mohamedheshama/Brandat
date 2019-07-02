@@ -160,7 +160,6 @@ public class FavoriteFragment extends Fragment implements productsAdapter.ImageC
         //  String userImg = products.getPhone();
         intent.putExtra("img_url",products.getImg_url());
         startActivity(intent);
-        Toast.makeText(getContext(),""+products.getCategory(),Toast.LENGTH_SHORT).show();
 
     }
 

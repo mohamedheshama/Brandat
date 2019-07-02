@@ -325,7 +325,6 @@ final DatabaseReference productsData=mDatabase.child("products").push();
 
 
                             mProgress.dismiss();
-                            Toast.makeText(getApplicationContext(), "Your ptoduct's data has inserted succesfully.", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(Upload.this, MainActivity.class));
 
 
@@ -333,7 +332,6 @@ final DatabaseReference productsData=mDatabase.child("products").push();
                 } else {
  mProgress.dismiss();
 
-                    Toast.makeText(getApplicationContext(),"task not succesful",Toast.LENGTH_LONG ).show();
 
                     // Handle failures
                     // ...

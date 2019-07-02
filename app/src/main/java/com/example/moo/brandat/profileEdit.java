@@ -294,7 +294,6 @@ imageView=(ImageView)findViewById(R.id.viewImageeeeee);
 
                                             } else {
                                                 progressDialog.dismiss();
-                                                Toast.makeText(profileEdit.this, "error inserting your data", Toast.LENGTH_LONG).show();
                                             }
 
 

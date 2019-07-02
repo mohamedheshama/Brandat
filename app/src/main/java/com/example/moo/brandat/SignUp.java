@@ -226,7 +226,6 @@ startActivity(i);
                         if (task.isSuccessful()) {
                             Log.d("usser", "User created" + mImgUri);
 
-                            Toast.makeText(SignUp.this, "done ", Toast.LENGTH_SHORT).show();
                             updateUserInfo(userName,email,password, mImgUri, mAuth.getCurrentUser(),fone,loc);
 
                             if(mAuth.getCurrentUser().getPhotoUrl()!=null){
@@ -247,7 +246,6 @@ startActivity(i);
 
 
 
-                            Toast.makeText(SignUp.this, "faild ", Toast.LENGTH_LONG).show();
 
                         }
                     }
@@ -316,7 +314,6 @@ startActivity(i);
                                             } else {
                                                 Log.d("usser", "User profile updated." + "user update error");
                                                 progressDialog.dismiss();
-                                                Toast.makeText(SignUp.this, "error inserting your data", Toast.LENGTH_LONG).show();
                                             }
 
 

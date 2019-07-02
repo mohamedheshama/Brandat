@@ -309,8 +309,6 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                                 String ls=""+l;
                                 String gs=""+g;
                                 setMyLocationToFirebase(l,g);
-                                Toast.makeText(my_product.this, ls, Toast.LENGTH_SHORT).show();
-                                Toast.makeText(my_product.this, gs, Toast.LENGTH_SHORT).show();
 
                             }
                         }
@@ -329,8 +327,6 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                                     String ls=""+l;
                                     String gs=""+g;
                                     setMyLocationToFirebase(l,g);
-                                    Toast.makeText(my_product.this, ls, Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(my_product.this, gs, Toast.LENGTH_SHORT).show();
 
                                 }
                             }
@@ -354,8 +350,6 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                                 String gs =  ""+ g;
                                 setMyLocationToFirebase(l,g);
 
-                                Toast.makeText(my_product.this, ls, Toast.LENGTH_SHORT).show();
-                                Toast.makeText(my_product.this, gs, Toast.LENGTH_SHORT).show();
 
                             }
                         }
@@ -377,8 +371,6 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                                 String gs=""+g;
                                 setMyLocationToFirebase(l,g);
 
-                                Toast.makeText(my_product.this, ls, Toast.LENGTH_SHORT).show();
-                                Toast.makeText(my_product.this, gs, Toast.LENGTH_SHORT).show();
 
                             }
                         }
@@ -401,8 +393,6 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                             String gs=""+g;
                             setMyLocationToFirebase(l,g);
 
-                            Toast.makeText(my_product.this, ls, Toast.LENGTH_SHORT).show();
-                            Toast.makeText(my_product.this, gs, Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -443,8 +433,6 @@ public class my_product extends AppCompatActivity implements View.OnClickListene
                 {
                     String messageReturn = dataIntent.getStringExtra("long");
                     String messageReturn2 = dataIntent.getStringExtra("lat");
-                    Toast.makeText(this, messageReturn, Toast.LENGTH_SHORT).show();
-                    Toast.makeText(this, messageReturn2, Toast.LENGTH_SHORT).show();
                     double l = Double.parseDouble(messageReturn2);
                     double g = Double.parseDouble(messageReturn);
                     setMyLocationToFirebase(l,g);

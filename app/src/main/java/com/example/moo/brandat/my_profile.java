@@ -501,7 +501,6 @@ favourcat.clear();
 
 
             } else {
-                Toast.makeText(my_profile.this, "error", Toast.LENGTH_LONG);
 
             }
         }
@@ -560,7 +559,6 @@ favourcat.clear();
             //  String userImg = products.getPhone();
             intent.putExtra("img_url",products.getImg_url());
             startActivity(intent);
-            Toast.makeText(getApplicationContext(),""+products.getCategory(),Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -648,7 +646,6 @@ favourcat.clear();
 
 
             } else {
-                Toast.makeText(my_profile.this, "error", Toast.LENGTH_LONG).show();
 
             }
         }
@@ -716,7 +713,6 @@ favourcat.clear();
             //  String userImg = products.getPhone();
             intent.putExtra("img_url",products.getImg_url());
             startActivity(intent);
-            Toast.makeText(getApplicationContext(),""+products.getCategory(),Toast.LENGTH_SHORT).show();
 
         }
 
@@ -1035,8 +1031,6 @@ View mView;
 
                         String ls = "" + l;
                         String gs = "" + g;
-                        Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
-                        Toast.makeText(my_profile.this, gs, Toast.LENGTH_SHORT).show();
 
                     }
                 }
@@ -1056,8 +1050,6 @@ View mView;
                             //to firebase
                             setMyLocationToFirebase(l,g);
 
-                            Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
-                            Toast.makeText(my_profile.this, gs, Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -1082,8 +1074,6 @@ View mView;
                         //to firebase
                         setMyLocationToFirebase(l,g);
 
-                        Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
-                        Toast.makeText(my_profile.this, gs, Toast.LENGTH_SHORT).show();
 
                     }
                 }
@@ -1106,8 +1096,6 @@ View mView;
                         //to firebase
                         setMyLocationToFirebase(l,g);
 
-                        Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
-                        Toast.makeText(my_profile.this, gs, Toast.LENGTH_SHORT).show();
 
                     }
                 }
@@ -1132,8 +1120,6 @@ View mView;
                     //to firebase
                     setMyLocationToFirebase(l,g);
 
-                    Toast.makeText(my_profile.this, ls, Toast.LENGTH_SHORT).show();
-                    Toast.makeText(my_profile.this, gs, Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -1142,7 +1128,6 @@ View mView;
 
         break;
             case R.id.delete_account:
-                Toast.makeText(getApplicationContext(), "delete", Toast.LENGTH_SHORT).show();
                 deleteAccount(getApplicationContext(),MainActivity.usernameId);
                 FirebaseAuth.getInstance().getCurrentUser().delete()
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -1228,8 +1213,6 @@ View mView;
                 {
                     String messageReturn = dataIntent.getStringExtra("long");
                     String messageReturn2 = dataIntent.getStringExtra("lat");
-                    Toast.makeText(this, messageReturn, Toast.LENGTH_SHORT).show();
-                    Toast.makeText(this, messageReturn2, Toast.LENGTH_SHORT).show();
                     double l = Double.parseDouble(messageReturn2);
                     double g = Double.parseDouble(messageReturn);
                     setMyLocationToFirebase(l,g);

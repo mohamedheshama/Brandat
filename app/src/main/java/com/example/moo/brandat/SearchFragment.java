@@ -173,7 +173,6 @@ public class SearchFragment extends Fragment implements ImageAdapterTwo.ImageCli
 
             Log.d("imgitem", "onImageClick: " + products.getImg_url());
             startActivity(intent);
-            Toast.makeText(getActivity(), "" + products.getCategory(), Toast.LENGTH_SHORT).show();
 
 
         } else {
@@ -210,7 +209,6 @@ public class SearchFragment extends Fragment implements ImageAdapterTwo.ImageCli
             intent.putExtra("img_url", products.getImg_url());
             Log.d("imgitem", "onImageClick: " + products.getImg_url());
             startActivity(intent);
-            Toast.makeText(getActivity(), "" + products.getCategory(), Toast.LENGTH_SHORT).show();
 
 
         }
