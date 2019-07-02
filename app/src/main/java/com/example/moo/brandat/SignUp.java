@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,7 +41,7 @@ private FirebaseAuth.AuthStateListener mAuthListner;
         StorageReference mstorStorageReference;
 
  EditText fullname;
-    EditText email;
+ EditText email;
 EditText password;
  EditText confirmpass;
  EditText phone;
@@ -63,6 +64,7 @@ private DatabaseReference mDatabase;
 
 
       //  ButterKnife.bind(this);
+        login=(TextView)findViewById(R.id.textView4);
 fullname=(EditText) findViewById(R.id.fullName);
         email=(EditText) findViewById(R.id.email);
         password=(EditText) findViewById(R.id.password);
@@ -97,6 +99,15 @@ email=(EditText)findViewById(R.id.email);
                 submitVerification();
             }
         });
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(SignUp.this, splash.class);
+startActivity(i);
+            }
+        });
+
+
 }
 
     @Override
@@ -119,34 +130,155 @@ email=(EditText)findViewById(R.id.email);
         if (!TextUtils.isEmpty(fname) && !TextUtils.isEmpty(pass) && !TextUtils.isEmpty(cpass) && !TextUtils.isEmpty(emai) && !TextUtils.isEmpty(fone) && !TextUtils.isEmpty(locash)) {
             progressDialog.setMessage("Signing up ...");
             progressDialog.show();
-            Log.d("usser", "User profile updated." + emai+""+pass);
-            Log.d("usser", "User profile updated."+""+pass);
+            Log.d("", "User ." + emai+""+pass);
+            Log.d("usser", "User "+""+pass);
+           // Log.d("usser", "User " + mImgUri.toString());
 
 
 
-            mAuth.createUserWithEmailAndPassword(emai, cpass)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("usser", "User profile updated." + "user created");
-                                // mImgUri=(Uri) mAuth.getCurrentUser().getPhotoUrl();
-
-
-                               photoAndprofile(fname,emai,cpass,fone,locash);
-
-                            }else{
-                                progressDialog.dismiss();
-                                Log.d("usser", "User profile updated." + "error");
-                            }
-                        }
-
-
-                    });
+            createUserAccount(fname, emai, cpass,fone,locash);
 
         }
     }
-   private void photoAndprofile (final String fname, final String emai, final String cpass, final String fone, final String locash){
+
+
+
+
+    private void createUserAccount(final String userName, final String email, final String password, final String fone, final String loc) {
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("usser", "User created" + mImgUri);
+
+                            Toast.makeText(SignUp.this, "done ", Toast.LENGTH_SHORT).show();
+                            updateUserInfo(userName,email,password, mImgUri, mAuth.getCurrentUser(),fone,loc);
+
+                            if(mAuth.getCurrentUser().getPhotoUrl()!=null){
+                           Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(i);
+                                finish();
+                            }else{
+                                updateUserInfo(userName,email,password, mImgUri, mAuth.getCurrentUser(),fone,loc);
+
+                            }
+
+
+
+
+                        } else {
+
+
+
+
+
+                            Toast.makeText(SignUp.this, "faild ", Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+                });
+
+    }
+
+
+
+    private void updateUserInfo(final String userName, final String email, final String cpass, Uri imageUrl, final FirebaseUser currentUser, final String fone, final String locash) {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("App_Images");
+        final StorageReference reference = storageReference.child(imageUrl.getLastPathSegment());
+        Log.d("usser", "storage reference." + "user profile updated"+imageUrl);
+
+        reference.putFile(imageUrl).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(final Uri uri) {
+
+                        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(userName)
+                                .setPhotoUri(uri)
+                                .build();
+                        currentUser.updateProfile(profileUpdate)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                      //  Log.d("usser", "User updated"+ mAuth.getCurrentUser().getPhotoUrl().toString());
+
+
+                                            if (task.isSuccessful()) {
+
+
+                                                Log.d("usser", "User profile updated." + mAuth.getCurrentUser().getPhotoUrl().toString());
+                                                Log.d("usser", "User profile updated." + userName+email+cpass+fone+locash+uri.toString());
+
+
+                                                String Uid = mAuth.getCurrentUser().getUid();
+
+                                                DatabaseReference currentUserDB = mDatabase.child(Uid);
+                                                currentUserDB.child("name").setValue(userName);
+                                                currentUserDB.child("email").setValue(email);
+
+                                                currentUserDB.child("password").setValue(cpass);
+                                                currentUserDB.child("phone").setValue(fone);
+                                                currentUserDB.child("address").setValue(locash);
+                                                currentUserDB.child("image_url").setValue(uri.toString());
+
+                                                //currentUserDB.child("shop").setValue(isShop.isEnabled());
+
+                                                boolean s = isShop.isChecked();
+                                                if (s == true) {
+
+                                                    currentUserDB.child("shop").setValue("I'am shop owner");
+                                                } else {
+                                                    currentUserDB.child("shop").setValue("I'am not shop owner");
+
+
+                                                }
+
+                                                Log.d("usser", "User profile updated." + "finish");
+                                                progressDialog.dismiss();
+                                              startActivity(new Intent(SignUp.this, MainActivity.class));
+                                            } else {
+                                                Log.d("usser", "User profile updated." + "user update error");
+                                                progressDialog.dismiss();
+                                                Toast.makeText(SignUp.this, "error inserting your data", Toast.LENGTH_LONG).show();
+                                            }
+
+
+
+
+
+
+
+                                    }
+                                });
+
+
+                    }
+                });
+
+            }
+        });
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*  private void photoAndprofile (final String fname, final String emai, final String cpass, final String fone, final String locash){
 
 
 
@@ -268,17 +400,17 @@ return downloadUri;
 
 
 
-
+*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if(requestCode==PHOTO_PICKER &&resultCode==RESULT_OK){
-
-            mImgUri=data.getData();
-            imageView.setImageURI(mImgUri);
-
-        }
+      //  if(requestCode==PHOTO_PICKER &&resultCode==RESULT_OK){
+if(data!=null) {
+    mImgUri = data.getData();
+    imageView.setImageURI(mImgUri);
+}
+      //  }
 
 
     }

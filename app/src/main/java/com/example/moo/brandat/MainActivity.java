@@ -325,7 +325,7 @@ String hh= String.valueOf(userImageUrl);
                 case R.id.nav_LogOut:
                     FragmentChat.IS_ACTIVATE=false;
                     mAuth.signOut();
-                 //   startActivity(new Intent(MainActivity.this,splash.class));
+                    startActivity(new Intent(MainActivity.this,splash.class));
 
                     onBackPressed();
 

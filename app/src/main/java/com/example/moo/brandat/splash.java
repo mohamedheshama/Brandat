@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.drm.DrmStore;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -141,7 +142,7 @@ private FirebaseAuth.AuthStateListener mAuthListner;
         mAuthListner=new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() !=null) {
+                if(firebaseAuth.getCurrentUser() !=null&&firebaseAuth.getCurrentUser().getPhotoUrl()!=null) {
 
 
 
@@ -151,9 +152,7 @@ private FirebaseAuth.AuthStateListener mAuthListner;
                     finish();
 
                 }
-//                }else {
-//                    signIn();
-//                }
+
             }
         };
 
@@ -265,7 +264,17 @@ private FirebaseAuth.AuthStateListener mAuthListner;
 
 
     public void SignUp (View v){
-        startActivity(new Intent(splash.this,SignUp.class));
+
+
+
+                Intent intent =new Intent(splash.this,SignUp.class);
+            //    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP );
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+
+        startActivity(intent);
+
+        finish();
 
     }
     public void LogIn (View v){

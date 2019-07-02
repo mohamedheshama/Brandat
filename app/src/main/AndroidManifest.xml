@@ -41,6 +41,7 @@
         </activity>
         <activity
             android:name=".SignUp"
+            android:excludeFromRecents="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".login"
