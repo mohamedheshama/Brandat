@@ -8,7 +8,7 @@
 
     <string name="title_home" translatable="false">Home</string>
     <string name="title_shops" translatable="false">shops</string>
-    <string name="title_notifications" translatable="false">Notifications</string>
+    <string name="title_notifications" translatable="false">Chat</string>
     <string name="title_favorite" translatable="false">My Favorite</string>
 
     <string name="names_categories_key" translatable="false">namesCategoriesKey</string>

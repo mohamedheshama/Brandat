@@ -366,6 +366,7 @@ if(mAuth.getCurrentUser()!=null){
                 case R.id.nav_LogOut:
                     FragmentChat.IS_ACTIVATE=false;
                     mAuth.signOut();
+                    mDatabaseReference.child("userss").child(usernameId).child("state").setValue("offline");
                     startActivity(new Intent(MainActivity.this,splash.class));
 
                     onBackPressed();
