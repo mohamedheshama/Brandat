@@ -1,12 +1,16 @@
 package com.example.moo.brandat;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +34,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-public class SignUp extends AppCompatActivity {
+public class SignUp extends AppCompatActivity implements TextWatcher {
 private static final int PHOTO_PICKER = 2;
 ProgressDialog progressDialog;
         FirebaseAuth mAuth;
@@ -92,12 +96,81 @@ email=(EditText)findViewById(R.id.email);
             }
         });
 
+        fullname.addTextChangedListener(this);
+        email.addTextChangedListener(this);
+        password.addTextChangedListener(this);
+        confirmpass.addTextChangedListener(this);
+        phone.addTextChangedListener(this);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitVerification();
+
+                int i = 1;
+                if (mImgUri != null) {
+                    i=1;
+                } else
+                {
+                    i=3;
+                }
+                if ( !(fullname.getText().toString().length() == 0) ){
+                    fullname.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+                }else {
+                    fullname.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+                    i=2;
+
+                }
+                if (!(email.getText().toString().length() == 0) ){
+                    email.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+                }
+                else{
+                    email.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+                    i=2;
+
+                }
+
+
+
+                if (!(password.getText().toString().length() == 0)&&password.getText().toString().length()>= 8 ){
+                    password.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+                }
+                else{
+                    password.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+                    i=2;
+
+                }
+
+                if ( !(confirmpass.getText().toString().length() == 0) ){
+                    confirmpass.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+                }
+                else{
+                    confirmpass.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+                    i=2;
+
+                }
+
+                if ( !(phone.getText().toString().length() == 0) ){
+                    phone.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
+                }
+                else {
+                    phone.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_red,0, 0, 0);
+                    i=2;
+
+                }
+
+                if (i == 1) {
+
+                    submitVerification();
+
+                }else if (i==3){
+                    alertOnimage();
+                }else {
+
+                    alertOneButton("error in input data");
+
+                }
             }
+
         });
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -413,6 +486,58 @@ if(data!=null) {
       //  }
 
 
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+    }
+    public void alertOneButton(String message) {
+
+        new AlertDialog.Builder(SignUp.this)
+                .setTitle("error ")
+                .setMessage(message)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                    }
+                }).show();
+    }
+    public void alertOnimage() {
+
+        new AlertDialog.Builder(SignUp.this)
+                .setTitle("error in input image")
+                .setMessage("error in image input ")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        //  setResult(RESULT_OK,intent);
+
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PHOTO_PICKER);
+
+
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+                    }
+                }).show();
     }
 
 }

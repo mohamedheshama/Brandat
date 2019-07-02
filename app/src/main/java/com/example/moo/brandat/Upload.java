@@ -564,6 +564,18 @@ final DatabaseReference productsData=mDatabase.child("products").push();
                 .setMessage("error in image input ")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        //  setResult(RESULT_OK,intent);
+
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PHOTO_PICKER);
+
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
 
                         dialog.cancel();
                     }
