@@ -24,6 +24,7 @@
         <activity android:name=".search" />
         <activity android:name=".splash"></activity>
         <activity android:name=".splahScreen">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -71,6 +72,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Upload"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".No_Internet"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".chat.ChatActivity"

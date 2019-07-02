@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.drm.DrmStore;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -75,6 +77,26 @@ private FirebaseAuth.AuthStateListener mAuthListner;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
+
+        if(isNetworkAvailable()){
+//internt connect
+        }else{
+
+            Intent intent =new Intent(splash.this,No_Internet.class);
+            //    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP );
+          //  intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+
+            startActivity(intent);
+
+
+// no network
+//you can show image here by adding layout and set visibility gone and when no connection set visible
+
+
+        }
+
+
         SharedPreferences pref2 = getSharedPreferences("DialogPREF", Context.MODE_PRIVATE);
         if(pref2.getBoolean("Dialog_executed", false)){
 
@@ -244,6 +266,16 @@ private FirebaseAuth.AuthStateListener mAuthListner;
         });
 
     }
+
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+
     private void signIn() {
         Intent signInIntent =Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
