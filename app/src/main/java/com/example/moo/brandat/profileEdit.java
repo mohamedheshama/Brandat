@@ -158,9 +158,9 @@ imageView=(ImageView)findViewById(R.id.viewImageeeeee);
 
                 }else{
 
-                    if(mAuth.getCurrentUser().getPhotoUrl()!=null){
+                    if(MainActivity.userImageUrl!=null){
                         Picasso.with(c)
-                                .load(mAuth.getCurrentUser().getPhotoUrl().toString())
+                                .load(MainActivity.userImageUrl)
                                 .resize(120, 120)
                                 .centerCrop()
                                 .into(imageView);}

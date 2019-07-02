@@ -152,7 +152,7 @@ i=2;
 
         }
 
-        if ( !(cost.getText().toString().length() == 0)&&(cost.getText().toString().length() <= 3) ){
+        if ( !(cost.getText().toString().length() == 0) ){
             cost.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_check_circle_black_24dp,0, 0, 0);
         }
         else{
@@ -292,7 +292,12 @@ final DatabaseReference productsData=mDatabase.child("products").push();
                             productsData.child("quantity").setValue(fone);
                             productsData.child("time").setValue(date);
                             productsData.child("imagesrc").setValue(downloadUri.toString());
-                            productsData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
+                            if (MainActivity.userImageUrl!=null) {
+                                productsData.child("img_url").setValue(MainActivity.userImageUrl);
+                            }else {
+                                productsData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
+
+                            }
                             productsData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
                             productsData.child("product_key").setValue(key);
 
@@ -307,7 +312,13 @@ final DatabaseReference productsData=mDatabase.child("products").push();
                             categoriesData.child("quantity").setValue(fone);
                             categoriesData.child("time").setValue(date);
                             categoriesData.child("imagesrc").setValue(downloadUri.toString());
-                            categoriesData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
+                            if (MainActivity.userImageUrl!=null) {
+                                categoriesData.child("img_url").setValue(MainActivity.userImageUrl);
+                            }else {
+                                categoriesData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
+
+                            }
+
 
                             categoriesData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
                             categoriesData.child("product_key").setValue(key);

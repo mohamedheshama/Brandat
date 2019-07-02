@@ -279,7 +279,7 @@ email.setText(em);
 
                         productsData.child("imagesrc").setValue(downloadUri.toString());
                         Log.d("photo", "onComplete: "+downloadUri);
-                                productsData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
+                                productsData.child("img_url").setValue(MainActivity.userImageUrl);
                                 productsData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
 
                                 categoriesData.child("product_key").setValue(product_key);
@@ -294,7 +294,7 @@ email.setText(em);
                         categoriesData.child("time").setValue(java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
 
                         categoriesData.child("imagesrc").setValue(downloadUri.toString());
-                                categoriesData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
+                                categoriesData.child("img_url").setValue(MainActivity.userImageUrl);
 
                                 categoriesData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
 
@@ -336,7 +336,7 @@ startActivity(new Intent(UpdateProduct.this,MainActivity.class));
             productsData.child("time").setValue(java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
 
             // productsData.child("imagesrc").setValue(downloadUri.toString());
-                    productsData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
+                    productsData.child("img_url").setValue(MainActivity.userImageUrl);
                     productsData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
 
                     categoriesData.child("imagesrc").setValue(img_src);
@@ -352,7 +352,7 @@ startActivity(new Intent(UpdateProduct.this,MainActivity.class));
             categoriesData.child("time").setValue(java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
 
             //categoriesData.child("imagesrc").setValue(downloadUri.toString());
-                    categoriesData.child("img_url").setValue(mAuth.getCurrentUser().getPhotoUrl().toString());
+                    categoriesData.child("img_url").setValue(MainActivity.userImageUrl);
 
                     categoriesData.child("user_id").setValue(mAuth.getCurrentUser().getUid());
 

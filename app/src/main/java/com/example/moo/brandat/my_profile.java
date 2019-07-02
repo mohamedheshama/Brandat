@@ -521,7 +521,7 @@ favourcat.clear();
 
 
 
-            cardsAdapter = new productsAdapter(productsList, getApplicationContext(),  this);
+            cardsAdapter = new productsAdapter(productsList, getApplicationContext(),  this,false);
 
             productRecycler.setAdapter(cardsAdapter);
 
@@ -669,7 +669,7 @@ favourcat.clear();
 
 
 
-            cardsAdapter2 = new productsAdapter(productsfavList, getApplicationContext(),  this);
+            cardsAdapter2 = new productsAdapter(productsfavList, getApplicationContext(),  this,false);
            // Log.d("errrrorrrrrrrrrrrrrr", "onCancelleddrrrrrrrr:6 "+favour.get(0));
 
             productfavRecycler.setAdapter(cardsAdapter2);
@@ -773,19 +773,19 @@ favourcat.clear();
 
              emailTV.setText((String)dataSnapshot.child("email").getValue())  ;
               // locationTV.setText((String)dataSnapshot.child("location").getValue())  ;
-                if(img_url!=null){
+                if(MainActivity.userImageUrl!=null){
 
                     Picasso.with(c)
-                            .load(img_url)
+                            .load(MainActivity.userImageUrl)
                             .resize(120, 120)
                             .centerCrop()
                             .into(circularImageView);
 
                 }else{
 
-                    if(mAuth.getCurrentUser().getPhotoUrl()!=null){
+                    if(MainActivity.userImageUrl==null){
                         Picasso.with(c)
-                                .load(mAuth.getCurrentUser().getPhotoUrl().toString())
+                                .load(MainActivity.userImageUrl)
                                 .resize(120, 120)
                                 .centerCrop()
                                 .into(circularImageView);}

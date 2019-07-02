@@ -532,7 +532,7 @@ productsList= products;
 
 
 
-    cardsAdapter = new productsAdapter(productsList, getApplicationContext(),  this);
+    cardsAdapter = new productsAdapter(productsList, getApplicationContext(),  this,false);
 
     productRecycler.setAdapter(cardsAdapter);
 
