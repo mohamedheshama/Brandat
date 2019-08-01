@@ -65,6 +65,9 @@
             android:name=".details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".contactUs"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".categoryItem"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

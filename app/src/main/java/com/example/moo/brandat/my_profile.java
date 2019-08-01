@@ -788,7 +788,7 @@ favourcat.clear();
 
 
                     else{
-                        circularImageView.setImageResource(R.mipmap.baseline_account_circle_black_48);
+                        circularImageView.setImageResource(R.drawable.ic_account_circle_black_24dp);
 
                     }
                 }

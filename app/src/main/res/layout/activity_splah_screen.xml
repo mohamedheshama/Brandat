@@ -4,74 +4,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".splahScreen"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-   >
-<android.support.v7.widget.CardView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
-    app:cardElevation="3dp"
     >
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        app:cardElevation="3dp"
+        >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
 
-    >
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/report"
-        style="@style/Widget.Design.FloatingActionButton"
-        android:layout_width="170dp"
-        android:layout_height="170dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="40dp"
-        android:elevation="4dp"
-        android:backgroundTint="#EDEAFD"
+            >
+            <TextView
+                android:id="@+id/report"
+                android:background="@drawable/circle_style"
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="40dp"
+                android:elevation="4dp"
 
-        />
-    <ImageView    android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:elevation="9dp"
-        android:layout_marginBottom="35dp"
-        android:layout_marginEnd="4dp"
-        android:src="@drawable/ic_logo"
+                android:backgroundTint="#EDEAFD"
 
-        android:layout_marginRight="4dp" />
+                />
+            <ImageView    android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:elevation="9dp"
+                android:layout_marginBottom="35dp"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/ic_logo"
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="4dp"
-        android:text="مارك تك"
-        android:elevation="9dp"
-        android:layout_marginBottom="38dp"
+                android:layout_marginRight="4dp" />
 
-        android:layout_marginLeft="4dp"
-        android:textColor="#0057FF"
-        android:textSize="17dp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Brands"
-        android:textColor="#0057FF"
-        android:textSize="34dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp" />
-    <com.bhargavms.dotloader.DotLoader
-        android:id="@+id/text_dot_loader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="220dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
-        app:color_array="@array/dot_colors"
-        app:dot_radius="4dp"
-        app:number_of_dots="3"/>
-</FrameLayout>
-</android.support.v7.widget.CardView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="4dp"
+                android:text="مارك تك"
+                android:elevation="9dp"
+                android:layout_marginBottom="38dp"
+
+                android:layout_marginLeft="4dp"
+                android:textColor="#0057FF"
+                android:textSize="17dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Brands"
+                android:textColor="#0057FF"
+                android:textSize="34dp"
+                android:layout_marginTop="80dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp" />
+
+            <com.bhargavms.dotloader.DotLoader
+                android:id="@+id/text_dot_loader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="220dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                app:color_array="@array/dot_colors"
+                app:dot_radius="4dp"
+                app:number_of_dots="3"/>
+        </FrameLayout>
+    </android.support.v7.widget.CardView>
 </FrameLayout>

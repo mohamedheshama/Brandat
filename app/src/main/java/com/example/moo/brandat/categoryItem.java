@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -95,6 +96,9 @@ Intent intent=getIntent();
 
 
     }
+
+//    public void myProfile(View view) {
+//    }
 
     public class fetchProducts extends AsyncTask<String, Void, List> implements ImageAdapterTwo.ImageClickHandler {
 
