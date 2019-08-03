@@ -12,77 +12,7 @@
         android:layout_height="match_parent"
         android:padding="5dp"
         android:orientation="vertical">
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardView3"
-            app:cardCornerRadius="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_gravity="top"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
-            android:elevation="5dp"
-            >
 
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:padding="5dp"
-                android:background="@android:color/white"
-                >
-                <ImageView
-                    android:id="@+id/navShow2"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_marginEnd="95dp"
-                    android:layout_marginRight="100dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:onClick="navShow"
-                    android:src="@drawable/ic_list_black_24dp"
-                    />
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|start"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:text="search "
-                    android:textSize="19dp"
-                    android:onClick="searchText"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="#858F2D"
-                    android:textAlignment="textStart"
-                    app:layout_constraintHorizontal_bias="0.14"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_weight="7"
-                    />
-
-
-
-
-
-                <com.mikhaellopez.circularimageview.CircularImageView
-
-                    android:id="@+id/profilePhoto"
-                    android:paddingTop="@dimen/nav_header_vertical_spacing"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:src="@drawable/ic_account_circle_black_24dp"
-                    android:layout_gravity="end"
-                    android:onClick="myProfile"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginRight="4dp" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"

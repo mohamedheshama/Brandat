@@ -1,6 +1,7 @@
 package com.example.moo.brandat;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Movie;
 import android.net.Uri;
@@ -53,21 +54,23 @@ public class MainActivity extends AppCompatActivity
         BottomNavigationView.OnNavigationItemSelectedListener {
     private static final int PHOTO_PICKER = 2;
     CircularImageView nav_head_account_image;
+    ImageView drawNav;
     List<model> moviesList;
     FirebaseAuth mAuth;
-    TextView user,signed_in;
+    //TextView user,signed_in;
     private FirebaseAuth.AuthStateListener mAuthListner;
     private DatabaseReference mDatabaseReference;
     public static String usernameId ,usernameUser,userImageUrl;
     //android:onClick="onclick"
-
-
+    Context c;
+    Toolbar toolbar;
+    NavigationView navigationView;
     StorageReference mstorStorageReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nav_contender);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
@@ -90,12 +93,12 @@ public class MainActivity extends AppCompatActivity
         BottomNavigationView navigation =  findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerLayout = navigationView.getHeaderView(0);
-        signed_in = (TextView) headerLayout.findViewById(R.id.signed_in);
-       // nav_head_account_image = (CircularImageView) findViewById(R.id.profilePhoto);
-        nav_head_account_image = (CircularImageView) headerLayout.findViewById(R.id.imageView_account);  //for navegation head action image and account
-        user = (TextView) headerLayout.findViewById(R.id.user);
+        // signed_in = (TextView) headerLayout.findViewById(R.id.signed_in);
+        nav_head_account_image = (CircularImageView) findViewById(R.id.profilePhoto);  //for navegation head action image and account
+        drawNav = (ImageView) findViewById(R.id.navShow2);
+        //user = (TextView) headerLayout.findViewById(R.id.user);
 
         mDatabaseReference=FirebaseDatabase.getInstance().getReference();
 
@@ -163,8 +166,8 @@ public class MainActivity extends AppCompatActivity
                                     .putString(getApplicationContext().getString(R.string.user_uid_shared_preference), usernameId)
                                     .putString(getApplicationContext().getString(R.string.user_imge_url_shared_preference), userImageUrl)
                                     .apply();
-                            user.setText(usernameUser);
-                            signed_in.setText("Signed in..");
+                            //   user.setText(usernameUser);
+                            //  signed_in.setText("Signed in..");
                             String hh = String.valueOf(userImageUrl);
                             if (hh != null) {
                                 Picasso.with(MainActivity.this)
@@ -173,7 +176,7 @@ public class MainActivity extends AppCompatActivity
                                         .centerCrop()
                                         .into(nav_head_account_image);
                             } else {
-                                nav_head_account_image.setImageResource(R.mipmap.baseline_account_circle_black_48);
+                                nav_head_account_image.setImageResource(R.drawable.ic_account_circle_black_24dp);
 
                             }
 
@@ -195,17 +198,18 @@ public class MainActivity extends AppCompatActivity
                         .putString(getApplicationContext().getString(R.string.user_uid_shared_preference), usernameId)
                         .putString(getApplicationContext().getString(R.string.user_imge_url_shared_preference), userImageUrl)
                         .apply();
-                user.setText(usernameUser);
-                signed_in.setText("Signed in..");
+                // user.setText(usernameUser);
+                // signed_in.setText("Signed in..");
                 String hh = String.valueOf(userImageUrl);
                 if (hh != null) {
                     Picasso.with(MainActivity.this)
                             .load(hh)
-                            .resize(80, 80)
+                            .resize(45, 45)
                             .centerCrop()
                             .into(nav_head_account_image);
+
                 } else {
-                    nav_head_account_image.setImageResource(R.mipmap.baseline_account_circle_black_48);
+                    nav_head_account_image.setImageResource(R.drawable.ic_account_circle_black_24dp);
 
                 }
 
@@ -271,21 +275,21 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-      //  getMenuInflater().inflate(R.menu.menu_main2, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main2, menu);
+//        return true;
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
 //        if (id == R.id.action_settings) {
 //            return true;
 //        }
@@ -295,9 +299,9 @@ public class MainActivity extends AppCompatActivity
 //        if (id == R.id.action_setting3) {
 //            return true;
 //        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
 
@@ -410,8 +414,13 @@ public class MainActivity extends AppCompatActivity
     public void searchText(View view) {
         startActivity(new Intent(MainActivity.this,search.class));
     }
-    public void searchButton(View view) {
-        startActivity(new Intent(MainActivity.this,search.class));
+    public void navShow(View view) {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
 
