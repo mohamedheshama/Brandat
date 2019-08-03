@@ -1,7 +1,6 @@
 package com.example.moo.brandat;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Movie;
 import android.net.Uri;
@@ -54,23 +53,21 @@ public class MainActivity extends AppCompatActivity
         BottomNavigationView.OnNavigationItemSelectedListener {
     private static final int PHOTO_PICKER = 2;
     CircularImageView nav_head_account_image;
-    ImageView drawNav;
     List<model> moviesList;
     FirebaseAuth mAuth;
-//TextView user,signed_in;
+    TextView user,signed_in;
     private FirebaseAuth.AuthStateListener mAuthListner;
     private DatabaseReference mDatabaseReference;
     public static String usernameId ,usernameUser,userImageUrl;
     //android:onClick="onclick"
-    Context c;
-    Toolbar toolbar;
-    NavigationView navigationView;
+
+
     StorageReference mstorStorageReference;
-@Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nav_contender);
-         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
@@ -78,31 +75,31 @@ public class MainActivity extends AppCompatActivity
         if (intent.hasExtra("Exit")){
             finish();
         }
-    LifeCyclerr.getInstance().setOnVisibilityChangeListener(new LifeCyclerr.ValueChangeListener() {
-        @Override
-        public void onChanged(Boolean value) {
-            Log.d("isAppInBackground", String.valueOf(value));
-            if (String.valueOf(value).equals("true")){
-                mDatabaseReference.child("userss").child(usernameId).child("state").setValue("offline");
-            }else {
-                mDatabaseReference.child("userss").child(usernameId).child("state").setValue("online");
+        LifeCyclerr.getInstance().setOnVisibilityChangeListener(new LifeCyclerr.ValueChangeListener() {
+            @Override
+            public void onChanged(Boolean value) {
+                Log.d("isAppInBackground", String.valueOf(value));
+                if (String.valueOf(value).equals("true")){
+                    mDatabaseReference.child("userss").child(usernameId).child("state").setValue("offline");
+                }else {
+                    mDatabaseReference.child("userss").child(usernameId).child("state").setValue("online");
+                }
             }
-        }
-    });
+        });
 
         BottomNavigationView navigation =  findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
 
-     navigationView = (NavigationView) findViewById(R.id.nav_view);
-    View headerLayout = navigationView.getHeaderView(0);
-   // signed_in = (TextView) headerLayout.findViewById(R.id.signed_in);
-    nav_head_account_image = (CircularImageView) findViewById(R.id.profilePhoto);  //for navegation head action image and account
-    drawNav = (ImageView) findViewById(R.id.navShow2);
-    //user = (TextView) headerLayout.findViewById(R.id.user);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerLayout = navigationView.getHeaderView(0);
+        signed_in = (TextView) headerLayout.findViewById(R.id.signed_in);
+       // nav_head_account_image = (CircularImageView) findViewById(R.id.profilePhoto);
+        nav_head_account_image = (CircularImageView) headerLayout.findViewById(R.id.imageView_account);  //for navegation head action image and account
+        user = (TextView) headerLayout.findViewById(R.id.user);
 
-    mDatabaseReference=FirebaseDatabase.getInstance().getReference();
+        mDatabaseReference=FirebaseDatabase.getInstance().getReference();
 
-    loadfragment(new home());
+        loadfragment(new home());
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +111,7 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-    mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
 //    FloatingActionButton fab1 = (FloatingActionButton) findViewById(R.id.floatingActionButton);
 //    fab1.setOnClickListener(new View.OnClickListener() {
@@ -128,104 +125,103 @@ public class MainActivity extends AppCompatActivity
 //        }
 //    });
 
-    mAuthListner=new FirebaseAuth.AuthStateListener() {
-        @Override
-        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-            if(firebaseAuth.getCurrentUser() ==null) {
-                startActivity(new Intent(MainActivity.this, splash.class));
+        mAuthListner=new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() ==null) {
+                    startActivity(new Intent(MainActivity.this, splash.class));
 
-            }
+                }
 //                }else {
 //                    signIn();
 //                }
-        }
-    };
+            }
+        };
 
 
-mstorStorageReference= FirebaseStorage.getInstance().getReference();
-StorageReference filepath=mstorStorageReference.child("App_Images");
+        mstorStorageReference= FirebaseStorage.getInstance().getReference();
+        StorageReference filepath=mstorStorageReference.child("App_Images");
 
 //    String url= mAuth.getCurrentUser().getPhotoUrl().toString();
 
- //   Log.d("hh", url);
-if(mAuth.getCurrentUser()!=null){
-    Log.d("mano", "onComplete: done user id");
-    FragmentChat.IS_ACTIVATE=true;
-    usernameId = mAuth.getCurrentUser().getUid();
-    usernameUser=mAuth.getCurrentUser().getDisplayName();
-    if(mAuth.getCurrentUser().getPhotoUrl()==null) {
-        mDatabaseReference.child("userss").child(usernameId).child("img_url").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue(String.class) != null) {
-                    userImageUrl = dataSnapshot.getValue(String.class);
+        //   Log.d("hh", url);
+        if(mAuth.getCurrentUser()!=null){
+            Log.d("mano", "onComplete: done user id");
+            FragmentChat.IS_ACTIVATE=true;
+            usernameId = mAuth.getCurrentUser().getUid();
+            usernameUser=mAuth.getCurrentUser().getDisplayName();
+            if(mAuth.getCurrentUser().getPhotoUrl()==null) {
+                mDatabaseReference.child("userss").child(usernameId).child("img_url").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue(String.class) != null) {
+                            userImageUrl = dataSnapshot.getValue(String.class);
 
 
-                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                            .edit()
-                            .putString(getApplicationContext().getString(R.string.user_uid_shared_preference), usernameId)
-                            .putString(getApplicationContext().getString(R.string.user_imge_url_shared_preference), userImageUrl)
-                            .apply();
-                 //   user.setText(usernameUser);
-                  //  signed_in.setText("Signed in..");
-                    String hh = String.valueOf(userImageUrl);
-                    if (hh != null) {
-                        Picasso.with(MainActivity.this)
-                                .load(hh)
-                                .resize(80, 80)
-                                .centerCrop()
-                                .into(nav_head_account_image);
-                    } else {
-                        nav_head_account_image.setImageResource(R.drawable.ic_account_circle_black_24dp);
+                            PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                                    .edit()
+                                    .putString(getApplicationContext().getString(R.string.user_uid_shared_preference), usernameId)
+                                    .putString(getApplicationContext().getString(R.string.user_imge_url_shared_preference), userImageUrl)
+                                    .apply();
+                            user.setText(usernameUser);
+                            signed_in.setText("Signed in..");
+                            String hh = String.valueOf(userImageUrl);
+                            if (hh != null) {
+                                Picasso.with(MainActivity.this)
+                                        .load(hh)
+                                        .resize(80, 80)
+                                        .centerCrop()
+                                        .into(nav_head_account_image);
+                            } else {
+                                nav_head_account_image.setImageResource(R.mipmap.baseline_account_circle_black_48);
 
+                            }
+
+
+                        }
                     }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }else {
+                userImageUrl = mAuth.getCurrentUser().getPhotoUrl().toString();
+
+
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                        .edit()
+                        .putString(getApplicationContext().getString(R.string.user_uid_shared_preference), usernameId)
+                        .putString(getApplicationContext().getString(R.string.user_imge_url_shared_preference), userImageUrl)
+                        .apply();
+                user.setText(usernameUser);
+                signed_in.setText("Signed in..");
+                String hh = String.valueOf(userImageUrl);
+                if (hh != null) {
+                    Picasso.with(MainActivity.this)
+                            .load(hh)
+                            .resize(80, 80)
+                            .centerCrop()
+                            .into(nav_head_account_image);
+                } else {
+                    nav_head_account_image.setImageResource(R.mipmap.baseline_account_circle_black_48);
 
                 }
+
+                Log.d("immmg", "onCreate: " + mAuth.getCurrentUser().getPhotoUrl());
+                nav_head_account_image.setImageURI(mAuth.getCurrentUser().getPhotoUrl());
             }
 
+        }
+        nav_head_account_image.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onClick(View view) {
+
+                startActivity(new Intent(MainActivity.this, my_profile.class));
 
             }
         });
-    }else {
-        userImageUrl = mAuth.getCurrentUser().getPhotoUrl().toString();
-
-
-        PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                .edit()
-                .putString(getApplicationContext().getString(R.string.user_uid_shared_preference), usernameId)
-                .putString(getApplicationContext().getString(R.string.user_imge_url_shared_preference), userImageUrl)
-                .apply();
-       // user.setText(usernameUser);
-       // signed_in.setText("Signed in..");
-        String hh = String.valueOf(userImageUrl);
-        if (hh != null) {
-            Picasso.with(MainActivity.this)
-                    .load(hh)
-                    .resize(45, 45)
-                    .centerCrop()
-                    .into(nav_head_account_image);
-
-        } else {
-            nav_head_account_image.setImageResource(R.drawable.ic_account_circle_black_24dp);
-
-        }
-
-        Log.d("immmg", "onCreate: " + mAuth.getCurrentUser().getPhotoUrl());
-        nav_head_account_image.setImageURI(mAuth.getCurrentUser().getPhotoUrl());
-    }
-
-}
-  nav_head_account_image.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-
-        startActivity(new Intent(MainActivity.this, my_profile.class));
-
-    }
-   });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -251,16 +247,16 @@ if(mAuth.getCurrentUser()!=null){
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PHOTO_PICKER);
     }
-   public void imgprofclck(View v){
+    public void imgprofclck(View v){
 
 
-       startActivity(new Intent(MainActivity.this, UserProfile.class));
+        startActivity(new Intent(MainActivity.this, UserProfile.class));
 
 //       Fragment fragment=null;
 //       fragment=new account();
 ////
 //        loadfragment(fragment);
-   }
+    }
 
     @Override
     public void onBackPressed() {
@@ -275,21 +271,21 @@ if(mAuth.getCurrentUser()!=null){
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main2, menu);
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+      //  getMenuInflater().inflate(R.menu.menu_main2, menu);
+        return true;
+    }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
 //        if (id == R.id.action_settings) {
 //            return true;
 //        }
@@ -299,9 +295,9 @@ if(mAuth.getCurrentUser()!=null){
 //        if (id == R.id.action_setting3) {
 //            return true;
 //        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
 
@@ -318,7 +314,7 @@ if(mAuth.getCurrentUser()!=null){
         switch (item .getItemId()){
             case R.id.navigation_home:
                 try {
-                  //  new moviessearchTask().execute("https://api.themoviedb.org/3/movie/popular?api_key=cb77b332ccbf1c0fb73ba7dca9973100");
+                    //  new moviessearchTask().execute("https://api.themoviedb.org/3/movie/popular?api_key=cb77b332ccbf1c0fb73ba7dca9973100");
                 } catch (Exception e) {
                     Log.d("error", "error");
 
@@ -356,31 +352,31 @@ if(mAuth.getCurrentUser()!=null){
                 fragment=new account();
                 onBackPressed();
                 break;
-                case R.id.nav_gallery:
+            case R.id.nav_gallery:
                 fragment=new account();
-                    onBackPressed();
+                onBackPressed();
                 break;
-                case  R.id.nav_slideshow:
+            case  R.id.nav_slideshow:
                 fragment=new home();
-                    onBackPressed();
+                onBackPressed();
                 break;
-                case R.id.my_favorite:
+            case R.id.my_favorite:
                 fragment=new account();
-                    onBackPressed();
+                onBackPressed();
                 break;
-                case R.id.nav_LogOut:
-                    FragmentChat.IS_ACTIVATE=false;
-                    mAuth.signOut();
-                    mDatabaseReference.child("userss").child(usernameId).child("state").setValue("offline");
-                    startActivity(new Intent(MainActivity.this,splash.class));
+            case R.id.nav_LogOut:
+                FragmentChat.IS_ACTIVATE=false;
+                mAuth.signOut();
+                mDatabaseReference.child("userss").child(usernameId).child("state").setValue("offline");
+                startActivity(new Intent(MainActivity.this,splash.class));
 
-                    onBackPressed();
+                onBackPressed();
 
                 break;
             case R.id.about:
 
-               Intent intent=new Intent(this,AboutApp.class);
-               startActivity(intent);
+                Intent intent=new Intent(this,AboutApp.class);
+                startActivity(intent);
                 //   startActivity(new Intent(MainActivity.this,splash.class));
 
                 onBackPressed();
@@ -414,13 +410,8 @@ if(mAuth.getCurrentUser()!=null){
     public void searchText(View view) {
         startActivity(new Intent(MainActivity.this,search.class));
     }
-    public void navShow(View view) {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
+    public void searchButton(View view) {
+        startActivity(new Intent(MainActivity.this,search.class));
     }
 
 
